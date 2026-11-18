@@ -1,0 +1,1902 @@
+[
+ {
+  "cands": [
+   "Hongbo Deng",
+   "Jangwon Seo",
+   "Alok Choudhary",
+   "Chaoyi Pang",
+   "Eyal Krikon",
+   "Huajing Li"
+  ],
+  "gold": [
+   "Jangwon Seo",
+   "Hongbo Deng",
+   "Eyal Krikon",
+   "Huajing Li",
+   "Alok Choudhary",
+   "Chaoyi Pang"
+  ],
+  "pred": "Eyal Krikon > Alok Choudhary > Hongbo Deng > Jangwon Seo > Huajing Li > Chaoyi Pang"
+ },
+ {
+  "cands": [
+   "Djoerd Hiemstra",
+   "Lizhu Zhou",
+   "Dongdong Shan",
+   "Peter Knees",
+   "Jie Tang",
+   "Jaime B. Teevan"
+  ],
+  "gold": [
+   "Jaime B. Teevan",
+   "Djoerd Hiemstra",
+   "Jie Tang",
+   "Dongdong Shan",
+   "Peter Knees",
+   "Lizhu Zhou"
+  ],
+  "pred": "Jaime B. Teevan > Djoerd Hiemstra > Jie Tang > Peter Knees > Lizhu Zhou > Dongdong Shan"
+ },
+ {
+  "cands": [
+   "Dejing Dou",
+   "Jérôme Kunegis",
+   "Ye Yuan",
+   "Vishwa Vinay",
+   "Falk Scholer",
+   "Yiming Yang"
+  ],
+  "gold": [
+   "Falk Scholer",
+   "Vishwa Vinay",
+   "Jérôme Kunegis",
+   "Dejing Dou",
+   "Yiming Yang",
+   "Ye Yuan"
+  ],
+  "pred": "Falk Scholer > Jérôme Kunegis > Yiming Yang > Vishwa Vinay > Dejing Dou > Ye Yuan"
+ },
+ {
+  "cands": [
+   "Chirag Suresh Shah",
+   "Mengchi Liu",
+   "Paolo Rosso",
+   "Eyal Krikon",
+   "Massimiliano Ciaramita",
+   "Peter Knees"
+  ],
+  "gold": [
+   "Chirag Suresh Shah",
+   "Massimiliano Ciaramita",
+   "Eyal Krikon",
+   "Peter Knees",
+   "Paolo Rosso",
+   "Mengchi Liu"
+  ],
+  "pred": "Chirag Suresh Shah > Paolo Rosso > Massimiliano Ciaramita > Eyal Krikon > Mengchi Liu > Peter Knees"
+ },
+ {
+  "cands": [
+   "Tetsuya Sakai",
+   "M‐Dyaa Albakour",
+   "Evgeniy Gabrilovich",
+   "Philip S. Yu",
+   "Efthimis N. Efthimiadis",
+   "Djoerd Hiemstra"
+  ],
+  "gold": [
+   "Tetsuya Sakai",
+   "Evgeniy Gabrilovich",
+   "Djoerd Hiemstra",
+   "Efthimis N. Efthimiadis",
+   "Philip S. Yu",
+   "M‐Dyaa Albakour"
+  ],
+  "pred": "Evgeniy Gabrilovich > Djoerd Hiemstra > Tetsuya Sakai > Philip S. Yu > Efthimis N. Efthimiadis > M‐Dyaa Albakour"
+ },
+ {
+  "cands": [
+   "Thomas Neumann",
+   "Heung‐Yeung Shum",
+   "Gautam Das",
+   "Rifat Ozcan",
+   "Ling Feng",
+   "Gareth J. F. Jones"
+  ],
+  "gold": [
+   "Gareth J. F. Jones",
+   "Rifat Ozcan",
+   "Thomas Neumann",
+   "Heung‐Yeung Shum",
+   "Gautam Das",
+   "Ling Feng"
+  ],
+  "pred": "Gareth J. F. Jones > Rifat Ozcan > Gautam Das > Thomas Neumann > Ling Feng > Heung‐Yeung Shum"
+ },
+ {
+  "cands": [
+   "Yifan Pan",
+   "Flávio Figueiredo",
+   "Mauricio Marı́n",
+   "Gonzalo Navarro",
+   "Maya Ramanath",
+   "Tok Wang Ling"
+  ],
+  "gold": [
+   "Flávio Figueiredo",
+   "Maya Ramanath",
+   "Gonzalo Navarro",
+   "Mauricio Marı́n",
+   "Yifan Pan",
+   "Tok Wang Ling"
+  ],
+  "pred": "Gonzalo Navarro > Maya Ramanath > Flávio Figueiredo > Yifan Pan > Tok Wang Ling > Mauricio Marı́n"
+ },
+ {
+  "cands": [
+   "Peter C. K. Yeung",
+   "Chunyan Miao",
+   "Linas Baltrunas",
+   "Chaoyi Pang",
+   "Ling Feng",
+   "Yanan Qian"
+  ],
+  "gold": [
+   "Peter C. K. Yeung",
+   "Linas Baltrunas",
+   "Chunyan Miao",
+   "Yanan Qian",
+   "Chaoyi Pang",
+   "Ling Feng"
+  ],
+  "pred": "Linas Baltrunas > Ling Feng > Yanan Qian > Peter C. K. Yeung > Chaoyi Pang > Chunyan Miao"
+ },
+ {
+  "cands": [
+   "Ping Luo",
+   "Krysta M. Svore",
+   "Xifeng Yan",
+   "Vagelis Hristidis",
+   "Charles L. A. Clarke",
+   "Eric Nyberg"
+  ],
+  "gold": [
+   "Charles L. A. Clarke",
+   "Krysta M. Svore",
+   "Eric Nyberg",
+   "Ping Luo",
+   "Vagelis Hristidis",
+   "Xifeng Yan"
+  ],
+  "pred": "Charles L. A. Clarke > Vagelis Hristidis > Krysta M. Svore > Eric Nyberg > Ping Luo > Xifeng Yan"
+ },
+ {
+  "cands": [
+   "Jun He",
+   "Songhua Xu",
+   "Juan F. Huete",
+   "Charles L. A. Clarke",
+   "Massimo Melucci",
+   "Ronald T. Fernández"
+  ],
+  "gold": [
+   "Charles L. A. Clarke",
+   "Massimo Melucci",
+   "Ronald T. Fernández",
+   "Jun He",
+   "Juan F. Huete",
+   "Songhua Xu"
+  ],
+  "pred": "Charles L. A. Clarke > Ronald T. Fernández > Massimo Melucci > Songhua Xu > Jun He > Juan F. Huete"
+ },
+ {
+  "cands": [
+   "Suleyman Cetintas",
+   "Filip Radlinski",
+   "Reynold C. K. Cheng",
+   "Evgeniy Gabrilovich",
+   "Jaime B. Teevan",
+   "Carsten Eickhoff"
+  ],
+  "gold": [
+   "Filip Radlinski",
+   "Jaime B. Teevan",
+   "Evgeniy Gabrilovich",
+   "Carsten Eickhoff",
+   "Suleyman Cetintas",
+   "Reynold C. K. Cheng"
+  ],
+  "pred": "Evgeniy Gabrilovich > Jaime B. Teevan > Filip Radlinski > Suleyman Cetintas > Carsten Eickhoff > Reynold C. K. Cheng"
+ },
+ {
+  "cands": [
+   "Liang Tang",
+   "Éric Gaussier",
+   "Shenghua Bao",
+   "Mohand Boughanem",
+   "Jianfeng Gao",
+   "Yiqun Liu"
+  ],
+  "gold": [
+   "Jianfeng Gao",
+   "Yiqun Liu",
+   "Shenghua Bao",
+   "Éric Gaussier",
+   "Liang Tang",
+   "Mohand Boughanem"
+  ],
+  "pred": "Yiqun Liu > Shenghua Bao > Éric Gaussier > Jianfeng Gao > Liang Tang > Mohand Boughanem"
+ },
+ {
+  "cands": [
+   "Qianli Xing",
+   "Torsten Suel",
+   "Jeff J. S. Huang",
+   "Michael Gertz",
+   "Gareth J. F. Jones",
+   "Ting Yuan"
+  ],
+  "gold": [
+   "Torsten Suel",
+   "Jeff J. S. Huang",
+   "Gareth J. F. Jones",
+   "Michael Gertz",
+   "Ting Yuan",
+   "Qianli Xing"
+  ],
+  "pred": "Torsten Suel > Michael Gertz > Gareth J. F. Jones > Qianli Xing > Jeff J. S. Huang > Ting Yuan"
+ },
+ {
+  "cands": [
+   "Jingdong Wang",
+   "Ke Chen",
+   "C. Y. Liao",
+   "Ming Zhong",
+   "Djoerd Hiemstra",
+   "Shenghua Bao"
+  ],
+  "gold": [
+   "C. Y. Liao",
+   "Djoerd Hiemstra",
+   "Ming Zhong",
+   "Shenghua Bao",
+   "Ke Chen",
+   "Jingdong Wang"
+  ],
+  "pred": "Djoerd Hiemstra > Ming Zhong > Ke Chen > Shenghua Bao > Jingdong Wang > C. Y. Liao"
+ },
+ {
+  "cands": [
+   "Ke Chen",
+   "Jianfeng Gao",
+   "Chirag Suresh Shah",
+   "Prasenjit Mitra",
+   "Massimiliano Ciaramita",
+   "Stefan Rüger"
+  ],
+  "gold": [
+   "Jianfeng Gao",
+   "Prasenjit Mitra",
+   "Chirag Suresh Shah",
+   "Massimiliano Ciaramita",
+   "Ke Chen",
+   "Stefan Rüger"
+  ],
+  "pred": "Prasenjit Mitra > Chirag Suresh Shah > Jianfeng Gao > Massimiliano Ciaramita > Stefan Rüger > Ke Chen"
+ },
+ {
+  "cands": [
+   "Manuel Gomez-Rodriguez",
+   "Long Jiang",
+   "Dolf Trieschnigg",
+   "Yunhua Hu",
+   "Elif Aktolga",
+   "Thomas Neumann"
+  ],
+  "gold": [
+   "Dolf Trieschnigg",
+   "Thomas Neumann",
+   "Yunhua Hu",
+   "Elif Aktolga",
+   "Manuel Gomez-Rodriguez",
+   "Long Jiang"
+  ],
+  "pred": "Dolf Trieschnigg > Thomas Neumann > Yunhua Hu > Elif Aktolga > Manuel Gomez-Rodriguez > Long Jiang"
+ },
+ {
+  "cands": [
+   "Paolo Rosso",
+   "Nazli Goharian",
+   "Chiranjib Bhattacharyya",
+   "Qiang Yang",
+   "Alok Choudhary",
+   "James Mayfield"
+  ],
+  "gold": [
+   "Qiang Yang",
+   "Chiranjib Bhattacharyya",
+   "Paolo Rosso",
+   "Alok Choudhary",
+   "James Mayfield",
+   "Nazli Goharian"
+  ],
+  "pred": "Qiang Yang > Nazli Goharian > Paolo Rosso > Alok Choudhary > Chiranjib Bhattacharyya > James Mayfield"
+ },
+ {
+  "cands": [
+   "Jianfeng Gao",
+   "Nattiya Kanhabua",
+   "Dongyi Guan",
+   "Wenjie Zhang",
+   "Hongliang Fei",
+   "Haggai Roitman"
+  ],
+  "gold": [
+   "Jianfeng Gao",
+   "Dongyi Guan",
+   "Haggai Roitman",
+   "Nattiya Kanhabua",
+   "Hongliang Fei",
+   "Wenjie Zhang"
+  ],
+  "pred": "Haggai Roitman > Nattiya Kanhabua > Jianfeng Gao > Hongliang Fei > Dongyi Guan > Wenjie Zhang"
+ },
+ {
+  "cands": [
+   "Shengbo Guo",
+   "Peter Knees",
+   "Javier Parapar",
+   "Changsung Kang",
+   "Jianguo Lü",
+   "Ling Feng"
+  ],
+  "gold": [
+   "Peter Knees",
+   "Shengbo Guo",
+   "Jianguo Lü",
+   "Changsung Kang",
+   "Ling Feng",
+   "Javier Parapar"
+  ],
+  "pred": "Javier Parapar > Ling Feng > Shengbo Guo > Jianguo Lü > Changsung Kang > Peter Knees"
+ },
+ {
+  "cands": [
+   "Tok Wang Ling",
+   "Suleyman Cetintas",
+   "Efthimis N. Efthimiadis",
+   "Gareth J. F. Jones",
+   "Peter C. K. Yeung",
+   "Shima Gerani"
+  ],
+  "gold": [
+   "Gareth J. F. Jones",
+   "Efthimis N. Efthimiadis",
+   "Shima Gerani",
+   "Peter C. K. Yeung",
+   "Suleyman Cetintas",
+   "Tok Wang Ling"
+  ],
+  "pred": "Gareth J. F. Jones > Suleyman Cetintas > Tok Wang Ling > Efthimis N. Efthimiadis > Shima Gerani > Peter C. K. Yeung"
+ },
+ {
+  "cands": [
+   "Zhongfei Mark Zhang",
+   "Xinying Song",
+   "Chaoyi Pang",
+   "Weifa Liang",
+   "Vagelis Hristidis",
+   "Eugene Agichtein"
+  ],
+  "gold": [
+   "Eugene Agichtein",
+   "Vagelis Hristidis",
+   "Xinying Song",
+   "Zhongfei Mark Zhang",
+   "Weifa Liang",
+   "Chaoyi Pang"
+  ],
+  "pred": "Eugene Agichtein > Vagelis Hristidis > Zhongfei Mark Zhang > Weifa Liang > Xinying Song > Chaoyi Pang"
+ },
+ {
+  "cands": [
+   "Xifeng Yan",
+   "P Deepak",
+   "Yiqun Liu",
+   "Éric Gaussier",
+   "Edward Y. Chang",
+   "K. Selçuk Candan"
+  ],
+  "gold": [
+   "Yiqun Liu",
+   "K. Selçuk Candan",
+   "Éric Gaussier",
+   "Xifeng Yan",
+   "P Deepak",
+   "Edward Y. Chang"
+  ],
+  "pred": "Yiqun Liu > K. Selçuk Candan > Éric Gaussier > Edward Y. Chang > Xifeng Yan > P Deepak"
+ },
+ {
+  "cands": [
+   "Ming Zhang",
+   "Qifan Wang",
+   "David Wai-lok Cheung",
+   "Vishwa Vinay",
+   "Fazlı Can",
+   "Shima Gerani"
+  ],
+  "gold": [
+   "Vishwa Vinay",
+   "Shima Gerani",
+   "Fazlı Can",
+   "Qifan Wang",
+   "Ming Zhang",
+   "David Wai-lok Cheung"
+  ],
+  "pred": "Vishwa Vinay > David Wai-lok Cheung > Fazlı Can > Shima Gerani > Ming Zhang > Qifan Wang"
+ },
+ {
+  "cands": [
+   "Teerapong Leelanupab",
+   "Arindam Banerjee",
+   "Ben He",
+   "Jianfeng Gao",
+   "C. Y. Liao",
+   "Suleyman Cetintas"
+  ],
+  "gold": [
+   "C. Y. Liao",
+   "Jianfeng Gao",
+   "Ben He",
+   "Suleyman Cetintas",
+   "Teerapong Leelanupab",
+   "Arindam Banerjee"
+  ],
+  "pred": "Ben He > Jianfeng Gao > Arindam Banerjee > Suleyman Cetintas > Teerapong Leelanupab > C. Y. Liao"
+ },
+ {
+  "cands": [
+   "Neal Lathia",
+   "M‐Dyaa Albakour",
+   "Jianfeng Gao",
+   "Ye Zheng",
+   "Xifeng Yan",
+   "Maria-Hendrike Peetz"
+  ],
+  "gold": [
+   "Jianfeng Gao",
+   "Ye Zheng",
+   "Maria-Hendrike Peetz",
+   "Neal Lathia",
+   "M‐Dyaa Albakour",
+   "Xifeng Yan"
+  ],
+  "pred": "Jianfeng Gao > Neal Lathia > Ye Zheng > Xifeng Yan > Maria-Hendrike Peetz > M‐Dyaa Albakour"
+ },
+ {
+  "cands": [
+   "Wei Zheng",
+   "Gonzalo Navarro",
+   "Christopher G. Harris",
+   "Gary Marchionini",
+   "Jangwon Seo",
+   "Roberto Basili"
+  ],
+  "gold": [
+   "Jangwon Seo",
+   "Gonzalo Navarro",
+   "Wei Zheng",
+   "Gary Marchionini",
+   "Christopher G. Harris",
+   "Roberto Basili"
+  ],
+  "pred": "Gonzalo Navarro > Gary Marchionini > Christopher G. Harris > Jangwon Seo > Wei Zheng > Roberto Basili"
+ },
+ {
+  "cands": [
+   "Zhen Yue",
+   "Kuansan Wang",
+   "Krysta M. Svore",
+   "Peter Knees",
+   "Christopher G. Harris",
+   "Eugene Agichtein"
+  ],
+  "gold": [
+   "Eugene Agichtein",
+   "Krysta M. Svore",
+   "Kuansan Wang",
+   "Peter Knees",
+   "Zhen Yue",
+   "Christopher G. Harris"
+  ],
+  "pred": "Eugene Agichtein > Krysta M. Svore > Kuansan Wang > Peter Knees > Zhen Yue > Christopher G. Harris"
+ },
+ {
+  "cands": [
+   "Ming Zhang",
+   "Zhisheng Huang",
+   "Yunhua Hu",
+   "Yi Zhang",
+   "Pável Pereira Calado",
+   "Yafang Wang"
+  ],
+  "gold": [
+   "Yi Zhang",
+   "Pável Pereira Calado",
+   "Yunhua Hu",
+   "Ming Zhang",
+   "Yafang Wang",
+   "Zhisheng Huang"
+  ],
+  "pred": "Yi Zhang > Yunhua Hu > Pável Pereira Calado > Yafang Wang > Ming Zhang > Zhisheng Huang"
+ },
+ {
+  "cands": [
+   "Jangwon Seo",
+   "Ke Chen",
+   "Nattiya Kanhabua",
+   "Juanzi Li",
+   "Gang Wang",
+   "Edward Y. Chang"
+  ],
+  "gold": [
+   "Jangwon Seo",
+   "Nattiya Kanhabua",
+   "Juanzi Li",
+   "Ke Chen",
+   "Gang Wang",
+   "Edward Y. Chang"
+  ],
+  "pred": "Nattiya Kanhabua > Edward Y. Chang > Jangwon Seo > Ke Chen > Gang Wang > Juanzi Li"
+ },
+ {
+  "cands": [
+   "Sandeep Pandey",
+   "Kian‐Lee Tan",
+   "Klaus Berberich",
+   "Miloš Hauskrecht",
+   "Tanveer Afzal Faruquie",
+   "Linas Baltrunas"
+  ],
+  "gold": [
+   "Klaus Berberich",
+   "Linas Baltrunas",
+   "Kian‐Lee Tan",
+   "Sandeep Pandey",
+   "Miloš Hauskrecht",
+   "Tanveer Afzal Faruquie"
+  ],
+  "pred": "Klaus Berberich > Kian‐Lee Tan > Linas Baltrunas > Miloš Hauskrecht > Sandeep Pandey > Tanveer Afzal Faruquie"
+ },
+ {
+  "cands": [
+   "Songhua Xu",
+   "Huan Liu",
+   "Dongdong Shan",
+   "Filip Radlinski",
+   "Yong Liu",
+   "Peter C. K. Yeung"
+  ],
+  "gold": [
+   "Filip Radlinski",
+   "Huan Liu",
+   "Yong Liu",
+   "Peter C. K. Yeung",
+   "Dongdong Shan",
+   "Songhua Xu"
+  ],
+  "pred": "Filip Radlinski > Huan Liu > Peter C. K. Yeung > Songhua Xu > Dongdong Shan > Yong Liu"
+ },
+ {
+  "cands": [
+   "Huajing Li",
+   "Zhisheng Huang",
+   "Shuang-Hong Yang",
+   "Nitin Jindal",
+   "James Caverlee",
+   "Juan F. Huete"
+  ],
+  "gold": [
+   "James Caverlee",
+   "Nitin Jindal",
+   "Shuang-Hong Yang",
+   "Huajing Li",
+   "Zhisheng Huang",
+   "Juan F. Huete"
+  ],
+  "pred": "James Caverlee > Shuang-Hong Yang > Huajing Li > Nitin Jindal > Zhisheng Huang > Juan F. Huete"
+ },
+ {
+  "cands": [
+   "Qifan Wang",
+   "Lizhu Zhou",
+   "Nattiya Kanhabua",
+   "Jingdong Wang",
+   "Andreas Paepcke",
+   "Eric Nyberg"
+  ],
+  "gold": [
+   "Eric Nyberg",
+   "Andreas Paepcke",
+   "Nattiya Kanhabua",
+   "Qifan Wang",
+   "Lizhu Zhou",
+   "Jingdong Wang"
+  ],
+  "pred": "Nattiya Kanhabua > Eric Nyberg > Jingdong Wang > Qifan Wang > Lizhu Zhou > Andreas Paepcke"
+ },
+ {
+  "cands": [
+   "Huan Liu",
+   "Zhongfei Mark Zhang",
+   "Hongliang Fei",
+   "Jian-Tao Sun",
+   "Ling Feng",
+   "Pável Pereira Calado"
+  ],
+  "gold": [
+   "Jian-Tao Sun",
+   "Huan Liu",
+   "Pável Pereira Calado",
+   "Zhongfei Mark Zhang",
+   "Hongliang Fei",
+   "Ling Feng"
+  ],
+  "pred": "Jian-Tao Sun > Huan Liu > Pável Pereira Calado > Zhongfei Mark Zhang > Ling Feng > Hongliang Fei"
+ },
+ {
+  "cands": [
+   "Berthier A. Ribeiro-Neto",
+   "Jianfeng Gao",
+   "Mengchi Liu",
+   "Jérôme Kunegis",
+   "Kjetil Nørvåg",
+   "Imed Zitouni"
+  ],
+  "gold": [
+   "Jianfeng Gao",
+   "Imed Zitouni",
+   "Berthier A. Ribeiro-Neto",
+   "Jérôme Kunegis",
+   "Kjetil Nørvåg",
+   "Mengchi Liu"
+  ],
+  "pred": "Jianfeng Gao > Jérôme Kunegis > Kjetil Nørvåg > Berthier A. Ribeiro-Neto > Imed Zitouni > Mengchi Liu"
+ },
+ {
+  "cands": [
+   "Liang Tang",
+   "Long Jiang",
+   "Claudia Hauff",
+   "Mohand Boughanem",
+   "Chiranjib Bhattacharyya",
+   "Raman Chandrasekar"
+  ],
+  "gold": [
+   "Claudia Hauff",
+   "Raman Chandrasekar",
+   "Chiranjib Bhattacharyya",
+   "Liang Tang",
+   "Mohand Boughanem",
+   "Long Jiang"
+  ],
+  "pred": "Claudia Hauff > Liang Tang > Raman Chandrasekar > Chiranjib Bhattacharyya > Long Jiang > Mohand Boughanem"
+ },
+ {
+  "cands": [
+   "Yueguo Chen",
+   "Jennifer Chu‐Carroll",
+   "Lidong Bing",
+   "Guoliang Li",
+   "Bingsheng He",
+   "Peixiang Zhao"
+  ],
+  "gold": [
+   "Lidong Bing",
+   "Peixiang Zhao",
+   "Jennifer Chu‐Carroll",
+   "Guoliang Li",
+   "Bingsheng He",
+   "Yueguo Chen"
+  ],
+  "pred": "Guoliang Li > Jennifer Chu‐Carroll > Lidong Bing > Bingsheng He > Peixiang Zhao > Yueguo Chen"
+ },
+ {
+  "cands": [
+   "Vagelis Hristidis",
+   "Krysta M. Svore",
+   "Jiliang Tang",
+   "ChengXiang Zhai",
+   "P Deepak",
+   "Carsten Eickhoff"
+  ],
+  "gold": [
+   "ChengXiang Zhai",
+   "Krysta M. Svore",
+   "Carsten Eickhoff",
+   "Jiliang Tang",
+   "Vagelis Hristidis",
+   "P Deepak"
+  ],
+  "pred": "ChengXiang Zhai > Vagelis Hristidis > Krysta M. Svore > Carsten Eickhoff > Jiliang Tang > P Deepak"
+ },
+ {
+  "cands": [
+   "Dongwon Lee",
+   "Haocheng Wu",
+   "Shima Gerani",
+   "Linas Baltrunas",
+   "Evgeniy Gabrilovich",
+   "Sunju Park"
+  ],
+  "gold": [
+   "Evgeniy Gabrilovich",
+   "Shima Gerani",
+   "Linas Baltrunas",
+   "Dongwon Lee",
+   "Haocheng Wu",
+   "Sunju Park"
+  ],
+  "pred": "Evgeniy Gabrilovich > Linas Baltrunas > Shima Gerani > Dongwon Lee > Haocheng Wu > Sunju Park"
+ },
+ {
+  "cands": [
+   "Vishwa Vinay",
+   "Weifa Liang",
+   "Michael Gertz",
+   "Ruey-Cheng Chen",
+   "Eugene Agichtein",
+   "Jianfeng Gao"
+  ],
+  "gold": [
+   "Eugene Agichtein",
+   "Jianfeng Gao",
+   "Vishwa Vinay",
+   "Michael Gertz",
+   "Ruey-Cheng Chen",
+   "Weifa Liang"
+  ],
+  "pred": "Eugene Agichtein > Michael Gertz > Jianfeng Gao > Weifa Liang > Vishwa Vinay > Ruey-Cheng Chen"
+ },
+ {
+  "cands": [
+   "Paul McNamee",
+   "Bevan Koopman",
+   "Gary Marchionini",
+   "Nazli Goharian",
+   "Haixuan Yang",
+   "Guiguang Ding"
+  ],
+  "gold": [
+   "Haixuan Yang",
+   "Bevan Koopman",
+   "Guiguang Ding",
+   "Gary Marchionini",
+   "Paul McNamee",
+   "Nazli Goharian"
+  ],
+  "pred": "Paul McNamee > Gary Marchionini > Haixuan Yang > Nazli Goharian > Guiguang Ding > Bevan Koopman"
+ },
+ {
+  "cands": [
+   "Guo-Jun Qi",
+   "Fazlı Can",
+   "Shengbo Guo",
+   "Vishwa Vinay",
+   "Nicola Ferro",
+   "Young-In Song"
+  ],
+  "gold": [
+   "Vishwa Vinay",
+   "Young-In Song",
+   "Fazlı Can",
+   "Shengbo Guo",
+   "Nicola Ferro",
+   "Guo-Jun Qi"
+  ],
+  "pred": "Vishwa Vinay > Guo-Jun Qi > Young-In Song > Fazlı Can > Nicola Ferro > Shengbo Guo"
+ },
+ {
+  "cands": [
+   "Yong Ge",
+   "Yuan Tian",
+   "İsmail Sengör Altıngövde",
+   "Abhay Harpale",
+   "Jun He",
+   "Reynold C. K. Cheng"
+  ],
+  "gold": [
+   "İsmail Sengör Altıngövde",
+   "Abhay Harpale",
+   "Yong Ge",
+   "Reynold C. K. Cheng",
+   "Jun He",
+   "Yuan Tian"
+  ],
+  "pred": "İsmail Sengör Altıngövde > Abhay Harpale > Jun He > Yuan Tian > Reynold C. K. Cheng > Yong Ge"
+ },
+ {
+  "cands": [
+   "Hakim Hacid",
+   "Gary Marchionini",
+   "Linas Baltrunas",
+   "Clement T. Yu",
+   "Lizhu Zhou",
+   "Alok Choudhary"
+  ],
+  "gold": [
+   "Clement T. Yu",
+   "Linas Baltrunas",
+   "Lizhu Zhou",
+   "Gary Marchionini",
+   "Alok Choudhary",
+   "Hakim Hacid"
+  ],
+  "pred": "Linas Baltrunas > Gary Marchionini > Alok Choudhary > Clement T. Yu > Lizhu Zhou > Hakim Hacid"
+ },
+ {
+  "cands": [
+   "Torsten Suel",
+   "Benno Stein",
+   "Maya Ramanath",
+   "Ruey-Cheng Chen",
+   "Yong Liu",
+   "Bo Pang"
+  ],
+  "gold": [
+   "Torsten Suel",
+   "Benno Stein",
+   "Yong Liu",
+   "Maya Ramanath",
+   "Bo Pang",
+   "Ruey-Cheng Chen"
+  ],
+  "pred": "Torsten Suel > Bo Pang > Benno Stein > Maya Ramanath > Yong Liu > Ruey-Cheng Chen"
+ },
+ {
+  "cands": [
+   "Jussara Marques Almeida",
+   "Jianguo Lü",
+   "Leif A. Azzopardi",
+   "Ronny Lempel",
+   "Reynold C. K. Cheng",
+   "Jangwon Seo"
+  ],
+  "gold": [
+   "Leif A. Azzopardi",
+   "Jangwon Seo",
+   "Jussara Marques Almeida",
+   "Ronny Lempel",
+   "Jianguo Lü",
+   "Reynold C. K. Cheng"
+  ],
+  "pred": "Leif A. Azzopardi > Ronny Lempel > Jianguo Lü > Jangwon Seo > Jussara Marques Almeida > Reynolds C. K. Cheng"
+ },
+ {
+  "cands": [
+   "Hakim Hacid",
+   "Dongdong Shan",
+   "Edward Y. Chang",
+   "Gary Marchionini",
+   "Shima Gerani",
+   "P Deepak"
+  ],
+  "gold": [
+   "Shima Gerani",
+   "Dongdong Shan",
+   "Gary Marchionini",
+   "Hakim Hacid",
+   "P Deepak",
+   "Edward Y. Chang"
+  ],
+  "pred": "Gary Marchionini > Edward Y. Chang > Shima Gerani > P Deepak > Hakim Hacid > Dongdong Shan"
+ },
+ {
+  "cands": [
+   "Eugene Agichtein",
+   "Martin Theobald",
+   "Liangjie Hong",
+   "Mohamed Reda Bouadjenek",
+   "Éric Gaussier",
+   "Chirag Suresh Shah"
+  ],
+  "gold": [
+   "Eugene Agichtein",
+   "Chirag Suresh Shah",
+   "Liangjie Hong",
+   "Martin Theobald",
+   "Éric Gaussier",
+   "Mohamed Reda Bouadjenek"
+  ],
+  "pred": "Eugene Agichtein > Chirag Suresh Shah > Martin Theobald > Éric Gaussier > Liangjie Hong > Mohamed Reda Bouadjenek"
+ },
+ {
+  "cands": [
+   "Jiaheng Lu",
+   "Andreas Paepcke",
+   "Benno Stein",
+   "Melanie Herschel",
+   "Teerapong Leelanupab",
+   "Gautam Das"
+  ],
+  "gold": [
+   "Benno Stein",
+   "Andreas Paepcke",
+   "Gautam Das",
+   "Melanie Herschel",
+   "Teerapong Leelanupab",
+   "Jiaheng Lu"
+  ],
+  "pred": "Benno Stein > Gautam Das > Melanie Herschel > Jiaheng Lu > Teerapong Leelanupab > Andreas Paepcke"
+ },
+ {
+  "cands": [
+   "Dan Roth",
+   "Elena Demidova",
+   "Renxian Zhang",
+   "Bingsheng He",
+   "Eugene Agichtein",
+   "Tetsuya Sakai"
+  ],
+  "gold": [
+   "Eugene Agichtein",
+   "Tetsuya Sakai",
+   "Elena Demidova",
+   "Dan Roth",
+   "Bingsheng He",
+   "Renxian Zhang"
+  ],
+  "pred": "Eugene Agichtein > Tetsuya Sakai > Dan Roth > Bingsheng He > Renxian Zhang > Elena Demidova"
+ },
+ {
+  "cands": [
+   "Thore Graepel",
+   "Stefan Rüger",
+   "Ben He",
+   "Zhaoyan Ming",
+   "Thomas R. Lynam",
+   "Nitin Jindal"
+  ],
+  "gold": [
+   "Thomas R. Lynam",
+   "Ben He",
+   "Zhaoyan Ming",
+   "Nitin Jindal",
+   "Thore Graepel",
+   "Stefan Rüger"
+  ],
+  "pred": "Ben He > Thore Graepel > Stefan Rüger > Zhaoyan Ming > Thomas R. Lynam > Nitin Jindal"
+ },
+ {
+  "cands": [
+   "Éric Gaussier",
+   "Shengbo Guo",
+   "Jinru He",
+   "Jennifer Chu‐Carroll",
+   "Prasenjit Mitra",
+   "Takehiro Yamamoto"
+  ],
+  "gold": [
+   "Prasenjit Mitra",
+   "Éric Gaussier",
+   "Jinru He",
+   "Jennifer Chu‐Carroll",
+   "Takehiro Yamamoto",
+   "Shengbo Guo"
+  ],
+  "pred": "Prasenjit Mitra > Jennifer Chu‐Carroll > Éric Gaussier > Jinru He > Takehiro Yamamoto > Shengbo Guo"
+ },
+ {
+  "cands": [
+   "Zhongfei Mark Zhang",
+   "Peng Cui",
+   "Xifeng Yan",
+   "Chirag Suresh Shah",
+   "Jussara Marques Almeida",
+   "Kian‐Lee Tan"
+  ],
+  "gold": [
+   "Chirag Suresh Shah",
+   "Jussara Marques Almeida",
+   "Kian‐Lee Tan",
+   "Peng Cui",
+   "Zhongfei Mark Zhang",
+   "Xifeng Yan"
+  ],
+  "pred": "Chirag Suresh Shah > Kian‐Lee Tan > Jussara Marques Almeida > Peng Cui > Zhongfei Mark Zhang > Xifeng Yan"
+ },
+ {
+  "cands": [
+   "Eric Nyberg",
+   "Paolo Rosso",
+   "Peter Mika",
+   "Ke Chen",
+   "Lina Yao",
+   "Torsten Suel"
+  ],
+  "gold": [
+   "Torsten Suel",
+   "Eric Nyberg",
+   "Peter Mika",
+   "Ke Chen",
+   "Paolo Rosso",
+   "Lina Yao"
+  ],
+  "pred": "Torsten Suel > Eric Nyberg > Peter Mika > Paolo Rosso > Ke Chen > Lina Yao"
+ },
+ {
+  "cands": [
+   "Silviu Cucerzan",
+   "Ben He",
+   "Frank Wm. Tompa",
+   "Hwee Tou Ng",
+   "Djoerd Hiemstra",
+   "James Mayfield"
+  ],
+  "gold": [
+   "Djoerd Hiemstra",
+   "Silviu Cucerzan",
+   "Ben He",
+   "Frank Wm. Tompa",
+   "Hwee Tou Ng",
+   "James Mayfield"
+  ],
+  "pred": "Djoerd Hiemstra > Frank Wm. Tompa > Ben He > Silviu Cucerzan > Hwee Tou Ng > James Mayfield"
+ },
+ {
+  "cands": [
+   "Yi Zhang",
+   "Alistair Moffat",
+   "Chirag Suresh Shah",
+   "Hwee Tou Ng",
+   "Shengbo Guo",
+   "Krisztian Balog"
+  ],
+  "gold": [
+   "Alistair Moffat",
+   "Krisztian Balog",
+   "Yi Zhang",
+   "Chirag Suresh Shah",
+   "Shengbo Guo",
+   "Hwee Tou Ng"
+  ],
+  "pred": "Krisztian Balog > Alistair Moffat > Chirag Suresh Shah > Yi Zhang > Hwee Tou Ng > Shengbo Guo"
+ },
+ {
+  "cands": [
+   "Lizhu Zhou",
+   "Nattiya Kanhabua",
+   "Gareth J. F. Jones",
+   "Stewart Whiting",
+   "Changsung Kang",
+   "Jianguo Lü"
+  ],
+  "gold": [
+   "Gareth J. F. Jones",
+   "Nattiya Kanhabua",
+   "Jianguo Lü",
+   "Lizhu Zhou",
+   "Stewart Whiting",
+   "Changsung Kang"
+  ],
+  "pred": "Gareth J. F. Jones > Stewart Whiting > Nattiya Kanhabua > Changsung Kang > Lizhu Zhou > Jianguo Lü"
+ },
+ {
+  "cands": [
+   "Nitin Jindal",
+   "Chirag Suresh Shah",
+   "Stewart Whiting",
+   "Lidong Bing",
+   "Krisztian Balog",
+   "Ben He"
+  ],
+  "gold": [
+   "Krisztian Balog",
+   "Ben He",
+   "Chirag Suresh Shah",
+   "Nitin Jindal",
+   "Lidong Bing",
+   "Stewart Whiting"
+  ],
+  "pred": "Krisztian Balog > Chirag Suresh Shah > Ben He > Nitin Jindal > Stewart Whiting > Lidong Bing"
+ },
+ {
+  "cands": [
+   "Kjetil Nørvåg",
+   "Leif A. Azzopardi",
+   "Ronny Lempel",
+   "Nicola Ferro",
+   "Sundararajan Sellamanickam",
+   "Dik Lun Lee"
+  ],
+  "gold": [
+   "Leif A. Azzopardi",
+   "Ronny Lempel",
+   "Dik Lun Lee",
+   "Kjetil Nørvåg",
+   "Nicola Ferro",
+   "Sundararajan Sellamanickam"
+  ],
+  "pred": "Leif A. Azzopardi > Kjetil Nørvåg > Ronny Lempel > Dik Lun Lee > Nicola Ferro > Sundararajan Sellamanickam"
+ },
+ {
+  "cands": [
+   "Kjetil Nørvåg",
+   "Franciska M. G. de Jong",
+   "Hakim Hacid",
+   "M‐Dyaa Albakour",
+   "Lifeng Jia",
+   "Wenjie Zhang"
+  ],
+  "gold": [
+   "Franciska M. G. de Jong",
+   "Kjetil Nørvåg",
+   "M‐Dyaa Albakour",
+   "Hakim Hacid",
+   "Lifeng Jia",
+   "Wenjie Zhang"
+  ],
+  "pred": "Kjetil Nørvåg > Franciska M. G. de Jong > Wenjie Zhang > Lifeng Jia > Hakim Hacid > M‐Dyaa Albakour"
+ },
+ {
+  "cands": [
+   "Jiawei Han",
+   "Kjetil Nørvåg",
+   "Yi Zhang",
+   "James Mayfield",
+   "Guangyou Zhou",
+   "Djoerd Hiemstra"
+  ],
+  "gold": [
+   "Yi Zhang",
+   "Djoerd Hiemstra",
+   "Kjetil Nørvåg",
+   "Guangyou Zhou",
+   "Jiawei Han",
+   "James Mayfield"
+  ],
+  "pred": "Djoerd Hiemstra > Jiawei Han > Yi Zhang > Kjetil Nørvåg > Guangyou Zhou > James Mayfield"
+ },
+ {
+  "cands": [
+   "Peter Knees",
+   "Paul McNamee",
+   "Teerapong Leelanupab",
+   "Efthimis N. Efthimiadis",
+   "Jianhan Zhu A",
+   "Huan Liu"
+  ],
+  "gold": [
+   "Jianhan Zhu A",
+   "Efthimis N. Efthimiadis",
+   "Huan Liu",
+   "Peter Knees",
+   "Teerapong Leelanupab",
+   "Paul McNamee"
+  ],
+  "pred": "Huan Liu > Paul McNamee > Jianhan Zhu A > Efthimis N. Efthimiadis > Teerapong Leelanupab > Peter Knees"
+ },
+ {
+  "cands": [
+   "Roberto Basili",
+   "Guangyou Zhou",
+   "Nicola Ferro",
+   "Elif Aktolga",
+   "Ronald T. Fernández",
+   "Tingjian Ge"
+  ],
+  "gold": [
+   "Elif Aktolga",
+   "Guangyou Zhou",
+   "Nicola Ferro",
+   "Ronald T. Fernández",
+   "Roberto Basili",
+   "Tingjian Ge"
+  ],
+  "pred": "Elif Aktolga > Ronald T. Fernández > Guangyou Zhou > Roberto Basili > Nicola Ferro > Tingjian Ge"
+ },
+ {
+  "cands": [
+   "Ronald T. Fernández",
+   "Bevan Koopman",
+   "Gary Marchionini",
+   "Lidong Bing",
+   "Xifeng Yan",
+   "Roberto Basili"
+  ],
+  "gold": [
+   "Lidong Bing",
+   "Bevan Koopman",
+   "Ronald T. Fernández",
+   "Gary Marchionini",
+   "Xifeng Yan",
+   "Roberto Basili"
+  ],
+  "pred": "Gary Marchionini > Bevan Koopman > Ronald T. Fernández > Lidong Bing > Xifeng Yan > Roberto Basili"
+ },
+ {
+  "cands": [
+   "Jiwoon Jeon",
+   "Kian‐Lee Tan",
+   "P Deepak",
+   "Eric Brill",
+   "Teerapong Leelanupab",
+   "Jianguo Xiao"
+  ],
+  "gold": [
+   "Eric Brill",
+   "Jiwoon Jeon",
+   "Kian‐Lee Tan",
+   "Jianguo Xiao",
+   "Teerapong Leelanupab",
+   "P Deepak"
+  ],
+  "pred": "Kian‐Lee Tan > Eric Brill > Jiwoon Jeon > Teerapong Leelanupab > P Deepak > Jianguo Xiao"
+ },
+ {
+  "cands": [
+   "Elif Aktolga",
+   "Aleksandar Stupar",
+   "Franciska M. G. de Jong",
+   "Flávio Figueiredo",
+   "Ke Chen",
+   "M‐Dyaa Albakour"
+  ],
+  "gold": [
+   "Franciska M. G. de Jong",
+   "Flávio Figueiredo",
+   "Ke Chen",
+   "Elif Aktolga",
+   "M‐Dyaa Albakour",
+   "Aleksandar Stupar"
+  ],
+  "pred": "Flávio Figueiredo > Aleksandar Stupar > Elif Aktolga > M‐Dyaa Albakour > Franciska M. G. de Jong > Ke Chen"
+ },
+ {
+  "cands": [
+   "Shenghua Bao",
+   "Evgeniy Gabrilovich",
+   "Peixiang Zhao",
+   "Charles L. A. Clarke",
+   "Yiming Yang",
+   "Nazli Goharian"
+  ],
+  "gold": [
+   "Charles L. A. Clarke",
+   "Evgeniy Gabrilovich",
+   "Shenghua Bao",
+   "Peixiang Zhao",
+   "Yiming Yang",
+   "Nazli Goharian"
+  ],
+  "pred": "Evgeniy Gabrilovich > Charles L. A. Clarke > Shenghua Bao > Nazli Goharian > Yiming Yang > Peixiang Zhao"
+ },
+ {
+  "cands": [
+   "Seung-Wook Lee",
+   "Nicola Ferro",
+   "Paul David Clough",
+   "Mohammad Al Hasan",
+   "Jianguo Xiao",
+   "Chaoyi Pang"
+  ],
+  "gold": [
+   "Paul David Clough",
+   "Mohammad Al Hasan",
+   "Jianguo Xiao",
+   "Nicola Ferro",
+   "Seung-Wook Lee",
+   "Chaoyi Pang"
+  ],
+  "pred": "Paul David Clough > Nicola Ferro > Jianguo Xiao > Seung-Wook Lee > Chaoyi Pang > Mohammad Al Hasan"
+ },
+ {
+  "cands": [
+   "Xinying Song",
+   "Javier Parapar",
+   "Huan Liu",
+   "Shuang-Hong Yang",
+   "Zhisheng Huang",
+   "James Caverlee"
+  ],
+  "gold": [
+   "James Caverlee",
+   "Huan Liu",
+   "Shuang-Hong Yang",
+   "Xinying Song",
+   "Zhisheng Huang",
+   "Javier Parapar"
+  ],
+  "pred": "James Caverlee > Huan Liu > Shuang-Hong Yang > Xinying Song > Javier Parapar > Zhisheng Huang"
+ },
+ {
+  "cands": [
+   "Andreas Paepcke",
+   "Jimmy Xiangji Huang",
+   "David Wai-lok Cheung",
+   "Alistair Moffat",
+   "Pável Pereira Calado",
+   "Barry Smyth"
+  ],
+  "gold": [
+   "Alistair Moffat",
+   "Jimmy Xiangji Huang",
+   "Andreas Paepcke",
+   "Pável Pereira Calado",
+   "Barry Smyth",
+   "David Wai-lok Cheung"
+  ],
+  "pred": "Alistair Moffat > Barry Smyth > David Wai-lok Cheung > Pável Pereira Calado > Jimmy Xiangji Huang > Andreas Paepcke"
+ },
+ {
+  "cands": [
+   "Guiguang Ding",
+   "Edward Y. Chang",
+   "Nitin Jindal",
+   "Vagelis Hristidis",
+   "Sathiya Keerthi Selvaraj",
+   "Yanyan Lan"
+  ],
+  "gold": [
+   "Nitin Jindal",
+   "Yanyan Lan",
+   "Vagelis Hristidis",
+   "Guiguang Ding",
+   "Sathiya Keerthi Selvaraj",
+   "Edward Y. Chang"
+  ],
+  "pred": "Vagelis Hristidis > Edward Y. Chang > Yanyan Lan > Guiguang Ding > Nitin Jindal > Sathiya Keerthi Selvaraj"
+ },
+ {
+  "cands": [
+   "C. Y. Liao",
+   "Bin Tan",
+   "Nicola Ferro",
+   "Ke Chen",
+   "Songhua Xu",
+   "Martin Theobald"
+  ],
+  "gold": [
+   "C. Y. Liao",
+   "Martin Theobald",
+   "Ke Chen",
+   "Bin Tan",
+   "Nicola Ferro",
+   "Songhua Xu"
+  ],
+  "pred": "Martin Theobald > C. Y. Liao > Ke Chen > Bin Tan > Nicola Ferro > Songhua Xu"
+ },
+ {
+  "cands": [
+   "Martin Theobald",
+   "Maya Ramanath",
+   "Qiankun Zhao",
+   "Frank Wm. Tompa",
+   "Falk Scholer",
+   "Xingjie Liu"
+  ],
+  "gold": [
+   "Falk Scholer",
+   "Frank Wm. Tompa",
+   "Martin Theobald",
+   "Xingjie Liu",
+   "Maya Ramanath",
+   "Qiankun Zhao"
+  ],
+  "pred": "Falk Scholer > Martin Theobald > Maya Ramanath > Qiankun Zhao > Xingjie Liu > Frank Wm. Tompa"
+ },
+ {
+  "cands": [
+   "Bevan Koopman",
+   "Huajing Li",
+   "Il‐Yeol Song",
+   "Yuan Tian",
+   "Claudia Hauff",
+   "Efthimis N. Efthimiadis"
+  ],
+  "gold": [
+   "Claudia Hauff",
+   "Efthimis N. Efthimiadis",
+   "Huajing Li",
+   "Bevan Koopman",
+   "Il‐Yeol Song",
+   "Yuan Tian"
+  ],
+  "pred": "Claudia Hauff > Bevan Koopman > Il‐Yeol Song > Yuan Tian > Huajing Li > Efthimis N. Efthimiadis"
+ },
+ {
+  "cands": [
+   "Suleyman Cetintas",
+   "Guo-Jun Qi",
+   "Gang Wang",
+   "Claudia Hauff",
+   "Sandeep Pandey",
+   "Ye‐Yi Wang"
+  ],
+  "gold": [
+   "Ye‐Yi Wang",
+   "Claudia Hauff",
+   "Sandeep Pandey",
+   "Suleyman Cetintas",
+   "Gang Wang",
+   "Guo-Jun Qi"
+  ],
+  "pred": "Claudia Hauff > Suleyman Cetintas > Gang Wang > Ye‐Yi Wang > Sandeep Pandey > Guo-Jun Qi"
+ },
+ {
+  "cands": [
+   "Dustin Lange",
+   "Jack Wu",
+   "Jie Tang",
+   "Liangjie Hong",
+   "Jingdong Wang",
+   "Djoerd Hiemstra"
+  ],
+  "gold": [
+   "Djoerd Hiemstra",
+   "Jie Tang",
+   "Liangjie Hong",
+   "Jack Wu",
+   "Jingdong Wang",
+   "Dustin Lange"
+  ],
+  "pred": "Jie Tang > Djoerd Hiemstra > Jack Wu > Jingdong Wang > Liangjie Hong > Dustin Lange"
+ },
+ {
+  "cands": [
+   "Dongdong Shan",
+   "Charles L. A. Clarke",
+   "Miloš Hauskrecht",
+   "Guoliang Li",
+   "Peixiang Zhao",
+   "Ye Zheng"
+  ],
+  "gold": [
+   "Charles L. A. Clarke",
+   "Ye Zheng",
+   "Peixiang Zhao",
+   "Dongdong Shan",
+   "Guoliang Li",
+   "Miloš Hauskrecht"
+  ],
+  "pred": "Charles L. A. Clarke > Guoliang Li > Miloš Hauskrecht > Peixiang Zhao > Dongdong Shan > Ye Zheng"
+ },
+ {
+  "cands": [
+   "Peter C. K. Yeung",
+   "Zhaoyan Ming",
+   "Martin Ester",
+   "Tok Wang Ling",
+   "Vagelis Hristidis",
+   "Yong Ge"
+  ],
+  "gold": [
+   "Zhaoyan Ming",
+   "Martin Ester",
+   "Peter C. K. Yeung",
+   "Vagelis Hristidis",
+   "Yong Ge",
+   "Tok Wang Ling"
+  ],
+  "pred": "Vagelis Hristidis > Martin Ester > Peter C. K. Yeung > Zhaoyan Ming > Tok Wang Ling > Yong Ge"
+ },
+ {
+  "cands": [
+   "Gary Marchionini",
+   "Shengbo Guo",
+   "Curtis Dyreson",
+   "Manuel Gomez-Rodriguez",
+   "Paul McNamee",
+   "Lei Tang"
+  ],
+  "gold": [
+   "Lei Tang",
+   "Shengbo Guo",
+   "Gary Marchionini",
+   "Manuel Gomez-Rodriguez",
+   "Paul McNamee",
+   "Curtis Dyreson"
+  ],
+  "pred": "Gary Marchionini > Curtis Dyreson > Paul McNamee > Lei Tang > Shengbo Guo > Manuel Gomez-Rodriguez"
+ },
+ {
+  "cands": [
+   "Thomas R. Lynam",
+   "Jiliang Tang",
+   "Tok Wang Ling",
+   "Suleyman Cetintas",
+   "Edward Y. Chang",
+   "Haggai Roitman"
+  ],
+  "gold": [
+   "Thomas R. Lynam",
+   "Jiliang Tang",
+   "Haggai Roitman",
+   "Suleyman Cetintas",
+   "Edward Y. Chang",
+   "Tok Wang Ling"
+  ],
+  "pred": "Haggai Roitman > Suleyman Cetintas > Edward Y. Chang > Jiliang Tang > Tok Wang Ling > Thomas R. Lynam"
+ },
+ {
+  "cands": [
+   "Charles L. A. Clarke",
+   "James Mayfield",
+   "Krysta M. Svore",
+   "Chiranjib Bhattacharyya",
+   "Zhongfei Mark Zhang",
+   "Liangjie Hong"
+  ],
+  "gold": [
+   "Charles L. A. Clarke",
+   "Krysta M. Svore",
+   "Liangjie Hong",
+   "Zhongfei Mark Zhang",
+   "Chiranjib Bhattacharyya",
+   "James Mayfield"
+  ],
+  "pred": "Charles L. A. Clarke > Krysta M. Svore > Zhongfei Mark Zhang > Liangjie Hong > James Mayfield > Chiranjib Bhattacharyya"
+ },
+ {
+  "cands": [
+   "Jeff J. S. Huang",
+   "Jun He",
+   "Eric Nyberg",
+   "Jiawei Han",
+   "Flávio Figueiredo",
+   "Yueguo Chen"
+  ],
+  "gold": [
+   "Jeff J. S. Huang",
+   "Eric Nyberg",
+   "Flávio Figueiredo",
+   "Jiawei Han",
+   "Jun He",
+   "Yueguo Chen"
+  ],
+  "pred": "Eric Nyberg > Jiawei Han > Flávio Figueiredo > Yueguo Chen > Jeff J. S. Huang > Jun He"
+ },
+ {
+  "cands": [
+   "P Deepak",
+   "Gary Marchionini",
+   "Berthier A. Ribeiro-Neto",
+   "Guo-Jun Qi",
+   "Yuan Tian",
+   "Kareem Mohamed Darwish"
+  ],
+  "gold": [
+   "Berthier A. Ribeiro-Neto",
+   "Kareem Mohamed Darwish",
+   "Gary Marchionini",
+   "P Deepak",
+   "Yuan Tian",
+   "Guo-Jun Qi"
+  ],
+  "pred": "Gary Marchionini > Berthier A. Ribeiro-Neto > Kareem Mohamed Darwish > Guo-Jun Qi > P Deepak > Yuan Tian"
+ },
+ {
+  "cands": [
+   "Yiqun Liu",
+   "Yi Zhang",
+   "Jiebo Luo",
+   "Arindam Banerjee",
+   "Yafang Wang",
+   "Juanzi Li"
+  ],
+  "gold": [
+   "Yi Zhang",
+   "Yiqun Liu",
+   "Juanzi Li",
+   "Yafang Wang",
+   "Arindam Banerjee",
+   "Jiebo Luo"
+  ],
+  "pred": "Yiqun Liu > Yi Zhang > Jiebo Luo > Arindam Banerjee > Yafang Wang > Juanzi Li"
+ },
+ {
+  "cands": [
+   "Peter Knees",
+   "Shuang-Hong Yang",
+   "Klaus Berberich",
+   "Ming Zhang",
+   "Zhaoyan Ming",
+   "Ye Zheng"
+  ],
+  "gold": [
+   "Zhaoyan Ming",
+   "Klaus Berberich",
+   "Shuang-Hong Yang",
+   "Ye Zheng",
+   "Peter Knees",
+   "Ming Zhang"
+  ],
+  "pred": "Klaus Berberich > Shuang-Hong Yang > Zhaoyan Ming > Ming Zhang > Ye Zheng > Peter Knees"
+ },
+ {
+  "cands": [
+   "ChengXiang Zhai",
+   "Evgeniy Gabrilovich",
+   "Hui Wang",
+   "Ming Zhong",
+   "Chaoyi Pang",
+   "Aleksandar Stupar"
+  ],
+  "gold": [
+   "ChengXiang Zhai",
+   "Evgeniy Gabrilovich",
+   "Ming Zhong",
+   "Aleksandar Stupar",
+   "Chaoyi Pang",
+   "Hui Wang"
+  ],
+  "pred": "ChengXiang Zhai > Evgeniy Gabrilovich > Aleksandar Stupar > Hui Wang > Ming Zhong > Chaoyi Pang"
+ },
+ {
+  "cands": [
+   "José San Pedro",
+   "Evgeniy Gabrilovich",
+   "Maria Soledad Pera",
+   "Jun He",
+   "Shenghua Bao",
+   "Jiliang Tang"
+  ],
+  "gold": [
+   "Evgeniy Gabrilovich",
+   "Shenghua Bao",
+   "Jiliang Tang",
+   "José San Pedro",
+   "Jun He",
+   "Maria Soledad Pera"
+  ],
+  "pred": "Evgeniy Gabrilovich > Shenghua Bao > Jiliang Tang > Jun He > Maria Soledad Pera > José San Pedro"
+ },
+ {
+  "cands": [
+   "Bin Wu",
+   "Efthimis N. Efthimiadis",
+   "Young-In Song",
+   "Omar U. Florez",
+   "Guoliang Li",
+   "Teerapong Leelanupab"
+  ],
+  "gold": [
+   "Young-In Song",
+   "Efthimis N. Efthimiadis",
+   "Guoliang Li",
+   "Teerapong Leelanupab",
+   "Bin Wu",
+   "Omar U. Florez"
+  ],
+  "pred": "Guoliang Li > Young-In Song > Bin Wu > Omar U. Florez > Efthimis N. Efthimiadis > Teerapong Leelanupab"
+ },
+ {
+  "cands": [
+   "Manuel Gomez-Rodriguez",
+   "José San Pedro",
+   "Zheng Chen",
+   "Benno Stein",
+   "Raman Chandrasekar",
+   "Alpa Jain"
+  ],
+  "gold": [
+   "Benno Stein",
+   "Zheng Chen",
+   "Raman Chandrasekar",
+   "Alpa Jain",
+   "José San Pedro",
+   "Manuel Gomez-Rodriguez"
+  ],
+  "pred": "Benno Stein > Alpa Jain > Zheng Chen > Manuel Gomez-Rodriguez > Raman Chandrasekar > José San Pedro"
+ },
+ {
+  "cands": [
+   "Ling Feng",
+   "Alistair Moffat",
+   "Dolf Trieschnigg",
+   "Éric Gaussier",
+   "Benno Stein",
+   "Yueguo Chen"
+  ],
+  "gold": [
+   "Alistair Moffat",
+   "Benno Stein",
+   "Dolf Trieschnigg",
+   "Éric Gaussier",
+   "Ling Feng",
+   "Yueguo Chen"
+  ],
+  "pred": "Alistair Moffat > Benno Stein > Éric Gaussier > Dolf Trieschnigg > Ling Feng > Yueguo Chen"
+ },
+ {
+  "cands": [
+   "Kuang Mao",
+   "Vagelis Hristidis",
+   "Yuan Tian",
+   "Haggai Roitman",
+   "Kazunari Sugiyama",
+   "Xinying Song"
+  ],
+  "gold": [
+   "Kazunari Sugiyama",
+   "Haggai Roitman",
+   "Vagelis Hristidis",
+   "Xinying Song",
+   "Kuang Mao",
+   "Yuan Tian"
+  ],
+  "pred": "Vagelis Hristidis > Haggai Roitman > Xinying Song > Yuan Tian > Kazunari Sugiyama > Kuang Mao"
+ },
+ {
+  "cands": [
+   "Torsten Suel",
+   "Stewart Whiting",
+   "Kian‐Lee Tan",
+   "İsmail Sengör Altıngövde",
+   "Ping Luo",
+   "Jimmy Xiangji Huang"
+  ],
+  "gold": [
+   "Torsten Suel",
+   "Jimmy Xiangji Huang",
+   "İsmail Sengör Altıngövde",
+   "Ping Luo",
+   "Kian‐Lee Tan",
+   "Stewart Whiting"
+  ],
+  "pred": "İsmail Sengör Altıngövde > Kian‐Lee Tan > Ping Luo > Stewart Whiting > Jimmy Xiangji Huang > Torsten Suel"
+ },
+ {
+  "cands": [
+   "Qinmin Hu",
+   "Dongyi Guan",
+   "Yi Zhang",
+   "Jianguo Xiao",
+   "Abhay Harpale",
+   "Di Jiang"
+  ],
+  "gold": [
+   "Yi Zhang",
+   "Dongyi Guan",
+   "Abhay Harpale",
+   "Di Jiang",
+   "Jianguo Xiao",
+   "Qinmin Hu"
+  ],
+  "pred": "Yi Zhang > Di Jiang > Abhay Harpale > Qinmin Hu > Jianguo Xiao > Dongyi Guan"
+ },
+ {
+  "cands": [
+   "Zhaoyan Ming",
+   "Mohamed Reda Bouadjenek",
+   "Falk Scholer",
+   "Lina Yao",
+   "Monojit Choudhury",
+   "Mor Naaman"
+  ],
+  "gold": [
+   "Falk Scholer",
+   "Zhaoyan Ming",
+   "Mor Naaman",
+   "Monojit Choudhury",
+   "Lina Yao",
+   "Mohamed Reda Bouadjenek"
+  ],
+  "pred": "Falk Scholer > Lina Yao > Zhaoyan Ming > Monojit Choudhury > Mohamed Reda Bouadjenek > Mor Naaman"
+ },
+ {
+  "cands": [
+   "Wei Zheng",
+   "Arindam Banerjee",
+   "Mauricio Marı́n",
+   "Kuansan Wang",
+   "Neal Lathia",
+   "Yiqun Liu"
+  ],
+  "gold": [
+   "Kuansan Wang",
+   "Yiqun Liu",
+   "Neal Lathia",
+   "Wei Zheng",
+   "Mauricio Marı́n",
+   "Arindam Banerjee"
+  ],
+  "pred": "Yiqun Liu > Arindam Banerjee > Neal Lathia > Kuansan Wang > Mauricio Marı́n > Wei Zheng"
+ },
+ {
+  "cands": [
+   "Jianguo Lü",
+   "Aleksandar Stupar",
+   "Ana-Maria Popescu",
+   "Tao Mei",
+   "Paul McNamee",
+   "Peixiang Zhao"
+  ],
+  "gold": [
+   "Peixiang Zhao",
+   "Ana-Maria Popescu",
+   "Tao Mei",
+   "Aleksandar Stupar",
+   "Jianguo Lü",
+   "Paul McNamee"
+  ],
+  "pred": "Paul McNamee > Aleksandar Stupar > Ana-Maria Popescu > Tao Mei > Jianguo Lü > Peixiang Zhao"
+ },
+ {
+  "cands": [
+   "James Caverlee",
+   "Sundararajan Sellamanickam",
+   "Yiqun Liu",
+   "Manuel Gomez-Rodriguez",
+   "Jung‐Tae Lee",
+   "Maria Soledad Pera"
+  ],
+  "gold": [
+   "James Caverlee",
+   "Yiqun Liu",
+   "Sundararajan Sellamanickam",
+   "Jung‐Tae Lee",
+   "Manuel Gomez-Rodriguez",
+   "Maria Soledad Pera"
+  ],
+  "pred": "James Caverlee > Yiqun Liu > Jung‐Tae Lee > Maria Soledad Pera > Sundararajan Sellamanickam > Manuel Gomez-Rodriguez"
+ },
+ {
+  "cands": [
+   "Wei Zheng",
+   "Ling Feng",
+   "José San Pedro",
+   "Michael Gertz",
+   "Qiankun Zhao",
+   "Mengchi Liu"
+  ],
+  "gold": [
+   "Michael Gertz",
+   "Qiankun Zhao",
+   "José San Pedro",
+   "Wei Zheng",
+   "Ling Feng",
+   "Mengchi Liu"
+  ],
+  "pred": "Michael Gertz > Ling Feng > Qiankun Zhao > Wei Zheng > Mengchi Liu > José San Pedro"
+ },
+ {
+  "cands": [
+   "Mohand Boughanem",
+   "Nattiya Kanhabua",
+   "Yanyan Lan",
+   "HweeHwa Pang",
+   "Haocheng Wu",
+   "Kazunari Sugiyama"
+  ],
+  "gold": [
+   "Yanyan Lan",
+   "Kazunari Sugiyama",
+   "Nattiya Kanhabua",
+   "Haocheng Wu",
+   "Mohand Boughanem",
+   "HweeHwa Pang"
+  ],
+  "pred": "Nattiya Kanhabua > Yanyan Lan > Kazunari Sugiyama > Haocheng Wu > HweeHwa Pang > Mohand Boughanem"
+ },
+ {
+  "cands": [
+   "Vagelis Hristidis",
+   "Dan Roth",
+   "Dongyi Guan",
+   "Michael Gertz",
+   "Franciska M. G. de Jong",
+   "Jian-Tao Sun"
+  ],
+  "gold": [
+   "Jian-Tao Sun",
+   "Franciska M. G. de Jong",
+   "Dongyi Guan",
+   "Michael Gertz",
+   "Vagelis Hristidis",
+   "Dan Roth"
+  ],
+  "pred": "Vagelis Hristidis > Michael Gertz > Dan Roth > Jian-Tao Sun > Franciska M. G. de Jong > Dongyi Guan"
+ }
+]

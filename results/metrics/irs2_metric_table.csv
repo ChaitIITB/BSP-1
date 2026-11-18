@@ -1,0 +1,8 @@
+name,n,spearman_future,age_bias,top10_future_mean,top100_future_mean,tie_frac
+A1 total share (reference),1456,0.502,-0.002,24.19,9.13,0.817
+M1 per-paper share (normalised),1456,0.456,0.01,2.77,4.97,0.718
+M2 median paper share,1456,0.126,0.09,4.12,4.52,0.988
+M3 top-3 mean share,1456,0.501,-0.008,21.35,9.41,0.891
+M4 shrunk per-paper share,1456,0.126,-0.003,6.19,5.46,0.67
+B1 per-paper citations,1456,0.457,0.089,7.71,4.82,0.852
+B2 h-like (papers with 3+ cites),1456,0.223,0.043,22.48,7.03,0.997

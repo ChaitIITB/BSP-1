@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progress Update: Ranking Researchers</title>
+<style>
+:root{--bg:#0E1C27;--bg2:#13283A;--panel:#172E41;--panel2:#1D374D;--ink:#F3EFE6;--mut:#A9BBC8;--acc:#F2BB4B;--acc2:#6FC9B6;--bad:#EC8670;--line:#2B4659;--code:#0A1620}
+*{box-sizing:border-box}
+html{font-size:clamp(14px,calc(.55vw + 1.3vh),22px)}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;line-height:1.5;overflow:hidden}
+body{background:radial-gradient(1200px 700px at 85% -10%,#1B3A52 0%,transparent 60%),radial-gradient(900px 600px at -10% 110%,#163041 0%,transparent 55%),var(--bg)}
+.slide{position:absolute;inset:0;display:none;padding:5.2vh max(6.5vw,calc((100vw - 1300px)/2)) 9vh;overflow:auto}
+.slide.on{display:block;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font:600 clamp(2.4rem,4.6vw,4.2rem)/1.08 Georgia,serif;margin:0 0 .35em;letter-spacing:-.01em}
+h2{font:600 1.85rem/1.22 Georgia,serif;margin:0 0 .6em;letter-spacing:-.005em}
+h2::after{content:"";display:block;width:56px;height:3px;background:var(--acc);border-radius:2px;margin-top:.45em}
+.eb{display:inline-block;color:var(--acc);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.6em;padding:.2em .7em;border:1px solid rgba(242,187,75,.35);border-radius:99px;background:rgba(242,187,75,.07)}
+.mut{color:var(--mut)}.big{font-size:1.3rem;max-width:62ch}.sm{font-size:.82rem}
+p{margin:.5em 0}
+ul{padding-left:1.3em;margin:.4em 0}li{margin:.4em 0}
+li::marker{color:var(--acc)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.84rem;background:var(--panel);margin:.6em 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:.5em .8em;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+th{color:var(--acc);font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;background:var(--panel2)}
+table tr:nth-child(even) td{background:rgba(255,255,255,.025)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td:first-child{font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:.8em;margin:.6em 0}
+.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-left:4px solid var(--acc);padding:.7em 1em;border-radius:10px;font-size:.84rem}
+.card.g{border-left-color:var(--acc2)}.card.r{border-left-color:var(--bad)}
+.card b.t{color:var(--acc);display:block;margin-bottom:.2em;font-size:.92rem}
+.num{font:600 2.4rem/1.05 Georgia,serif;color:var(--acc);margin-bottom:.1em}
+code{font:.82em Consolas,monospace;background:var(--code);padding:.1em .45em;border-radius:4px;color:var(--acc2)}
+.formula{font:1.15rem Consolas,monospace;background:var(--code);padding:.7em 1em;border-radius:8px;color:var(--acc2);margin:.7em 0;border:1px solid var(--line)}
+.step{display:flex;gap:.8em;margin:.55em 0;align-items:flex-start}
+.step b.k{flex:0 0 2em;height:2em;border-radius:50%;background:var(--acc);color:#10202C;display:flex;align-items:center;justify-content:center;font-size:.85rem;margin-top:.1em}
+.take{margin:.8em 0;padding:.7em 1em;border-radius:10px;background:rgba(111,201,182,.09);border:1px solid rgba(111,201,182,.35);border-left:4px solid var(--acc2)}
+.take.warn{background:rgba(236,134,112,.09);border-color:rgba(236,134,112,.35);border-left-color:var(--bad)}
+.take b:first-child{color:var(--acc2)}.take.warn b:first-child{color:var(--bad)}
+.g2{grid-template-columns:repeat(2,1fr)!important}
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:1.2em;align-items:start}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:1em}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.5em .7em}
+.chart h4{margin:.1em 0 .2em;font-size:.82rem;color:var(--acc);font-weight:600}
+.chart svg{width:100%;height:auto;display:block}
+svg text{fill:var(--mut);font:11px "Segoe UI",sans-serif}
+svg .val{fill:var(--ink);font-weight:600}
+.hero{display:flex;gap:2.2em;margin-top:2.2em;flex-wrap:wrap}
+.hero div{border-left:3px solid var(--acc);padding-left:.8em}
+.hero b{display:block;font:600 2.1rem/1 Georgia,serif;color:var(--acc)}
+.hero span{font-size:.8rem;color:var(--mut)}
+.ft{position:fixed;left:0;right:0;bottom:0;height:5vh;min-height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 max(6.5vw,calc((100vw - 1300px)/2));font-size:.7rem;color:var(--mut);background:linear-gradient(0deg,rgba(14,28,39,.95),transparent);z-index:5;letter-spacing:.04em}
+.ft b{color:var(--acc);font-weight:600}
+.prog{position:fixed;left:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--acc),var(--acc2));z-index:6;transition:width .25s}
+.ok{color:var(--acc2);font-weight:600}.no{color:var(--bad);font-weight:600}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:.8em 1em;overflow:auto;font:.72rem/1.45 Consolas,monospace;color:#9BE0D2;white-space:pre;margin:.5em 0}
+@media print{html,body{overflow:visible;height:auto}.slide{display:block;position:static;page-break-after:always;min-height:100vh;animation:none}.ft,.prog{display:none}}
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide on" data-sec="Overview">
+<div class="eb">CS6101 · progress update</div>
+<h1>Ranking researchers<br>within a field</h1>
+<p class="big mut">A closed Information Retrieval citation graph, a field-share metric, a second data source to test it against, and a first language-model ranker.</p>
+<div class="hero">
+<div><b>14,462</b><span>papers, 5 IR venues</span></div>
+<div><b>54,351</b><span>citation edges</span></div>
+<div><b>1,430</b><span>authors ranked</span></div>
+<div><b>2</b><span>approaches built</span></div>
+</div>
+<p class="mut sm" style="margin-top:3em">Metric definitions are on slide 7.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-sec="Setup">
+<div class="eb">The goal and the approaches</div>
+<h2>Rank a person against peers in the same field, fairly across years</h2>
+<p>Raw citation counts favour old papers and big fields. Our idea: judge each paper by the <b>share of its field's citations</b> it collects soon after publication, then add the shares up per person. We compare the following approaches:</p>
+<table>
+<tr><th>Approach</th><th>In plain words</th></tr>
+<tr><td>A1 · Hand-crafted metric</td><td>The share formula, written by us (slide 6).</td></tr>
+<tr><td>A4 · Fine-tuned LLM</td><td>Fine-tune an LLM on ranking examples, GenRec-style (slides 14–15).</td></tr>
+<tr><td>A5 · LLMs pick the best ranking</td><td>An LLM compares candidate rankings and chooses the most relevant one.</td></tr>
+</table>
+<p class="mut sm">Status: Approach 1 is fully built and analysed. Approach 4 is trained and has first results (slides 14–15). Approach 5 is not built. Two further ideas — an LLM that writes the SQL, and an LLM that revises its own query and ranking rules — will be tried later.</p>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-sec="Setup">
+<div class="eb">Background: Relay-Linking (Singh et al., KDD 2017)</div>
+<h2>How citations arrive over time</h2>
+<ul>
+<li><b>Dating:</b> a paper's <b>birth year</b> is its publication year. No real citation timestamps exist, so a citation is dated by the citing paper's birth year. The <b>age gap</b> of a citation is the citing paper's birth year minus the cited paper's.</li>
+<li><b>Two forces:</b> citations favour already-popular papers (preferential attachment) and fade as papers age (obsolescence).</li>
+<li><b>Temporal bucket signature:</b> for each citing year j, the share F(i, j) of citations going to papers born in year i.</li>
+<li><b>Turnover</b> = how fast a cohort of papers loses citations. Take citations to papers born in a year <i>i</i>: compare the count they get in year <i>j</i> with the count in <i>j+1</i>; the ratio is how much that cohort's citations shrink in one year. Turnover is the average ratio of <i>j</i> to <i>j+1</i> over all cohorts <i>i</i> and years <i>j</i>. Higher turnover = older papers stop being cited sooner. It differs by community (Singh et al. report 3.97 for SIGMOD, 6.74 for ICML/NIPS).</li>
+<li><b>Our use:</b> the window Δ (number of years after birth in which a paper's citations count) is chosen from the age-gap distribution (slides 9–11). We have <b>not</b> computed the paper's turnover, distance or divergence measures, and we use years, not exact dates.</li>
+</ul>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-sec="Setup">
+<div class="eb">Data sources</div>
+<h2>Three candidate citation sources. We used two.</h2>
+<table>
+<tr><th>Source</th><th>Strength</th><th>Weakness</th><th>Our use</th></tr>
+<tr><td><b>OpenAlex</b></td><td>250M+ works; free API key; broad reference coverage</td><td>Reference lists and author IDs unaudited</td><td class="ok"><b>Main graph</b></td></tr>
+<tr><td><b>Semantic Scholar</b></td><td>References, exact dates, author IDs; free API</td><td>Rate limits; coverage not exhaustive</td><td class="ok"><b>Second graph, for comparison</b></td></tr>
+<tr><td><b>OpenCitations</b></td><td>Free CC0 dumps; verifiable edges with provenance</td><td>Thinner bibliographic metadata</td><td class="no">Not used; possible third check</td></tr>
+</table>
+<p class="mut">The pilot field is small on purpose: the whole graph fits on a laptop.</p>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-sec="Setup">
+<div class="eb">Dataset</div>
+<h2>Information Retrieval pilot (from OpenAlex)</h2>
+<div class="grid">
+<div class="card"><div class="num">14,462</div>papers, 2000–2022</div>
+<div class="card"><div class="num">21,362</div>authors</div>
+<div class="card"><div class="num">54,351</div>citation edges between papers in the set</div>
+</div>
+<table>
+<tr><th>Choice</th><th>What we did</th></tr>
+<tr><td>Where</td><td>OpenAlex API, <code>/works</code> endpoint, pulled on 26 Oct 2026</td></tr>
+<tr><td>Which venues</td><td>Five IR venues we picked: SIGIR, CIKM, WSDM, TOIS and Information Retrieval (both journals). Selected by OpenAlex source ID (the work's primary location). ECIR was left out because OpenAlex lists only 28 works for it.</td></tr>
+<tr><td>Which years</td><td>Publication years 2000–2022 (WSDM exists from 2009). Years are uneven: 165 works in 2004, 1,418 in 2022.</td></tr>
+<tr><td>Which items</td><td>Conference papers and journal articles only: 14,462 of the 15,268 works returned. Dropped 806: front matter 471, conference abstracts 251, editorials 35, reviews 20, book chapters 15, letters 1, other 13.</td></tr>
+<tr><td>Per venue</td><td>CIKM 6,707 · SIGIR 5,076 · WSDM 1,384 · TOIS 746 · IRJ 549 (of 7,009 / 5,370 / 1,458 / 812 / 619 returned)</td></tr>
+<tr><td>Edges</td><td>An <b>edge</b> is one paper citing another. 345,866 referenced works sit in the 14,462 papers' reference lists; 54,351 of them (16%) are papers in the set, and only these become edges. The set is <b>closed</b>: a citation from a paper outside the five venues is not counted. Most edges come from SIGIR and CIKM citing (21,472 and 17,299), fewest from IRJ (3,687).</td></tr>
+<tr><td>Author cohort</td><td>21,362 authors appear in the whole set, all years. Of these, 7,651 have at least one paper born 2006–2014 (the scored range); 1,430 of them have at least 3 papers there and are the ones ranked (median 4 papers). 132 of the 1,430 score exactly 0. The 3-paper minimum is the only filter.</td></tr>
+</table>
+<div class="take warn"><b>Caveat.</b> The field is defined by venue. CIKM also publishes database and knowledge-management work (database papers appear among our training examples), and IR papers printed elsewhere are not included.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-sec="Approach 1">
+<div class="eb">Approach 1</div>
+<h2>The field-share metric, step by step</h2>
+<div class="step"><b class="k">1</b><div>For a paper born in year <i>y</i>, count its citations in the window [y, y+Δ], with Δ = 3.</div></div>
+<div class="step"><b class="k">2</b><div>Count all citations the whole set makes in the years y to y+Δ (the <b>field total</b>, to papers of any age).</div></div>
+<div class="step"><b class="k">3</b><div>Divide: this is the paper's <b>share</b>.</div></div>
+<div class="formula">share(p) = cites(p, [y, y+Δ]) / field_total([y, y+Δ])</div>
+<div class="step"><b class="k">4</b><div>Keep papers born from 2006 up to the <b>cutoff</b>, 2014: the last birth year scored; later papers are ignored, as if the field had ended.</div></div>
+<div class="step"><b class="k">5</b><div>A person's score is the sum of their papers' shares, each split equally between co-authors. Keep people with at least 3 papers (1,430 authors).</div></div>
+<p class="mut sm">Example: 12 citations in a window where the field makes 3,000 gives a share of 0.4%. With 4 authors, each gets 0.1%. Within one birth year the share is proportional to the citation count; the field total only rescales across years. Years, not months: a December paper gets the same window as a January one.</p>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-sec="Approach 1">
+<div class="eb">Definitions 2 · how rankings are compared</div>
+<h2>No independent ground truth yet, so we compare rankings with each other</h2>
+<div class="grid g2">
+<div class="card"><b class="t">Agreement, top-100 overlap</b>For two methods, take the authors both score. <b>Agreement</b> = Spearman ρ between the two score vectors. <b>Top-100 overlap</b> = size of the intersection of the two top-100 lists.</div>
+<div class="card"><b class="t">Tied fraction</b>1 − (number of distinct score values) / (number of authors scored). It is the share of authors whose score repeats another author's, counting each distinct value once. 0 means all scores differ. Ties are not broken: Spearman gives tied authors their average rank, and the order inside a tie is arbitrary.</div>
+<div class="card"><b class="t">Volume influence</b>Spearman ρ between author score and the author's number of scored papers (born 2006–cutoff). High ρ means the ranking largely sorts by how many papers a person has, not by per-paper quality. A1 scores 0.61 on this: the metric is strongly tied to paper count (slide 9).</div>
+<div class="card"><b class="t">Noise floor</b>Re-run Approach 1 on a random 80% of the edges, 20 times, and compare each ranking with the full-data one (Spearman ρ and top-100 overlap). The spread of those values is the noise floor: a change smaller than it is within edge-sampling noise.</div>
+</div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-sec="Approach 1">
+<div class="eb">Approach 1 · what the metric rewards</div>
+<h2>The share metric is only half about quality</h2>
+<table>
+<tr><th>Method</th><th class="n">Authors scored</th><th class="n">ρ with paper count</th><th class="n">Tied scores</th></tr>
+<tr><td>A1 field share</td><td class="n">1,430</td><td class="n">0.61</td><td class="n">22%</td></tr>
+<tr><td>Raw citations in window</td><td class="n">1,430</td><td class="n">0.62</td><td class="n">53%</td></tr>
+</table>
+<div class="take "><b>Takeaway.</b> A1's score is strongly tied to paper count: ρ = 0.61 with the number of papers born 2006–2014 (median 4 papers for the cohort, 19 in the top 100; the top 10 have 22–70). Summing shares means authors with more papers accumulate more, and the raw-citation baseline is just as tied to count (0.62), so this is a property of the setting, not of the normalization. Top five by A1: <b>W. Bruce Croft, ChengXiang Zhai, Susan Dumais, Ryen W. White, Eugene Agichtein</b>.</div>
+</section>
+
+<!-- 9b -->
+<section class="slide" data-sec="Metrics">
+<div class="eb">New metric · normalizing by output</div>
+<h2>Does dividing by the number of papers fixed help?</h2>
+<p class="sm">Same papers, same windows, same 3-paper minimum. Only the aggregation changes. Hypotheses and falsifiers were written before running (<code>METRIC_PLAN.md</code>).</p>
+<table>
+<tr><th>Metric</th><th>Definition</th><th class="n">ρ with future citations</th><th class="n">Age bias</th><th class="n">ρ with paper count</th></tr>
+<tr><td>A1 total share (current)</td><td>Σ over papers of share / co-authors</td><td class="n">0.708</td><td class="n">−0.18</td><td class="n">0.61</td></tr>
+<tr><td><b>M1 per-paper</b></td><td>A1 divided by papers published in window</td><td class="n">0.625</td><td class="n">−0.19</td><td class="n">0.33</td></tr>
+<tr><td>M3 top-3 papers</td><td>mean of the 3 best paper shares</td><td class="n">0.692</td><td class="n">−0.18</td><td class="n">—</td></tr>
+<tr><td>M4 shrunk per-paper</td><td>M1 pulled toward field mean, k = 3</td><td class="n">0.302</td><td class="n">−0.14</td><td class="n">−0.27</td></tr>
+<tr><td>B1 per-paper citations</td><td>plain citations per paper</td><td class="n">0.646</td><td class="n">−0.08</td><td class="n">0.33</td></tr>
+<tr><td>B2 h-like</td><td>papers with ≥3 in-window citations</td><td class="n">0.689</td><td class="n">−0.07</td><td class="n">—</td></tr>
+</table>
+<p class="mut sm">Noise floor: dropping 20% of edges moves A1's ρ by at most 0.014. Every difference in the ρ column is 5–25× that. Age bias = Spearman ρ between score and the author's mean birth year; 0 is neutral.</p>
+</section>
+
+<!-- 9c -->
+<section class="slide" data-sec="Metrics">
+<div class="eb">New metric · verdict</div>
+<h2>It removes volume, not age bias, and costs accuracy</h2>
+<div class="grid g2">
+<div class="card g"><b class="t">What it does do</b>Cuts the tie between score and paper count from 0.61 to 0.33. In the lowest scoring fifth of authors the mean paper count goes from 3.6 to 4.1, in the highest from 13.9 to 9.3: the ranking stops being a headcount.</div>
+<div class="card r"><b class="t">What it does not do</b>Age bias does not move toward zero (−0.178 → −0.185 on OpenAlex, −0.002 → +0.010 on Semantic Scholar). The bias comes from earlier papers having had longer to collect citations, which a per-author division cannot touch.</div>
+<div class="card r"><b class="t">What it costs</b>ρ with future citations falls 0.083 (ten noise floors) and the top-10 mean falls from 96.5 to 22.3. Only 48 of A1's top 100 survive. Per-paper ranking rewards short records: M1's top 10 have 3–4 papers, A1's have 22–70.</div>
+<div class="card"><b class="t">The mechanism</b>M1 and plain per-paper citations (B1) agree at ρ = 0.987. Once you divide by paper count the field-share denominator stops doing anything, so M1 is really "citations per paper", not a new field-normalized metric.</div>
+</div>
+<div class="take warn"><b>Takeaway.</b> Per-paper and total answer different questions, and both are worth reporting: A1 for influence accumulated, M1 for typical output quality. But substituting M1 for A1 is not an improvement, and it does not fix age bias. The honest fix for age bias is in the birth window, not in the denominator.</div>
+</section>
+
+<!-- 9d -->
+<section class="slide" data-sec="Metrics">
+<div class="eb">New metric 2 · citation deflator · verdict</div>
+<h2>Correcting citation inflation does not fix age bias either</h2>
+<p>Each citation received in year <i>t</i> is worth <i>D</i>(<i>t</i>) = <i>R</i>(2021)/<i>R</i>(<i>t</i>), where <i>R</i>(<i>t</i>) is the references per paper of year <i>t</i>. A 2005 citation counts 1.74×, a 2021 one 1.00×.</p>
+<table>
+<tr><th>Metric</th><th>ρ future</th><th>Age bias</th><th>Top-10 mean</th><th>Top-100 overlap with A1</th></tr>
+<tr><td>A1</td><td class="n">0.708</td><td class="n">−0.178</td><td class="n">96.5</td><td class="n">100</td></tr>
+<tr><td><b>D1</b> deflated share</td><td class="n"><b>0.694</b></td><td class="n"><b>−0.217</b></td><td class="n"><b>91.6</b></td><td class="n"><b>97</b></td></tr>
+</table>
+<div class="grid g2">
+<div class="card g"><b class="t">What it does do</b>Keeps accuracy almost intact (cost 0.014 ρ against M1's 0.083) and makes citation counts from different years comparable. Same direction on Semantic Scholar (0.502 → 0.499).</div>
+<div class="card r"><b class="t">What it does not do</b>Age bias moves <i>away</i> from zero: −0.178 → −0.217. Discounting old citations removes exactly the citations young authors lack, so the gap widens.</div>
+<div class="card"><b class="t">Why the top does not move</b>H7 predicted a big reshuffle (top-100 overlap under 70); the result is 97, and the first nine ranks are identical. <i>D</i>(<i>t</i>) is nearly flat after 2012, so it trims the mid-career tail, not the leaders.</div>
+<div class="card"><b class="t">Field share still helps</b>Deflated per-paper counts alone (B1′) give age bias −0.132 with a top-10 mean of 22.0. The share, not the deflator, is what keeps the list sane.</div>
+</div>
+<div class="take warn"><b>Takeaway.</b> Age bias is not citation inflation of this form. The deflator is a fair reporting correction and belongs beside A1, not in place of it.</div>
+</section>
+
+
+<!-- 10 -->
+<section class="slide" data-sec="Sensitivity">
+<div class="eb">Sensitivity analysis · design</div>
+<h2>Vary the parameters on purpose, with predictions written first</h2>
+<p>Hypotheses were written before running anything (<code>hypotheses.md</code>):</p>
+<table>
+<tr><th>What we varied</th><th>Prediction written in advance</th></tr>
+<tr><td>Window Δ = 1, 2, 3, 5, 8</td><td>More ties for short windows; Δ = 3 and 5 rankings agree ≥ 0.90; Δ = 1 and 3 agree ≤ 0.85</td></tr>
+<tr><td>Citation age gap</td><td>Half of a paper's in-set citations arrive within 2–4 years (call this Δ_half)</td></tr>
+<tr><td>Cutoff = 2010, 2012, 2014, 2016</td><td>Rankings at cutoffs 2012 and 2014 agree ≥ 0.85</td></tr>
+<tr><td>Random loss of 20% of edges, 20 times</td><td>Spearman with the full ranking ≥ 0.95 (the noise floor)</td></tr>
+</table>
+<p class="mut sm">No outcome-based measure (future citations) is used; the comparisons are between rankings and properties of the data.</p>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-sec="Sensitivity">
+<div class="eb">Sensitivity analysis · results</div>
+<h2>Three held, one failed</h2>
+<table>
+<tr><th>Hypothesis</th><th>Result</th><th>Verdict</th></tr>
+<tr><td>Short windows are noisier</td><td>Ties 41%, 27%, 22%, 19%, 17% for Δ = 1, 2, 3, 5, 8</td><td class="ok">Held</td></tr>
+<tr><td>Δ = 1 differs a lot from Δ = 3</td><td>Spearman 0.93 (Δ = 2: 0.98, Δ = 5: 0.98, Δ = 8: 0.97)</td><td class="no">Failed: Δ barely matters beyond 1 year</td></tr>
+<tr><td>Half of citations arrive within 2–4 years</td><td>Half within 3 years, 80% within 6 (gaps capped at 8 years; uncapped, 2006–2010 papers have median 5)</td><td class="ok">Held, with caveat</td></tr>
+<tr><td>Moving the cutoff keeps the ranking</td><td>Spearman 0.97 (2012), 0.98 (2016), 0.94 (2010)</td><td class="ok">Held</td></tr>
+</table>
+<p><b>Noise floor:</b> dropping 20% of edges gives Spearman 0.99 and top-100 overlap of 92–98. Δ = 2 and 5 sit inside that noise; Δ = 1 and 8 (overlap 86) do not.</p>
+<div class="take "><b>Takeaway.</b> Δ = 3 is supported by the arrival data and the ranking is robust to Δ. The cutoff moves the ranking more than Δ does (0.94 at cutoff 2010, 0.97–0.98 elsewhere).</div>
+</section>
+
+<!-- 11b -->
+<section class="slide" data-sec="Sensitivity">
+<div class="eb">Sensitivity analysis · the picture</div>
+<h2>The ranking barely moves with Δ; citations arrive by about year 3</h2>
+<div class="three">
+<div class="chart" id="c_ties"></div>
+<div class="chart" id="c_agree"></div>
+<div class="chart" id="c_cdf"></div>
+</div>
+<p class="sm mut">Left: tied fraction by window length. Middle: Spearman agreement of each Δ with the Δ = 3 ranking; the shaded band is the noise floor (80% edge subsamples vs the full ranking, 20 runs: 0.987 to 0.991). Right: cumulative share of in-set citations by age gap, for papers born 2006–2014, gaps capped at 8 years.</p>
+<div class="take"><b>Takeaway.</b> Only Δ = 1 clearly departs from the others (agreement 0.93, below the noise floor); Δ = 2 and 5 are indistinguishable from sampling noise, and the median citation arrives in year 3.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-sec="Data sources">
+<div class="eb">Second source: Semantic Scholar graph of the same papers</div>
+<h2>It matches the papers, but has far fewer citation edges</h2>
+<div class="grid">
+<div class="card g"><div class="num">13,830</div>papers matched by DOI (95.7% of those with a DOI)</div>
+<div class="card r"><div class="num">13,548</div>edges, against 54,351 in OpenAlex</div>
+<div class="card"><div class="num">25%</div>of the references it counts were returned (95,989 of 387,563)</div>
+</div>
+<p class="sm" style="margin-top:10px">11,970 of its edges also exist in OpenAlex; 1,578 are Semantic Scholar only; 40,760 OpenAlex edges are missing there. Average reference list returned, by publication year:</p>
+<div class="chart" id="c_refs"></div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-sec="Data sources">
+<div class="eb">OpenAlex vs Semantic Scholar</div>
+<h2>For this dataset, OpenAlex is the better source</h2>
+<table>
+<tr><th>Approach 1</th><th class="n">OpenAlex</th><th class="n">Semantic Scholar</th></tr>
+<tr><td>Citation edges used</td><td class="n">54,351</td><td class="n">13,548</td></tr>
+<tr><td>Tied scores</td><td class="n">22%</td><td class="n">82%</td></tr>
+<tr><td>Authors scored</td><td class="n">1,430</td><td class="n">1,456</td></tr>
+</table>
+<div class="grid">
+<div class="card"><b class="t">Agreement of the two rankings</b>1,181 authors matched by name: Spearman 0.60; top-50 overlap 30; top-100 overlap 56. Name matching is approximate (surname plus first initial); the sources use different author IDs.</div>
+<div class="card"><b class="t">Both agree on the leader</b>W. Bruce Croft is first in both. Semantic Scholar top five: Croft, T. Sakai, A. Moffat, K. Balog, M. de Rijke.</div>
+</div>
+<p class="mut sm">Caveat: "better" here means more complete edges on this field. OpenAlex's edges are not verified as more accurate, and Semantic Scholar remains useful for author IDs and exact dates. Totals of citations agree between the sources (0.97 on a matched sample); the gap is in reference lists.</p>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-sec="Fine-tuning">
+<div class="eb">Approach 4 · our GenRec-style design</div>
+<h2>Rank six researchers from short text profiles</h2>
+<div class="step"><b class="k">In</b><div>Instruction plus six researchers, each one line: name, number of papers, years, two paper titles. No citation numbers are shown.</div></div>
+<div class="step"><b class="k">Out</b><div>The six names ranked best to worst, joined by " &gt; ".</div></div>
+<div class="step"><b class="k">Label</b><div>The <b>teacher</b> is the Approach 1 score. So the test is whether the model can reproduce Approach 1 from text, not whether Approach 1 is right.</div></div>
+<table>
+<tr><th>Split</th><th class="n">Examples</th><th class="n">Distinct authors</th></tr>
+<tr><td>Train (the model learns from these)</td><td class="n">5,000</td><td class="n">1,013</td></tr>
+<tr><td>Validation</td><td class="n">300</td><td class="n">137</td></tr>
+<tr><td>Test (authors disjoint from training)</td><td class="n">800</td><td class="n">280</td></tr>
+</table>
+<p class="sm">Metrics on the test set: <b>top-1</b> (is the best person placed first), <b>Kendall tau</b> against the teacher order, NDCG, and the share of answers in valid format. <b>Baseline to beat:</b> "more papers means higher rank" gets top-1 0.62 and Kendall tau 0.50; random gets 0.17 and 0. The base model before fine-tuning (zero-shot) is also measured on 100 examples.</p>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-sec="Fine-tuning">
+<div class="eb">Approach 4 · first results</div>
+<h2>The fine-tuned model learned the task, but a simple count still wins</h2>
+<p class="sm">Test set: 800 lists of six researchers, all authors unseen in training. "Valid format" = the answer lists exactly the six given names. Teacher = the Approach 1 order.</p>
+<div class="two"><table>
+<tr><th>Method</th><th class="n">Valid format</th><th class="n">Top-1</th><th class="n">Kendall tau</th><th class="n">NDCG</th></tr>
+<tr><td>Random guess</td><td class="n">–</td><td class="n">0.17</td><td class="n">0.00</td><td class="n">–</td></tr>
+<tr><td>Qwen2.5-1.5B before fine-tuning (zero-shot, 100 lists)</td><td class="n">20%</td><td class="n">0.21</td><td class="n">0.09</td><td class="n">0.87</td></tr>
+<tr><td><b>Fine-tuned model</b></td><td class="n">98.6%</td><td class="n">0.51</td><td class="n">0.36</td><td class="n">0.93</td></tr>
+<tr><td>Baseline: more papers means higher rank</td><td class="n">100%</td><td class="n"><b>0.62</b></td><td class="n"><b>0.50</b></td><td class="n"><b>0.95</b></td></tr>
+</table><div class="chart" id="c_res"></div></div>
+<ul>
+<li>Fine-tuning clearly helped: valid answers went from 20% to 98.6%, and top-1 from 0.21 to 0.51 (random is 0.17).</li>
+<li>But the model does <b>not</b> beat the paper-count rule, which uses only the number of papers shown in each profile.</li>
+<li>Reading: after one short run of a 1.5B model on 5,000 examples, it has not learned more from names and titles than a simple count of papers gives. The teacher (Approach 1) is itself strongly tied to paper count.</li>
+</ul>
+<div class="take warn"><b>Caveat.</b> One run, one seed, one model size, no tuning of settings. Not tested: a larger model, more data or epochs, a longer-history profile, or an independent label. These are first results, not a verdict on the approach.</div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-sec="Fine-tuning">
+<div class="eb">Why a fine-tuned ranker</div>
+<h2>How the final approach would help</h2>
+<ul>
+<li><b>One model, many rankings.</b> The criterion sits in the instruction: first-3-year impact, early-career only, recent work weighted more, one subfield. Hand-written SQL needs a new query for each.</li>
+<li><b>Uses paper titles</b> as well as citation counts, which the metric ignores.</li>
+<li><b>Handles sparse graphs.</b> Where edges are missing (as in Semantic Scholar), the profile text still carries signal.</li>
+<li><b>Can write the short assessment</b> of a person (the "review" part, my reading of that requirement, not yet confirmed), which a metric cannot.</li>
+<li><b>Can be trained toward an independent label</b> such as awards, not only toward our own metric.</li>
+</ul>
+<p class="mut">These are intended benefits, not yet shown: the first run did not beat the paper-count baseline (slide 15). Caveat: it learns only what its labels encode. Each new criterion needs labels that reflect it, and it must be tested on held-out researchers.</p>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-sec="Fine-tuning">
+<div class="eb">What we would require</div>
+<h2>Compute and cost estimates</h2>
+<table>
+<tr><th>Run</th><th>Assumption</th><th>Estimate</th></tr>
+<tr><td><b>Current pilot</b></td><td>1.5B model, 5,000 examples × 3 epochs, about 5M tokens, one T4</td><td>measured: 54 min, free</td></tr>
+<tr><td>Bigger run</td><td>1.5B model, 60M tokens (8,000 examples of 20 candidates, 2,500 tokens each)</td><td>about 8–12 h on one T4</td></tr>
+<tr><td>GenRec scale</td><td>7B model, same 60M tokens, cloud A100 GPU</td><td>about 8 h, about $25–35 per run</td></tr>
+</table>
+<div class="grid">
+<div class="card"><b class="t">Not compute</b>The real needs are an independent label (an awards list of 50–100 names), the definition of the "review" output, and an LLM API key for Approach 5.</div>
+<div class="card"><b class="t">LLM API cost</b>Small: a few dozen calls of a few thousand tokens; a written assessment for all 1,430 authors is about 1M tokens in and 0.2M out.</div>
+</div>
+<p class="mut sm">All figures are estimates from the stated assumptions; the pilot's measured throughput was about 1,413 tokens per second.</p>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-sec="Status">
+<div class="eb">Status of the approaches</div>
+<h2>What is built and what is not</h2>
+<table>
+<tr><th>Approach</th><th>Status</th></tr>
+<tr><td>1. Hand-crafted field-share metric</td><td class="ok">Built; run on OpenAlex and Semantic Scholar; sensitivity analysis done</td></tr>
+<tr><td>2 &amp; 3. LLM writes / refines the SQL</td><td>Not started; will try later</td></tr>
+<tr><td>4. Fine-tuned LLM, GenRec-style</td><td>Data built; trained (54 min); first results beat random and the untrained model but not a simple baseline (slide 15); "review" output not defined</td></tr>
+<tr><td>5. LLMs choose the best ranking</td><td class="no">Not built</td></tr>
+<tr><td>Independent ground truth</td><td class="no">None yet; all comparisons so far are between our own rankings</td></tr>
+</table>
+<p class="mut sm">Files: <code>report.html</code>, <code>results/ir/</code>, <code>results/ir_s2/</code>, <code>results/ir_sensitivity/</code>, <code>scripts/</code>, <code>kaggle/</code>.</p>
+</section>
+
+<section class="slide" data-sec="Appendix">
+<div class="eb">Appendix · Approach 1 query</div>
+<h2>The exact query behind the field-share metric</h2>
+<p class="sm">Tables: <code>edges(cited, citing, y_cited, y_citing)</code> and <code>authors(paper, year, author, n)</code>, where n is the number of authors on the paper. Δ = 3, births 2006–2014, minimum 3 papers.</p><pre>CREATE TABLE a1_share AS
+WITH tot AS (                       -- all in-set citations made in each year
+  SELECT y_citing AS yr, COUNT(*) AS n FROM edges GROUP BY 1),
+den AS (                            -- field total for the window [y, y+3]
+  SELECT y.year, SUM(t.n) AS d
+  FROM (SELECT DISTINCT year FROM authors WHERE year BETWEEN 2006 AND 2014) y
+  JOIN tot t ON t.yr BETWEEN y.year AND y.year + 3 GROUP BY 1)
+SELECT e.cited AS paper, e.y_cited AS year,
+       COUNT(*) * 1.0 / ANY_VALUE(d.d) AS share
+FROM edges e JOIN den d ON d.year = e.y_cited
+WHERE e.y_citing &lt;= e.y_cited + 3 AND e.y_cited BETWEEN 2006 AND 2014
+GROUP BY 1, 2;
+
+-- author score: uncited papers add 0 but still count toward the 3-paper minimum
+SELECT a.author, SUM(COALESCE(s.share, 0) / a.n) AS score,
+       COUNT(*) AS n_papers, SUM(COALESCE(s.c, 0)) AS raw_cites
+FROM authors a LEFT JOIN a1_share s ON s.paper = a.paper
+WHERE a.year BETWEEN 2006 AND 2014
+GROUP BY 1 HAVING COUNT(*) &gt;= 3;</pre>
+</section>
+
+<section class="slide" data-sec="Appendix">
+<div class="eb">Appendix · Approach 4 example</div>
+<h2>One training example, and the exact settings</h2>
+<pre>INSTRUCTION: Rank these information retrieval researchers from highest to lowest field-relative citation impact for papers published 2006-2014. Answer with the names in order, separated by &#x27; &gt; &#x27;.
+INPUT:
+Ken C. K. Lee (4 papers, 2008-2010): ROAD; On top-k social web search
+Chandra Prakash Jethani (3 papers, 2010-2012): Human performance and retrieval precision revisited; Time to judge relevance as an indicator of assessor error
+Romain Deveaud (3 papers, 2013-2014): Estimating topical context by diverging from external resources; SmartVenues
+Xiang Lian (5 papers, 2009-2014): Efficient join processing on uncertain data streams; Efficient Subgraph Skyline Search Over Large Graphs
+Zheng Chen (8 papers, 2007-2012): Shine; Beyond ten blue links
+Pavel Serdyukov (43 papers, 2007-2014): Generative modeling of persons and documents for expert search; Web search without &#x27;stupid&#x27; results
+OUTPUT (teacher = Approach 1 order):
+Pavel Serdyukov &gt; Chandra Prakash Jethani &gt; Zheng Chen &gt; Romain Deveaud &gt; Ken C. K. Lee &gt; Xiang Lian</pre><pre>Prompt text sent to the model:   &lt;instruction&gt;
+
+### Input:
+&lt;input&gt;
+
+### Response:
+&lt;output&gt;&lt;end&gt;
+Loss is computed on the answer only. Settings: model Qwen/Qwen2.5-1.5B (fp16, one T4), LoRA r=8, alpha=16, dropout=0.05,
+targets q_proj and v_proj, learning rate 3e-4, batch 32 (micro-batch 8 x 4), 3 epochs, input limit 512 tokens, cosine schedule.
+Decoding for the test: greedy, up to 96 new tokens; an answer is valid only if it lists exactly the six given names.</pre>
+</section>
+
+<div class="prog" id="prog"></div>
+<div class="ft"><span>CS6101 · Ranking researchers within a field</span><span id="sec"></span><span id="nav"></span></div>
+<script>
+function svg(w,h,inner){return '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="xMidYMid meet">'+inner+'</svg>'}
+function bars(id,title,data,o){o=o||{};var w=o.w||360,h=o.h||200,pl=34,pb=26,pt=14,max=o.max||Math.max.apply(null,data.map(function(d){return d[1]})),n=data.length,bw=(w-pl-8)/n,g='';
+ var nt=o.ticks||4;for(var t=0;t<=nt;t++){var y=pt+(h-pt-pb)*(1-t/nt);g+='<line x1="'+pl+'" x2="'+(w-6)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)" stroke-width="1"/><text x="'+(pl-5)+'" y="'+(y+3)+'" text-anchor="end">'+(max*t/nt).toFixed(o.dec||0)+(o.unit||'')+'</text>'}
+ data.forEach(function(d,i){var bh=(h-pt-pb)*d[1]/max,x=pl+i*bw+bw*.18,y=h-pb-bh;g+='<rect x="'+x+'" y="'+y+'" width="'+bw*.64+'" height="'+bh+'" rx="3" fill="'+(d[2]||'var(--acc2)')+'"/><text class="val" x="'+(x+bw*.32)+'" y="'+(y-4)+'" text-anchor="middle">'+(o.fmt?o.fmt(d[1]):d[1])+'</text><text x="'+(x+bw*.32)+'" y="'+(h-9)+'" text-anchor="middle">'+d[0]+'</text>'});
+ document.getElementById(id).innerHTML='<h4>'+title+'</h4>'+svg(w,h,g)}
+function line(id,title,pts,o){var w=360,h=230,pl=38,pb=26,pt=14,xs=pts.map(function(p){return p[0]}),xmin=Math.min.apply(null,xs),xmax=Math.max.apply(null,xs),ymin=o.ymin,ymax=o.ymax,g='';
+ function X(x){return pl+(w-pl-10)*(x-xmin)/(xmax-xmin)}function Y(y){return pt+(h-pt-pb)*(1-(y-ymin)/(ymax-ymin))}
+ var nt=o.ticks||4;for(var t=0;t<=nt;t++){var yv=ymin+(ymax-ymin)*t/nt,y=Y(yv);g+='<line x1="'+pl+'" x2="'+(w-8)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(pl-5)+'" y="'+(y+3)+'" text-anchor="end">'+yv.toFixed(o.dec)+'</text>'}
+ if(o.band)g+='<rect x="'+pl+'" y="'+Y(o.band[1])+'" width="'+(w-pl-8)+'" height="'+Math.max(2,Y(o.band[0])-Y(o.band[1]))+'" fill="var(--acc2)" opacity=".28"/><text x="'+(w-10)+'" y="'+(Y(o.band[1])-5)+'" text-anchor="end" style="fill:var(--acc2)">noise floor</text>';
+ (o.hl||[]).forEach(function(l){g+='<line x1="'+pl+'" x2="'+(w-8)+'" y1="'+Y(l[0])+'" y2="'+Y(l[0])+'" stroke="var(--acc)" stroke-dasharray="4 4"/><text x="'+(w-10)+'" y="'+(Y(l[0])-4)+'" text-anchor="end" style="fill:var(--acc)">'+l[1]+'</text>'});
+ g+='<polyline fill="none" stroke="var(--acc2)" stroke-width="2.4" points="'+pts.map(function(p){return X(p[0])+','+Y(p[1])}).join(' ')+'"/>';
+ pts.forEach(function(p){g+='<circle cx="'+X(p[0])+'" cy="'+Y(p[1])+'" r="3.6" fill="var(--acc2)"/><text x="'+X(p[0])+'" y="'+(h-9)+'" text-anchor="middle">'+p[0]+'</text>'});
+ document.getElementById(id).innerHTML='<h4>'+title+'</h4>'+svg(w,h,g)}
+function grouped(id,title,cats,series,o){var w=420,h=250,pl=34,pb=44,pt=22,max=o.max,n=cats.length,gw=(w-pl-8)/n,bw=gw*.36,g='';
+ for(var t=0;t<=4;t++){var y=pt+(h-pt-pb)*(1-t/4);g+='<line x1="'+pl+'" x2="'+(w-6)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(pl-5)+'" y="'+(y+3)+'" text-anchor="end">'+(max*t/4).toFixed(2)+'</text>'}
+ cats.forEach(function(c,i){series.forEach(function(se,k){var v=se.v[i],bh=(h-pt-pb)*v/max,x=pl+i*gw+gw*.12+k*bw*1.05,y=h-pb-bh;g+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+se.c+'"/><text class="val" x="'+(x+bw/2)+'" y="'+(y-4)+'" text-anchor="middle">'+v.toFixed(2)+'</text>'});
+  c.split('|').forEach(function(line,li){g+='<text x="'+(pl+i*gw+gw/2)+'" y="'+(h-pb+14+li*12)+'" text-anchor="middle">'+line+'</text>'})});
+ g+='<rect x="'+(pl+4)+'" y="1" width="9" height="9" rx="2" fill="'+series[0].c+'"/><text x="'+(pl+17)+'" y="9">'+series[0].n+'</text><rect x="'+(pl+88)+'" y="1" width="9" height="9" rx="2" fill="'+series[1].c+'"/><text x="'+(pl+101)+'" y="9">'+series[1].n+'</text>';
+ document.getElementById(id).innerHTML='<h4>'+title+'</h4>'+svg(w,h,g)}
+bars('c_refs','Average references returned per paper, by publication year (Semantic Scholar)',[[2000,0.96],[2005,1.1],[2010,0.7],[2012,1.5],[2014,1.4],[2015,3.4],[2016,4.4],[2017,7.1],[2018,9.9],[2019,11.1],[2020,14.5],[2021,19.1],[2022,17.8]],{w:720,h:190,dec:0,fmt:function(v){return v.toFixed(1)},max:20});
+bars('c_ties','Tied fraction by window Δ',[['Δ=1',40.5],['Δ=2',27.1],['Δ=3',22.4,'var(--acc)'],['Δ=5',18.7],['Δ=8',16.9]],{max:50,ticks:5,unit:'%',fmt:function(v){return v+'%'},h:230});
+line('c_agree','Agreement with the Δ = 3 ranking',[[1,.928],[2,.982],[3,1],[5,.984],[8,.971]],{ymin:.9,ymax:1,dec:2,ticks:5,band:[.987,.991]});
+line('c_cdf','Cumulative share of citations by age gap (years)',[[0,.029],[1,.186],[2,.357],[3,.507],[4,.64],[5,.752],[6,.847],[7,.929],[8,1]],{ymin:0,ymax:1,dec:1,ticks:5,hl:[[.5,'50%: year 3'],[.8,'80%: year 6']]});
+grouped('c_res','Test set, 800 lists of six researchers',['Random','Untrained|model','Fine-tuned|model','Paper-count|rule'],[{n:'Top-1',c:'var(--acc)',v:[.17,.21,.51,.62]},{n:'Kendall tau',c:'var(--acc2)',v:[0,.09,.36,.50]}],{max:.8});
+var s=[].slice.call(document.querySelectorAll('.slide')),i=0;
+function show(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach(function(e,k){e.classList.toggle('on',k===i)});
+document.getElementById('nav').innerHTML='<b>'+(i+1)+'</b> / '+s.length+' · arrows, F fullscreen';
+document.getElementById('sec').textContent=s[i].getAttribute('data-sec')||'';
+document.getElementById('prog').style.width=((i+1)/s.length*100)+'%';location.hash=i+1}
+document.addEventListener('keydown',function(e){
+if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1)show(i+1);
+else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1)show(i-1);
+else if(e.key==='Home')show(0);else if(e.key==='End')show(s.length-1);
+else if(e.key==='f'||e.key==='F'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}});
+document.addEventListener('click',function(e){if(e.target.closest('table,.card,pre,.chart'))return;show(e.clientX>innerWidth/2?i+1:i-1)});
+show((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>

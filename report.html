@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ranking Researchers in a Field: IR Pilot Report</title>
+<style>
+:root{--ink:#17202A;--muted:#4A5560;--paper:#FBFAF6;--card:#FFFFFF;--line:#DDD8CB;--accent:#9A4F10;--warn:#FFF4DC;--good:#1E6B52;--bad:#A3412D}
+@media (prefers-color-scheme: dark){:root{--ink:#EDE9DF;--muted:#B8C2CB;--paper:#14202B;--card:#1B2A37;--line:#34444F;--accent:#E8B04A;--warn:#2A2A1C;--good:#6FC3B2;--bad:#E8806B}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 "Segoe UI",system-ui,Arial,sans-serif}
+main{max-width:940px;margin:0 auto;padding:44px 24px 80px}
+h1{font:600 34px/1.15 Georgia,serif;margin:0 0 6px}
+h2{font:600 23px/1.25 Georgia,serif;margin:38px 0 8px;padding-top:6px;border-top:1px solid var(--line)}
+h3{font:600 17px/1.3 "Segoe UI",sans-serif;margin:20px 0 4px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.sub{color:var(--muted);margin:0 0 18px}
+p{margin:8px 0}ul,ol{padding-left:22px;margin:6px 0}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:15px;background:var(--card);border:1px solid var(--line)}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;background:rgba(127,127,127,.08)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+code{font:14px Consolas,monospace;background:rgba(127,127,127,.14);border-radius:4px;padding:1px 5px}
+.note{background:var(--warn);border-left:4px solid var(--accent);padding:10px 14px;border-radius:6px;margin:14px 0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.small{font-size:14px;color:var(--muted)}
+.g{color:var(--good);font-weight:600}.r{color:var(--bad);font-weight:600}
+pre{background:rgba(127,127,127,.12);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow:auto;font:13px/1.45 Consolas,monospace;white-space:pre}
+</style>
+</head>
+<body>
+<main>
+<p class="eyebrow">CS6101 · Project report</p>
+<h1>Ranking researchers within a field</h1>
+<p class="sub">Pilot on a closed Information Retrieval (IR) citation graph. This report puts every comparison from the progress presentation in one place.</p>
+
+<h2>Summary</h2>
+<ul>
+<li><b>Data:</b> 14,462 IR papers (five venues, 2000–2022), 21,362 authors, 54,351 citation edges from OpenAlex.</li>
+<li><b>Metric (Approach 1):</b> each paper's share of the field's citations in a short window after publication, summed per author. It ranks well-known IR researchers first (Croft, Zhai, Dumais).</li>
+<li><b>Parameters:</b> the ranking is robust to the window length Δ and to the cutoff year. Citations in this field arrive with a median of 3 years, which supports Δ = 3.</li>
+<li><b>Sources:</b> OpenAlex gives four times as many edges as Semantic Scholar for the same papers, so it is the better base here.</li>
+<li><b>Fine-tuned LLM (Approach 4):</b> learned the ranking task (98.6% valid answers, top-1 0.51 vs 0.17 random) but did <b>not</b> beat a simple "more papers = higher rank" rule (top-1 0.62).</li>
+<li><b>Not done:</b> real LLM runs of Approaches 2, 3 and 5, and any <b>independent ground truth</b>. Every comparison below is between our own rankings.</li>
+</ul>
+
+<h2>1. Terms</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Edge / citation graph</td><td>An edge is one paper citing another; all edges form the graph. Only citations between papers in the five venues are counted.</td></tr>
+<tr><td>Birth year, Δ, cutoff</td><td>Birth year = publication year. Δ = number of years after birth in which citations are counted. Cutoff = last birth year scored (2014).</td></tr>
+<tr><td>Age gap</td><td>Years between a cited paper's birth year and the citing paper's (Relay-Linking, Singh et al. 2017).</td></tr>
+<tr><td>Spearman / Kendall tau</td><td>Order-agreement scores between two rankings: 1 = same order, 0 = unrelated, −1 = reversed.</td></tr>
+<tr><td>Agreement</td><td>Spearman between two methods' rankings. Top-100 overlap = how many of the top 100 people they share.</td></tr>
+<tr><td>Age bias</td><td>Spearman between a score and the average birth year of the person's papers. Negative = older authors score higher; it cannot separate metric bias from career length.</td></tr>
+<tr><td>Tied scores</td><td>Share of authors whose score equals another author's.</td></tr>
+<tr><td>Noise floor</td><td>How much a ranking changes from random data loss alone; smaller differences are not real.</td></tr>
+<tr><td>Stand-in</td><td>A hand-written version of an LLM-driven approach, used to test the pipeline.</td></tr>
+<tr><td>LoRA, token, epoch, zero-shot</td><td>LoRA = cheap fine-tuning that trains small extra matrices on a frozen model. Token = word piece. Epoch = one pass over the training data. Zero-shot = the model before any fine-tuning.</td></tr>
+<tr><td>Teacher</td><td>The ranking used as the training label (here, Approach 1).</td></tr>
+</table>
+
+<h2>2. Metric and data</h2>
+<p><b>Approach 1.</b> For a paper born in year <i>y</i>: <code>share = citations in [y, y+Δ] ÷ all citations made inside the set during [y, y+Δ]</code>. Papers born 2006–2014 count. A person's score is the sum of their paper shares, split equally between co-authors; people with 3+ papers are kept (1,430 authors). Years only, not months.</p>
+<p><b>Dataset.</b> CIKM 6,707, SIGIR 5,076, WSDM 1,384, TOIS 746, Information Retrieval 549 papers. Of 345,866 reference entries, 16% point inside the set. Rebuild script: <code>build_ir.py</code> (reproduces the stored files exactly).</p>
+
+<h2>3. Comparison A: the approaches on OpenAlex</h2>
+<table>
+<tr><th>Method</th><th class="n">Authors</th><th class="n">Age bias</th><th class="n">Tied</th><th class="n">Agreement with A1</th></tr>
+<tr><td>A1 field share</td><td class="n">1,430</td><td class="n">−0.18</td><td class="n">22%</td><td class="n">–</td></tr>
+<tr><td>A2 SQL (hand-written stand-in)</td><td class="n">932</td><td class="n">−0.39</td><td class="n">2%</td><td class="n">0.83</td></tr>
+<tr><td>A3 refined (stand-in, round 3)</td><td class="n">1,430</td><td class="n">−0.03</td><td class="n">29%</td><td class="n">0.78</td></tr>
+<tr><td>Raw citations in the same window</td><td class="n">1,430</td><td class="n">−0.09</td><td class="n">53%</td><td class="n">–</td></tr>
+</table>
+<p>A2 and A3 agree only 0.42. A2 scores fewer authors (it counts only cited papers toward the 3-paper minimum) and has no 2006 floor. A3 rounds: (r1) drop self-citations, (r2) rank each paper within its birth-year cohort and shrink small samples, (r3) uncited papers at the bottom, (r4) sum over papers. The cohort rounds remove age bias but I have not investigated their other effects.</p>
+<div class="cols">
+<div><b>A1 top 5</b><ol><li>W. Bruce Croft</li><li>ChengXiang Zhai</li><li>Susan Dumais</li><li>Ryen W. White</li><li>Eugene Agichtein</li></ol></div>
+<div><b>A2 top 5</b><ol><li>W. Bruce Croft</li><li>ChengXiang Zhai</li><li>Jamie Callan</li><li>John Lafferty</li><li>Ellen M. Voorhees</li></ol></div>
+<div><b>A3 (r3) top 5</b><ol><li>Susan Dumais</li><li>Filip Radlinski</li><li>Olivier Chapelle</li><li>Stephen E. Robertson</li><li>Paul N. Bennett</li></ol></div>
+<div><b>A1 on Semantic Scholar</b><ol><li>W. Bruce Croft</li><li>T. Sakai</li><li>Alistair Moffat</li><li>K. Balog</li><li>M. de Rijke</li></ol></div>
+</div>
+
+<h2>4. Comparison B: parameters (sensitivity analysis)</h2>
+<p>Hypotheses were written before running (<code>results/ir_sensitivity/hypotheses.md</code>); no outcome-based measure was used.</p>
+<table>
+<tr><th>Hypothesis</th><th>Result</th><th>Verdict</th></tr>
+<tr><td>Shorter windows give more ties</td><td>Ties 41%, 27%, 22%, 19%, 17% for Δ = 1, 2, 3, 5, 8</td><td class="g">Held</td></tr>
+<tr><td>Δ = 1 ranking differs much from Δ = 3 (Spearman ≤ 0.85)</td><td>0.93; Δ = 2: 0.98, Δ = 5: 0.98, Δ = 8: 0.97</td><td class="r">Failed</td></tr>
+<tr><td>Half of citations arrive within 2–4 years</td><td>Median 3, 80% within 6 years (gaps capped at 8; uncapped, 2006–2010 papers have median 5)</td><td class="g">Held, with caveat</td></tr>
+<tr><td>Journals cited ≥ 0.5 year slower than conferences</td><td>Median 4 vs 3 years; mean 4.06 vs 3.73</td><td>Inconclusive</td></tr>
+<tr><td>Moving the cutoff keeps the ranking (Spearman ≥ 0.85)</td><td>0.97 (2012), 0.98 (2016), 0.94 (2010)</td><td class="g">Held</td></tr>
+<tr><td>Age bias stays within ±0.10 across Δ</td><td>−0.19, −0.18, −0.16, −0.17; but −0.24 at cutoff 2012, −0.13 at 2016</td><td class="g">Held for Δ, not cutoff</td></tr>
+<tr><td>Dropping 20% of edges changes little (Spearman ≥ 0.95)</td><td>Median 0.989; top-100 overlap 92–98 (20 repeats)</td><td class="g">Held</td></tr>
+</table>
+<p>Δ = 2 and 5 sit inside the noise floor; Δ = 1 and 8 (top-100 overlap 86) do not. Δ matters little beyond 1 year, and the cutoff moves age bias more than Δ does.</p>
+
+<h2>5. Comparison C: data sources</h2>
+<table>
+<tr><th></th><th class="n">OpenAlex</th><th class="n">Semantic Scholar</th></tr>
+<tr><td>Papers matched (by DOI)</td><td class="n">14,462</td><td class="n">13,830 (95.7% of those with a DOI)</td></tr>
+<tr><td>Citation edges inside the set</td><td class="n">54,351</td><td class="n">13,548</td></tr>
+<tr><td>Share of listed references returned</td><td class="n">–</td><td class="n">25% (95,989 of 387,563)</td></tr>
+<tr><td>Tied scores in A1</td><td class="n">22%</td><td class="n">82%</td></tr>
+<tr><td>Age bias in A1</td><td class="n">−0.18</td><td class="n">not interpretable (82% ties)</td></tr>
+</table>
+<p>Of the Semantic Scholar edges, 11,970 also exist in OpenAlex, 1,578 are Semantic Scholar only, and 40,760 OpenAlex edges are missing there. Older papers average about 1 returned reference; 2020–2022 papers 15–19. The two A1 rankings agree 0.60 (1,181 authors matched by surname and first initial; top-50 overlap 30, top-100 overlap 56). Total citation counts agree closely (0.97 on a matched sample), so the gap is in reference lists. OpenCitations was not used.</p>
+
+<h2>6. Comparison D: fine-tuned LLM vs baselines (Approach 4)</h2>
+<p>Qwen2.5-1.5B, GenRec's LoRA recipe (rank 8 on <code>q_proj</code>, <code>v_proj</code>, learning rate 3e-4), batch 32, input limit 512 tokens, 3 epochs on 5,000 lists of six researchers, trained on a Kaggle T4 in 54 minutes. Input: name, paper count, years and two titles per person, no citation numbers. Output: the six names in order. Teacher: A1. Test: 800 lists of authors unseen in training.</p>
+<table>
+<tr><th>Method</th><th class="n">Valid format</th><th class="n">Top-1</th><th class="n">Kendall tau</th><th class="n">NDCG</th></tr>
+<tr><td>Random guess</td><td class="n">–</td><td class="n">0.17</td><td class="n">0.00</td><td class="n">–</td></tr>
+<tr><td>Base model, zero-shot (100 lists)</td><td class="n">20%</td><td class="n">0.21</td><td class="n">0.09</td><td class="n">0.87</td></tr>
+<tr><td><b>Fine-tuned model</b></td><td class="n">98.6%</td><td class="n">0.51</td><td class="n">0.36</td><td class="n">0.93</td></tr>
+<tr><td>Baseline: more papers = higher</td><td class="n">100%</td><td class="n"><b>0.62</b></td><td class="n"><b>0.50</b></td><td class="n"><b>0.95</b></td></tr>
+</table>
+<p>GenRec itself (Ji et al., 2023; checked in paper and code): LLaMA-7B, LoRA rank 8, about 4.2M trainable parameters, 256-token inputs, beam search for ranked output, compared only with P5. It beat P5 on MovieLens (HR@10 0.131 vs 0.104) and lost on Amazon Toys (0.025 vs 0.041). Our run is a smaller model on a different task and is not comparable to those numbers.</p>
+<div class="note">One run, one seed, no tuning. The teacher (A1) is itself closely tied to paper count, which is likely why the count rule is hard to beat. Untested: removing the paper count from the profile, larger models, more training, an independent label.</div>
+
+<h2>7. Comparison E: normalizing by output</h2>
+<p>Same data, only the aggregation changed: <b>M1</b> = A1's total share divided by the number of papers the author published in the window; <b>M4</b> = M1 shrunk toward the field mean (k = 3); <b>M3</b> = mean of the author's 3 best paper shares; baselines <b>B1</b> = plain citations per paper, <b>B2</b> = papers with ≥3 in-window citations. Hypotheses were pre-registered (<code>METRIC_PLAN.md</code>).</p>
+<table>
+<tr><th>Metric (OpenAlex)</th><th class="n">ρ future</th><th class="n">Age bias</th><th class="n">ρ with paper count</th><th class="n">Top-100 overlap with A1</th></tr>
+<tr><td>A1 total share</td><td class="n">0.708</td><td class="n">−0.18</td><td class="n">0.61</td><td class="n">100</td></tr>
+<tr><td><b>M1 per-paper</b></td><td class="n">0.625</td><td class="n">−0.19</td><td class="n">0.33</td><td class="n">48</td></tr>
+<tr><td>M3 top-3 papers</td><td class="n">0.692</td><td class="n">−0.18</td><td class="n">–</td><td class="n">72</td></tr>
+<tr><td>M4 shrunk per-paper</td><td class="n">0.302</td><td class="n">−0.14</td><td class="n">−0.27</td><td class="n">48</td></tr>
+<tr><td>B1 per-paper citations</td><td class="n">0.646</td><td class="n">−0.08</td><td class="n">0.33</td><td class="n">47</td></tr>
+<tr><td>B2 h-like</td><td class="n">0.689</td><td class="n">−0.07</td><td class="n">–</td><td class="n">79</td></tr>
+</table>
+<p>Noise floor: dropping 20% of edges moves A1's ρ by at most 0.014 (20 runs). Normalizing by output removes the tie to paper count (0.61 → 0.33) but not age bias, and it costs 0.083 in agreement with future citations, about ten noise floors. M1 agrees with plain per-paper citations at ρ = 0.987, so once divided, the field-share denominator adds nothing. On Semantic Scholar the same pattern holds for M1 (ρ 0.502 → 0.456; age bias −0.002 → +0.010). Shrinkage (M4) is the worst variant — with a 3-paper minimum and k = 3 it pulls every short record toward the mean.</p>
+<div class="note">Verdict: report M1 beside A1 as "typical output quality", not as A1's replacement. Age bias lives in the birth window (longer exposure for earlier papers), not in output volume, so a denominator cannot fix it.</div>
+
+<h2>7b. Citation deflator</h2>
+<p>Each citation received in year <i>t</i> is multiplied by <i>D</i>(<i>t</i>) = <i>R</i>(2021)/<i>R</i>(<i>t</i>), with <i>R</i>(<i>t</i>) the references per pool paper of year <i>t</i>. <i>R</i> rises from 18.4 (2005) to 32.1 (2021), so a 2005 citation counts 1.74× and a 2021 citation 1.00×. Pre-2005 years are undefined and dropped; no in-window edge falls in one. With <i>D</i>(<i>t</i>) = 1 set everywhere the pipeline reproduces A1 exactly (ρ = 1.00000000).</p>
+<table>
+<tr><th>Metric</th><th>ρ future</th><th>Age bias</th><th>Top-10 mean</th><th>ρ vs A1</th><th>Top-100 overlap</th></tr>
+<tr><td>A1</td><td class="n">0.708</td><td class="n">−0.178</td><td class="n">96.5</td><td class="n">1.000</td><td class="n">100</td></tr>
+<tr><td><b>D1</b> deflated share</td><td class="n">0.694</td><td class="n">−0.217</td><td class="n">91.6</td><td class="n">0.998</td><td class="n">97</td></tr>
+<tr><td>D2 deflated per-paper</td><td class="n">0.610</td><td class="n">−0.232</td><td class="n">19.8</td><td class="n">0.936</td><td class="n">47</td></tr>
+<tr><td>B1′ deflated per-paper cites</td><td class="n">0.634</td><td class="n">−0.132</td><td class="n">22.0</td><td class="n">0.929</td><td class="n">45</td></tr>
+</table>
+<p>D1 costs almost no accuracy (0.014 ρ, against M1's 0.083) and barely reorders: the first nine ranks are identical and only two adjacent swaps occur in the top 12. But age bias moves <b>away</b> from zero, as it does on Semantic Scholar (−0.002 → −0.008). Deflated per-paper counts (B1′) are far worse on age bias, so under deflation the field share is still doing real work. The prediction that the deflator would reshuffle old and young authors (top-100 overlap below 70) was wrong: <i>D</i>(<i>t</i>) is close to flat after 2012 and only trims mid-career tails. Verdict: age bias is not citation inflation of this form; the deflator is a fair reporting correction, not an age-bias fix.</p>
+
+<h2>8. What the comparisons say together</h2>
+<ul>
+<li>The A1 ranking is stable under changes to Δ and cutoff and under random edge loss, so its settings are not the weak point.</li>
+<li>The source matters more: Semantic Scholar's thin graph ties 82% of authors.</li>
+<li>The hand-written variants (A2, A3) disagree with each other, so the ranking depends on design choices we cannot yet adjudicate without ground truth.</li>
+<li>The fine-tuned model reproduces part of A1 from text, but a count of papers does better. It is not yet evidence that language models add information.</li>
+<li>Normalizing the score by paper count trades volume dependence for accuracy and does not remove age bias; it is a second view, not a better metric.</li>
+<li>Neither per-paper normalisation nor the citation deflator reduces age bias; the deflator makes it slightly worse while costing almost no accuracy. Both point at the birth window as the cause.</li>
+</ul>
+<p><b>Limits:</b> no independent ground truth; years not months; OpenAlex edges unverified; single field; one fine-tuning run.</p>
+
+<h2>9. Status and files</h2>
+<table>
+<tr><th>Approach</th><th>Status</th></tr>
+<tr><td>1. Field-share metric</td><td class="g">Built, run on both sources, sensitivity analysis done; productivity-normalized variants added and compared (section 7)</td></tr>
+<tr><td>2. LLM writes SQL</td><td>Client and runner built, tested with a stand-in only; needs an API link, key and model name</td></tr>
+<tr><td>3. LLM improves queries</td><td>Hand-coded stand-in rounds only</td></tr>
+<tr><td>4. Fine-tuned LLM</td><td>Trained and tested once (section 6); the "review" output is not defined</td></tr>
+<tr><td>5. LLMs choose the best ranking</td><td class="r">Not built</td></tr>
+</table>
+<p class="small">Files: <code>results/ir/</code>, <code>results/ir_s2/</code>, <code>results/ir_sensitivity/</code>, <code>results/metrics/</code> (new: <code>RESULTS.md</code>, metric tables, noise floor), <code>results/genrec_rank/</code>; code in <code>scripts/</code> (<code>fetch_openalex.py</code>, <code>build_ir.py</code>, <code>approaches.py</code>, <code>metrics_run.py</code>, <code>metric_noise.py</code>, <code>sensitivity.py</code>, <code>fetch_s2_for_set.py</code>, <code>build_ir_s2.py</code>, <code>build_genrec_data.py</code>, <code>kaggle_genrec_rank.py</code>, <code>llm_client.py</code>, <code>a2_llm.py</code>); notebook in <code>kaggle/</code>. Raw data is in <code>C:\ranking_data</code>. The slide deck is <code>progress_update_presentation.html</code>.</p>
+
+<h2>Appendix: the queries, rules and prompts behind every result</h2>
+<p class="small">Parameters: Δ = 3, birth years 2006–2014 (cutoff 2014), minimum 3 papers. Tables: <code>edges(cited, citing, y_cited, y_citing)</code>, <code>authors(paper, year, author, n)</code> (n = number of authors on the paper), <code>cau(paper, author)</code> (authors of each paper, for self-citation removal). Code: <code>scripts/approaches.py</code>.</p>
+<h3>A. Approach 1 (reference implementation, <code>a1()</code>)</h3>
+<pre>CREATE TABLE a1_share AS
+WITH tot AS (                       -- all in-set citations made in each year
+  SELECT y_citing AS yr, COUNT(*) AS n FROM edges GROUP BY 1),
+den AS (                            -- field total for the window [y, y+3]
+  SELECT y.year, SUM(t.n) AS d
+  FROM (SELECT DISTINCT year FROM authors WHERE year BETWEEN 2006 AND 2014) y
+  JOIN tot t ON t.yr BETWEEN y.year AND y.year + 3 GROUP BY 1)
+SELECT e.cited AS paper, e.y_cited AS year,
+       COUNT(*) * 1.0 / ANY_VALUE(d.d) AS share
+FROM edges e JOIN den d ON d.year = e.y_cited
+WHERE e.y_citing &lt;= e.y_cited + 3 AND e.y_cited BETWEEN 2006 AND 2014
+GROUP BY 1, 2;
+
+-- author score: uncited papers add 0 but still count toward the 3-paper minimum
+SELECT a.author, SUM(COALESCE(s.share, 0) / a.n) AS score,
+       COUNT(*) AS n_papers, SUM(COALESCE(s.c, 0)) AS raw_cites
+FROM authors a LEFT JOIN a1_share s ON s.paper = a.paper
+WHERE a.year BETWEEN 2006 AND 2014
+GROUP BY 1 HAVING COUNT(*) &gt;= 3;</pre>
+<h3>B. Approach 2 (hand-written SQL stand-in, <code>sql/a2_v1.sql</code>)</h3>
+<p class="small">The comment block at the top is the plain-language prompt an LLM would receive. <code>a2_llm.py</code> sends the schema and that description and asks for one DuckDB query; with <code>--mock</code> it replays this file. No real LLM has been called yet.</p>
+<pre>-- Approach 2, single shot. Prompt given to the LLM: the schema below plus the plain-language metric:
+--   &quot;For each paper p in the field, take the citations p receives within DELTA years of its publication,
+--    divided by all citations the field&#x27;s papers receive in that same set of years. Ignore papers published after
+--    CUTOFF. Give each author the sum of their papers&#x27; shares (split equally between co-authors) and rank authors.&quot;
+-- Schema: edges(cited, citing, y_cited, y_citing)  authors(paper, year, author, n)
+-- Parameters substituted by the runner: {DELTA}, {CUTOFF}, {MIN_PAPERS}
+WITH field_cites AS (
+  SELECT y_citing AS yr, COUNT(*) AS total FROM edges GROUP BY y_citing
+),
+window_total AS (
+  SELECT p.year, SUM(f.total) AS total
+  FROM (SELECT DISTINCT year FROM authors) p
+  JOIN field_cites f ON f.yr BETWEEN p.year AND p.year + {DELTA}
+  GROUP BY p.year
+),
+paper_share AS (
+  SELECT e.cited AS paper, e.y_cited AS year,
+         COUNT(*) * 1.0 / w.total AS share
+  FROM edges e JOIN window_total w ON w.year = e.y_cited
+  WHERE e.y_citing - e.y_cited &lt;= {DELTA} AND e.y_cited &lt;= {CUTOFF}
+  GROUP BY e.cited, e.y_cited, w.total
+)
+SELECT a.author, SUM(s.share / a.n) AS score, COUNT(*) AS n_papers
+FROM paper_share s JOIN authors a ON a.paper = s.paper
+GROUP BY a.author
+HAVING COUNT(*) &gt;= {MIN_PAPERS}
+ORDER BY score DESC;
+</pre>
+<h3>C. Approach 3 (hand-coded refinement rounds, <code>a3()</code>)</h3>
+<pre>-- self-citation filter used in A3 and the evaluation
+AND NOT EXISTS (SELECT 1 FROM authors x JOIN cau y
+                ON y.paper = e.citing AND y.author = x.author
+                WHERE x.paper = e.cited)
+
+Round 1: count in-window citations per paper with the self-citation filter above; author score = total in-window citations over the author's papers (no co-author split, no field share).
+Round 2: per paper, percentile rank among papers of the same birth year (ties = average rank);
+         author score = (mean percentile x n_papers + 0.5 x 5) / (n_papers + 5)   -- shrinks small samples toward the middle
+Round 3: same, but uncited papers get percentile 0 (ties = minimum rank); shrink toward the field mean percentile
+Round 4: same percentile as round 3; author score = mean percentile x n_papers  (volume-aware, no shrinkage)
+(A3 in the tables above = round 3.)</pre>
+<h3>D. Approach 4 (one training example and the settings, <code>build_genrec_data.py</code>, <code>kaggle_genrec_rank.py</code>)</h3>
+<pre>INSTRUCTION: Rank these information retrieval researchers from highest to lowest field-relative citation impact for papers published 2006-2014. Answer with the names in order, separated by &#x27; &gt; &#x27;.
+INPUT:
+Ken C. K. Lee (4 papers, 2008-2010): ROAD; On top-k social web search
+Chandra Prakash Jethani (3 papers, 2010-2012): Human performance and retrieval precision revisited; Time to judge relevance as an indicator of assessor error
+Romain Deveaud (3 papers, 2013-2014): Estimating topical context by diverging from external resources; SmartVenues
+Xiang Lian (5 papers, 2009-2014): Efficient join processing on uncertain data streams; Efficient Subgraph Skyline Search Over Large Graphs
+Zheng Chen (8 papers, 2007-2012): Shine; Beyond ten blue links
+Pavel Serdyukov (43 papers, 2007-2014): Generative modeling of persons and documents for expert search; Web search without &#x27;stupid&#x27; results
+OUTPUT (teacher = Approach 1 order):
+Pavel Serdyukov &gt; Chandra Prakash Jethani &gt; Zheng Chen &gt; Romain Deveaud &gt; Ken C. K. Lee &gt; Xiang Lian</pre>
+<pre>Prompt text sent to the model:   &lt;instruction&gt;
+
+### Input:
+&lt;input&gt;
+
+### Response:
+&lt;output&gt;&lt;end&gt;
+Loss is computed on the answer only. Settings: model Qwen/Qwen2.5-1.5B (fp16, one T4), LoRA r=8, alpha=16, dropout=0.05,
+targets q_proj and v_proj, learning rate 3e-4, batch 32 (micro-batch 8 x 4), 3 epochs, input limit 512 tokens, cosine schedule.
+Decoding for the test: greedy, up to 96 new tokens; an answer is valid only if it lists exactly the six given names.</pre>
+<p class="small">Baseline rule: sort the six names by the paper count shown in their profile lines. Sensitivity runs: <code>scripts/sensitivity.py</code>; predictions written before running: <code>results/ir_sensitivity/hypotheses.md</code>.</p>
+</main>
+</body>
+</html>

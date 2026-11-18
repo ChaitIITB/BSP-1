@@ -1,0 +1,3 @@
+name,n,spearman_future,age_bias,top10_future_mean,top100_future_mean,tie_frac
+A1 duplicate edges counted,14952,0.314,0.046,11.1,49.54,0.979
+A1 distinct citing papers,14952,0.314,0.046,11.1,49.62,0.979

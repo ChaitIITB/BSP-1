@@ -1,0 +1,7 @@
+name,n,spearman_future,age_bias,top10_future_mean,top100_future_mean,tie_frac
+A1 total share (reference),1430,0.708,-0.178,96.52,30.49,0.224
+M1 per-paper share,1430,0.625,-0.185,22.27,20.36,0.185
+B1 per-paper citations,1430,0.646,-0.08,19.82,22.34,0.475
+D1 deflated total share,1430,0.694,-0.217,91.64,30.34,0.166
+D2 deflated per-paper share,1430,0.61,-0.232,19.77,19.9,0.135
+B1p deflated per-paper cites,1430,0.634,-0.132,21.95,21.02,0.159

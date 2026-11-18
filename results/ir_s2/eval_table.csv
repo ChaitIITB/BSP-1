@@ -1,0 +1,9 @@
+name,n,spearman_future,age_bias,top10_future_mean,top100_future_mean,tie_frac
+A1 reference,1456,0.502,-0.002,24.19,9.13,0.817
+A2 LLM SQL v1,129,0.317,-0.576,18.58,9.65,0.047
+A3 r1 +self-cite removal,1456,0.513,0.053,24.62,9.38,0.99
+A3 r2 +cohort percentile & shrinkage (ties=avg rank),1456,0.255,-0.232,8.25,5.51,0.273
+"A3 r3 uncited papers at the bottom, shrink to mean",1456,0.268,0.073,8.25,5.56,0.773
+"A3 r4 same, but summed over papers (volume-aware)",1456,0.512,0.026,29.42,10.09,0.883
+baseline: raw citations (same authors),1456,0.518,0.061,27.08,9.91,0.924
+baseline: raw citations (all authors with 3+ papers),1456,0.518,0.061,27.08,9.93,0.924

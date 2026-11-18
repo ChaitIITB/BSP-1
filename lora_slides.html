@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LoRA and the Fine-tuning Script</title>
+<style>
+:root{--bg:#10202C;--panel:#183040;--ink:#F2EEE3;--mut:#AFC0CC;--acc:#F0B94D;--acc2:#6FC3B2;--line:#2C4658}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:19px/1.5 "Segoe UI",system-ui,Arial,sans-serif;overflow:hidden}
+.slide{position:absolute;inset:0;display:none;padding:4.5vh 6vw 7vh;overflow:auto}
+.slide.on{display:block}
+h2{font:600 clamp(24px,3vw,34px)/1.2 Georgia,serif;margin:0 0 14px}
+.eb{color:var(--acc);font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.mut{color:var(--mut)}.sm{font-size:16px}
+ul{padding-left:24px;margin:6px 0}li{margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:16px;background:var(--panel);margin:8px 0}
+th,td{padding:7px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--acc);font-weight:600;font-size:13px;letter-spacing:.05em;text-transform:uppercase}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+code{font:15px Consolas,monospace;background:#0b1821;padding:1px 6px;border-radius:4px;color:var(--acc2)}
+.formula{font:20px Consolas,monospace;background:#0b1821;padding:12px 16px;border-radius:6px;color:var(--acc2);margin:10px 0}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 12px;text-align:center;font-size:15px}
+.box b{color:var(--acc);display:block;font-size:13px}
+.arrow{color:var(--acc);font-size:22px}
+.step{display:flex;gap:12px;margin:8px 0;align-items:flex-start}
+.step b.k{flex:0 0 32px;height:32px;border-radius:50%;background:var(--acc);color:#10202C;display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav{position:fixed;bottom:10px;right:20px;color:var(--mut);font-size:13px}
+.prog{position:fixed;left:0;bottom:0;height:4px;background:var(--acc)}
+@media print{html,body{overflow:visible;height:auto}.slide{display:block;position:static;page-break-after:always;min-height:100vh}.nav,.prog{display:none}}
+</style>
+</head>
+<body>
+
+<section class="slide on">
+<div class="eb">LoRA · mechanism</div>
+<h2>A frozen layer plus a small trainable bypass</h2>
+<div class="formula">h = W₀·x + (α / r) · B · (A · dropout(x))</div>
+<div class="flow">
+<div class="box"><b>x</b>k = 1536</div><span class="arrow">→</span>
+<div class="box"><b>A (r × k)</b>8 × 1536<br>project down</div><span class="arrow">→</span>
+<div class="box"><b>A·x</b>r = 8</div><span class="arrow">→</span>
+<div class="box"><b>B (d × r)</b>1536 × 8<br>project up</div><span class="arrow">→</span>
+<div class="box"><b>× α/r</b>= 16/8 = 2</div><span class="arrow">→ +</span>
+<div class="box"><b>W₀·x</b>frozen path, d = 1536</div>
+</div>
+<ul>
+<li><b>W₀ (d × k) is never updated.</b> It maps an input of size k to an output of size d. The bypass learns the change ΔW = (α/r)·B·A.</li>
+<li><b>Rank bottleneck:</b> the signal is squeezed through r = 8 numbers, so ΔW has rank at most 8, however large the layer is.</li>
+<li><b>Start:</b> A is random (Kaiming-uniform), B is all zeros, so ΔW = 0 and the model begins exactly as the base model.</li>
+<li><b>Training:</b> only A and B receive gradients and optimizer state. W₀ stays in fp16 and needs neither.</li>
+<li><b>Dropout</b> is applied to the input of the bypass only, not to W₀·x.</li>
+<li><b>After training:</b> merge W = W₀ + (α/r)·B·A for inference with no extra cost, or ship just A and B (about 4 MB here).</li>
+</ul>
+</section>
+
+<section class="slide">
+<div class="eb">LoRA · the symbols</div>
+<h2>What d, k, r and α are, and how the "division by r" works</h2>
+<table>
+<tr><th>Symbol</th><th>What it is</th><th>Who sets it</th><th>Our value</th></tr>
+<tr><td><b>d, k</b></td><td>Output and input size of the layer being adapted: W₀ is d × k</td><td>The model architecture (fixed)</td><td><code>q_proj</code> 1536 × 1536; <code>v_proj</code> 256 × 1536</td></tr>
+<tr><td><b>r</b></td><td>Rank: the inner dimension of the factorisation (rows of A, columns of B)</td><td>You, as a hyperparameter</td><td>8</td></tr>
+<tr><td><b>α</b></td><td>Scaling constant</td><td>You, as a hyperparameter</td><td>16</td></tr>
+<tr><td><b>A, B</b></td><td>The trained matrices: A is r × k, B is d × r</td><td>Learned by gradient descent</td><td>random / zeros at start</td></tr>
+</table>
+<ul>
+<li><b>"Division by r" is a scalar, not a matrix operation.</b> The product B·A is multiplied by the constant α/r = 2. In peft this is <code>scaling = lora_alpha / r</code>, applied to the bypass output.</li>
+<li><b>Why divide by r:</b> a bigger r adds more terms to B·A and would grow the update. Dividing keeps its size roughly stable, so the learning rate chosen for one r still works for another when α is held fixed.</li>
+<li><b>Parameter count:</b> A has r·k entries and B has d·r entries, so r·(d + k) in total, against d·k for training the whole matrix.</li>
+</ul>
+<table>
+<tr><th>Matrix</th><th class="n">Full fine-tune d·k</th><th class="n">LoRA r(d+k), r = 8</th><th class="n">Saving</th></tr>
+<tr><td><code>q_proj</code> (1536 × 1536)</td><td class="n">2,359,296</td><td class="n">8 × 3,072 = 24,576</td><td class="n">96×</td></tr>
+<tr><td><code>v_proj</code> (256 × 1536)</td><td class="n">393,216</td><td class="n">8 × 1,792 = 14,336</td><td class="n">27×</td></tr>
+<tr><td>Per layer, both</td><td class="n">2,752,512</td><td class="n">38,912</td><td class="n">71×</td></tr>
+<tr><td>× 28 layers</td><td class="n">77.1M</td><td class="n"><b>1,089,536</b></td><td class="n">71×</td></tr>
+</table>
+</section>
+
+<section class="slide">
+<div class="eb">LoRA · choosing r, α and the target layers</div>
+<h2>These are hyperparameters, not learned</h2>
+<ul>
+<li><b>r (capacity).</b> Typical range 4 to 64. A larger r lets the update express more directions (more capacity, more memory, more risk of overfitting on small data). Small r works when the task is a narrow change of behaviour, as the LoRA paper reports.</li>
+<li><b>α (strength of the update).</b> Common conventions are α = r or α = 2r. With r = 8 and α = 16 the update is scaled by 2. Raising α is similar to raising the learning rate for the bypass.</li>
+<li><b>Which layers.</b> Attention projections are the usual choice. Our setup, inherited from GenRec's code (itself from alpaca-lora), adapts only <code>q_proj</code> and <code>v_proj</code>. Adapting all linear layers often gives a better fit at a higher parameter count.</li>
+<li><b>Dropout 0.05</b> regularises the bypass.</li>
+<li><b>In practice they are chosen by convention and a small search:</b> try a few values of r (and α = r or 2r) on a validation set and keep the best.</li>
+</ul>
+<p><b>What we did:</b> no search. We copied GenRec's settings (r = 8, α = 16, dropout 0.05, q and v) and ran once. The validation split was not used. So we cannot say r = 8 is right for this task; a larger r or more target layers is a cheap thing to test, because the trainable count stays around 1–10M.</p>
+</section>
+
+<section class="slide">
+<div class="eb">Fine-tuning script · <code>kaggle_genrec_rank.py</code></div>
+<h2>What the script does, in order</h2>
+<div class="step"><b class="k">1</b><div><b>Data.</b> Loads <code>train/val/test.jsonl</code>. Each record: instruction, input, output, plus the candidate list and the gold order. The validation split is not used in this run.</div></div>
+<div class="step"><b class="k">2</b><div><b>Prompt.</b> instruction, <code>### Input:</code>, input, <code>### Response:</code>, then the answer and EOS. Labels are −100 on the prompt, so loss is on the answer only. Truncated at 512 tokens.</div></div>
+<div class="step"><b class="k">3</b><div><b>Model.</b> Qwen2.5-1.5B in fp16, one GPU, gradient checkpointing, then <code>get_peft_model</code> with r = 8, α = 16, dropout 0.05 on q_proj and v_proj.</div></div>
+<div class="step"><b class="k">4</b><div><b>Training.</b> HF <code>Trainer</code>: micro-batch 8 × 4 accumulation = 32, AdamW, lr 3e-4, 10 warm-up steps, cosine decay, fp16 mixed precision, 3 epochs (about 470 steps). Checkpoint every 20 steps, resumable.</div></div>
+<div class="step"><b class="k">5</b><div><b>Test.</b> Greedy decoding, up to 96 new tokens, split on " &gt; ". Valid only if it lists exactly the six given names; invalid answers are completed in input order for scoring, so partial answers get partial credit.</div></div>
+<div class="step"><b class="k">6</b><div><b>Outputs.</b> Paper-count baseline on all test lists, zero-shot on the first 100, then the adapter, <code>results.json</code> and 100 sample predictions.</div></div>
+<p class="mut sm">Measured: 54 minutes on one T4, about 1,413 tokens per second, about 5M training tokens.</p>
+</section>
+
+<div class="prog" id="prog"></div><div class="nav" id="nav"></div>
+<script>
+var s=[].slice.call(document.querySelectorAll('.slide')),i=0;
+function show(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach(function(e,k){e.classList.toggle('on',k===i)});
+document.getElementById('nav').textContent=(i+1)+' / '+s.length+'  ·  arrows, F for fullscreen';
+document.getElementById('prog').style.width=((i+1)/s.length*100)+'%'}
+document.addEventListener('keydown',function(e){
+if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1)show(i+1);
+else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1)show(i-1);
+else if(e.key==='f'||e.key==='F'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}});
+document.addEventListener('click',function(e){if(e.target.closest('table'))return;show(e.clientX>innerWidth/2?i+1:i-1)});
+show(0);
+</script>
+</body>
+</html>
