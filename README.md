@@ -1,4 +1,4 @@
-# CS6101 — Ranking Researchers by Citation Value
+# CS6101: Ranking Researchers by Citation Value
 
 Comparing five approaches to ranking researchers in a field by citation value,
 evaluated against one future-citation outcome, plus a set of alternative citation
@@ -31,8 +31,8 @@ papers. **A negative age-bias value means older authors score higher.**
 | 2 | LLM writes the ranking as SQL | `scripts/a2_llm.py`, `sql/` |
 | 3 | LLM proposes ranking rules, iterated for four rounds | `approaches.a3`, `rank_A3r*.csv` |
 | 4 | GenRec-style LoRA fine-tune of Qwen2.5-1.5B, trained on Kaggle GPU | `scripts/kaggle_genrec_rank.py`, `kaggle/` |
-| — | Metrics M1–M4, B1, B2 (mean-normalised share, h-index style, share of top-10% papers, distinct-paper share, …) | `approaches.py`, `scripts/metrics_run.py` |
-| — | Citation deflator (correcting for citation inflation) | `approaches.py` (`deflator`, `d1`, `d2`, `b1p`), `scripts/deflator_run.py` |
+| N/A | Metrics M1–M4, B1, B2 (mean-normalised share, h-index style, share of top-10% papers, distinct-paper share, …) | `approaches.py`, `scripts/metrics_run.py` |
+| N/A | Citation deflator (correcting for citation inflation) | `approaches.py` (`deflator`, `d1`, `d2`, `b1p`), `scripts/deflator_run.py` |
 
 ## Results
 
@@ -45,14 +45,14 @@ papers. **A negative age-bias value means older authors score higher.**
 
 Full tables and verdicts:
 
-- `results/metrics/RESULTS.md` — M1–M4, B1, B2 against pre-registered hypotheses
-- `results/metrics/RESULTS_DEFLATOR.md` — the deflator strand
-- `results/ir_sensitivity/` — noise floor (20 runs, 20% edge drops: ρ moves ≤ 0.014) and cutoff sweeps
+- `results/metrics/RESULTS.md`: M1–M4, B1, B2 against pre-registered hypotheses
+- `results/metrics/RESULTS_DEFLATOR.md`: the deflator strand
+- `results/ir_sensitivity/`: noise floor (20 runs, 20% edge drops: ρ moves ≤ 0.014) and cutoff sweeps
 
 Short version of the findings:
 
 - Field share (A1) is a strong predictor of future citations, and the whole
-  deflator strand **failed to fix age bias** while costing 0.014 ρ — a negative result,
+  deflator strand **failed to fix age bias** while costing 0.014 ρ, a negative result,
   documented.
 - M1 rediscovered MNCS (Waltman & van Eck, 2019) and reproduced its documented failure
   mode: small-n instability and one-hit authors.
@@ -63,16 +63,16 @@ Short version of the findings:
 Hypotheses were written down *before* each metric was run, with a noise band of 0.03
 ρ from the measured noise floor:
 
-- `METRIC_PLAN.md` — H1–H4
-- `METRIC_PLAN_DEFLATOR.md` — H5–H8 and the deflator amendment
+- `METRIC_PLAN.md`: H1–H4
+- `METRIC_PLAN_DEFLATOR.md`: H5–H8 and the deflator amendment
 - `results/ir_sensitivity/metric_hypotheses.md`
 
 ## Literature review
 
-- `METRIC_LITERATURE_REVIEW.md` — 12 metric families (W1–W12) ranked, with bibliography
-- `LITERATURE_REVIEW_METHOD.md` — the review procedure (PRISMA counts, TARCiS citation
+- `METRIC_LITERATURE_REVIEW.md`: 12 metric families (W1–W12) ranked, with bibliography
+- `LITERATURE_REVIEW_METHOD.md`: the review procedure (PRISMA counts, TARCiS citation
   searching), the term table, and the search queries
-- `literature_search_step1.json` — the novelty check on the two remaining candidate
+- `literature_search_step1.json`: the novelty check on the two remaining candidate
   metrics, with every query logged (database, date, hit count)
 
 ## Data
@@ -124,10 +124,10 @@ environment. The Kaggle fine-tune needs a Kaggle token in `~/.kaggle/`; see
 
 ## Decks and report
 
-- `progress_update_presentation.html` — the main deck (24 slides), standalone: open it in any browser
-- `lora_slides.html` — the LoRA / training-script deck kept separate from the main one
-- `report.html` — the written report
+- `progress_update_presentation.html`: the main deck (24 slides). It is standalone, so open it in any browser
+- `lora_slides.html`: the LoRA / training-script deck kept separate from the main one
+- `report.html`: the written report
 
 ## Licence
 
-MIT — see `LICENSE`.
+MIT license, see `LICENSE`.

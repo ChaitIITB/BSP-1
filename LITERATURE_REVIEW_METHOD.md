@@ -14,7 +14,7 @@ auditable.
 The project has two literature jobs that are being done with one habit (free-text web search),
 and they need different methods.
 
-### Job A — "what is the standard fix for bias X?" (the metric review)
+### Job A: "what is the standard fix for bias X?" (the metric review)
 
 This is what produced `METRIC_LITERATURE_REVIEW.md` and the deflator plan. The risk here is not
 finding papers; it is **stopping when a plausible-sounding paper turns up**. The fix used so far
@@ -29,32 +29,32 @@ is the right one and should become the rule:
 3. Write the hypothesis and its falsifier into `METRIC_PLAN*.md` **before** running. Both existing
    plans do this and it is what made "H5 FAILED" a usable result rather than a story.
 
-### Job B — "is my review complete?" (coverage)
+### Job B: "is my review complete?" (coverage)
 
 The standard instrument for this is a **systematic-review protocol**, and the two documents that
 matter are:
 
-- **PRISMA 2020** — the reporting checklist and the flow diagram. The flow diagram is the useful
+- **PRISMA 2020**: the reporting checklist and the flow diagram. The flow diagram is the useful
   part: it forces you to count records *identified → screened → included*, so an incompleteness gap
   is visible as a number instead of being invisible.
-- **TARCiS** (Hirt et al., *BMJ* 2024, bmj-2023-078384) — a statement specifically on **citation
+- **TARCiS** (Hirt et al., *BMJ* 2024, bmj-2023-078384), a statement specifically on **citation
   searching**, i.e. exactly the backward/forward "snowballing" this project already does informally
   every time it follows a paper's references or citing papers. Its recommendations you should adopt
   as written:
   - use **"citation searching"** as the umbrella term; **backward citation searching** for
     retrieving cited references, **forward citation searching** for retrieving citing papers;
-  - seed from **all included records of the primary search**, not from one convenient paper — the
+  - seed from **all included records of the primary search**, not from one convenient paper: the
     deflator strand did seed from one author's prior work once, and that is the failure mode TARCiS
     rec. 4 names;
   - where the topic is hard to search for by keyword (mine is: "how to rank researchers under
     citation inflation"), backward + forward citation searching should be **seriously considered as
     supplementary search**, not optional;
   - prefer a citation index over manually reading reference lists (rec. 5), and consider **two
-    citation indexes** for coverage (rec. 6) — for this project that means OpenAlex *and* Semantic
+    citation indexes** for coverage (rec. 6); for this project that means OpenAlex *and* Semantic
     Scholar, which is already done for data but not for the review.
 
 Evidence that snowballing is worth the effort: Badampudi, Wohlin & Petersen (2015) found
-snowballing found 83% of the papers in their study versus 46% for a database search — but the
+snowballing found 83% of the papers in their study versus 46% for a database search, but the
 reliability **depends entirely on the start set**. That is a direct argument for TARCiS rec. 4.
 
 ### Practical workflow to adopt
@@ -64,7 +64,7 @@ For the next metric (and any later one):
 1. **Seed set**: take the papers already cited in `METRIC_LITERATURE_REVIEW.md` plus every paper
    named in `RESULTS*.md`. That is the "all included records" TARCiS asks for.
 2. **Backward**: screen titles/abstracts of their references (OpenAlex `referenced_works` is
-   already ingested in `C:/ranking_data` — no new crawl needed).
+   already ingested in `C:/ranking_data`, so no new crawl is needed).
 3. **Forward**: screen the papers citing them. This does need a new pull; cost is small for
    ~20 seeds.
 4. **Keyword pass** with the terms in section 2, restricted to the areas in section 3.
@@ -100,19 +100,19 @@ been using:
 
 In rough order of usefulness to this project:
 
-1. **Bibliometrics / scientometrics** — the home field. Journals: *Scientometrics*, *Journal of
+1. **Bibliometrics / scientometrics**: the home field. Journals: *Scientometrics*, *Journal of
    Informetrics*, *Quantitative Science Studies*, *Research Evaluation*. This is where the
    author-level indicators, the deflator, percentile indicators and stability work all live.
-2. **Research assessment / responsible metrics** — **ISSI**, **DORA**, **Leiden Manifesto**, and
+2. **Research assessment / responsible metrics**: **ISSI**, **DORA**, **Leiden Manifesto**, and
    the Waltman/"Scientometrics of scientometrics" strand. Relevant because it states *which* biases
    are considered disqualifying, which is the normative backdrop for the hypotheses.
-3. **Computer science education / CS ranking** — CSRankings, and the "which ranking is fair"
+3. **Computer science education / CS ranking**: CSRankings, and the "which ranking is fair"
    literature. Directly relevant: the project's A1 is essentially a CSRankings-style field-share.
-4. **Systematic-review methodology** — PRISMA, TARCiS, snowballing (software-engineering version:
+4. **Systematic-review methodology**: PRISMA, TARCiS, snowballing (software-engineering version:
    Wohlin 2014; Badampudi 2015). This is *for the review itself*, not for the metric.
-5. **Network science** — PageRank on citation graphs, preferential attachment, burstiness. Relevant
+5. **Network science**: PageRank on citation graphs, preferential attachment, burstiness. Relevant
    only for the last untried metric family (Pagerank).
-6. **Name disambiguation / data quality** — relevant if the residual 0.05 drop in accuracy on
+6. **Name disambiguation / data quality**: relevant if the residual 0.05 drop in accuracy on
    Semantic Scholar is attributed to matching, which it partly is.
 
 Searches to *avoid*: general "how to rank scientists" web queries. They return opinion pieces and
@@ -124,11 +124,11 @@ university news. Always search the named-term column above.
 
 The literature points at one specific gap and one specific untried standard family:
 
-- **Fixed-age window** — the deflator result (H5 failed, H6 held) says citations are mostly stable
+- **Fixed-age window**: the deflator result (H5 failed, H6 held) says citations are mostly stable
   under reshuffling of *when* they arrive; what is not fixed is *how much time* each paper has had.
   Every paper should be scored over the same number of years since birth, not the same calendar
   window. This is what the literature calls fixing the **citation window / academic age**.
-- **Percentile scores** — the standard untried family. Instead of summing normalised citations,
+- **Percentile scores**: the standard untried family. Instead of summing normalised citations,
   convert each paper to "top X% of its field-year" and average. This is the family that replaces
   the small-n instability of MNCS (which is what M1 rediscovered) and is the family CSRankings-adjacent
   work uses.
@@ -148,19 +148,19 @@ tables), then percentile score.
 - Wohlin C. **Guidelines for snowballing in systematic literature studies.** EASE 2014;
   Wohlin & Prikladnicki. *Database searches vs. snowballing*, ESEM 2013.
   https://www.wohlin.eu/esem12a.pdf
-- Petersen A.M. et al. **A quantitative model of citation growth.** *PNAS* 2019 — source of the
+- Petersen A.M. et al. **A quantitative model of citation growth.** *PNAS* 2019, the source of the
   deflator used in `METRIC_PLAN_DEFLATOR.md`.
 - Ioannidis J.P.A., Boyack K., Wouters P.F. **Citation metrics: a primer on how (not) to
   normalize.** *PLOS Biology* 2016;14(9):e1002542. States the year-normalisation failure that the
   deflator was meant to fix.
 - Waltman L., van Eck N.J. **Field-normalised citation indicators: a review.** *Journal of
-  Informetrics* 2019 — MNCS and its documented failure modes.
+  Informetrics* 2019: MNCS and its documented failure modes.
 - Waltman L. et al. **The Leiden Manifesto for research metrics.** *Nature* 2015.
 - Weber I. et al. **The stability of the h-index under perturbations** (10/25/50% random removal;
   ≥95% pairwise agreement at 10% removal). Used as the comparison for the project's own noise floor
   (20 runs × 20% edge drops, A1 ρ moves ≤ 0.014).
 - Győrffy B. et al. **A global interdisciplinary platform for academic age-normalised researcher
-  evaluation.** *Scientometrics* 2026. doi:10.1007/s11192-026-05608-y — states explicitly that
+  evaluation.** *Scientometrics* 2026. doi:10.1007/s11192-026-05608-y, which states explicitly that
   raw citation metrics favour older researchers; the academic-age normalisation baseline.
 
 ## 6. The Exa queries used (so the review is reproducible)

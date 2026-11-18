@@ -1,7 +1,7 @@
 # Hypotheses about Approach 1's score: what it actually measures
 ### written 2026-11-16, BEFORE any of the confirmatory runs below
 
-Data: OpenAlex IR graph — 14,462 papers (SIGIR 5,370 · CIKM 7,009 · WSDM 1,458 · TOIS 812 · IRJ 619),
+Data: OpenAlex IR graph, 14,462 papers (SIGIR 5,370 · CIKM 7,009 · WSDM 1,458 · TOIS 812 · IRJ 619),
 54,351 in-set citation edges, 1,430 authors with ≥3 in-window papers.
 Approach 1 (A1) as in `scripts/approaches.py`: delta = 3, cutoff = 2014, birth_min = 2006, min_papers = 3,
 `score(author) = Σ_{papers p of author} share(p) / n_authors(p)` where `share(p)` is p's citations in
@@ -17,7 +17,7 @@ could be measuring something else.** A confirmation of an E is a finding about t
 
 ---
 
-## Section 0 — Probes already run (exploratory, not counted as tests)
+## Section 0: Probes already run (exploratory, not counted as tests)
 
 These are what suggested the grid; they are reported so the hypotheses are not back-fitted to them.
 None of them had a written prediction in advance, so none of them counts as a confirmation.
@@ -25,7 +25,7 @@ None of them had a written prediction in advance, so none of them counts as a co
 | probe | number | how I would misread it |
 |---|---|---|
 | score vs per-paper average | ρ 0.937 | "A1 is just volume." The top-10 by per-paper average (Eric Brill, Kristina Klinkner, Alan Halverson, Martin Szummer, Li-wei He, Daniel Ramage, Steffen Rendle …) shares **one name** with the top-10 by score. Both readings are available from the same 0.937. |
-| score share of total | top 10 authors = 13.4 %, top 50 = 36.1 %, top 100 = 49.5 % | a 1,430-author ranking where 100 people hold half the mass. Flat enough that a small score change does not move rank much — which is *why* ρ stays high under perturbation. High stability may be a property of the flatness, not of the signal. |
+| score share of total | top 10 authors = 13.4 %, top 50 = 36.1 %, top 100 = 49.5 % | a 1,430-author ranking where 100 people hold half the mass. Flat enough that a small score change does not move rank much, which is *why* ρ stays high under perturbation. High stability may be a property of the flatness, not of the signal. |
 | self-citations | 17.9 % of edges; median author-level self-share 0.25 | dropped later in H3. |
 | in-window citations per paper | 36.9 % of cited papers have **exactly one** | a third of the evidence base is a count of one. |
 | half-split (2006–09 vs 2010–14) | ρ 0.49, top-100 overlap 52 of 100 | the strongest signal in the probes. If an author's standing is a real property, two disjoint halves of the same field should agree far better than this. |
@@ -33,7 +33,7 @@ None of them had a written prediction in advance, so none of them counts as a co
 
 ---
 
-## Section 1 — Hypotheses
+## Section 1: Hypotheses
 
 ### H1. The score is flat, and flatness is what the stability results were measuring
 **Claim.** A1's score distribution is close to uniform over its 1,430 authors, in the sense that no small
@@ -44,7 +44,7 @@ than from a sharply defined property.
 90th to the 50th percentile score is under 4×; dropping the top 20 authors changes no other author's rank
 position (they only shift up).
 
-**Fails if.** The distribution is heavy-tailed (top 10 % > 70 % of mass) — then the stability results *are*
+**Fails if.** The distribution is heavy-tailed (top 10 % > 70 % of mass). Then the stability results *are*
 about a sharp ranking and this explanation collapses.
 
 **Why it matters for the deck.** The sensitivity slide currently sells stability as evidence of a sound
@@ -55,7 +55,7 @@ compressed, not because its rankings are well determined.*
 
 ### H2. An author's standing is mostly *which birth years they happen to occupy*
 **Claim.** The half-split disagreement (ρ 0.49) is not noise. Within the fixed window 2006–2014, citations
-per paper fall steeply with birth year — 12.0 (2006) to 5.7 (2014) in the whole graph — because an earlier
+per paper fall steeply with birth year, from 12.0 (2006) to 5.7 (2014) in the whole graph, because an earlier
 paper has had longer to be cited by the fixed cutoff. A1's window [y, y+3] equalises this *per paper*, but
 it cannot equalise *who* the author is in the field across the two halves. The score therefore largely
 measures cohort position.
@@ -65,7 +65,7 @@ halves have the same birth-year mix) raises ρ from ~0.49 to **≥ 0.70**. (b) A
 career in-window lies in one half, the cross-half ρ is undefined but their mean score differs in the
 direction of birth year: mean score of 2006–07 authors exceeds that of 2012–14 authors by **≥ 1.5×**.
 
-**Fails if.** Cohort matching leaves ρ near 0.49 — then the instability is about the citation process, not
+**Fails if.** Cohort matching leaves ρ near 0.49. Then the instability is about the citation process, not
 about the cohort, and H2 is wrong in the way that matters.
 
 **This is the one I would spend the next run on.** It separates "the metric is noisy" from "the metric ranks
@@ -75,7 +75,7 @@ age", and those two need completely different fixes.
 
 ### H3. Self-citation is not doing the work
 **Claim.** A1 includes self-citations (17.9 % of edges, median 25 % of an author's cited evidence). The
-"safe" fix — strip them — barely changes the ranking.
+"safe" fix (strip them) barely changes the ranking.
 
 **Prediction.** ρ(base, no-self-citations) **≥ 0.95**; top-100 overlap **≥ 90**; ≥ 500 of 1,430 authors
 unchanged in score.
@@ -95,9 +95,9 @@ sensitive to a single missing edge for a big subset of authors.
 
 **Prediction.** For ≥ 40 % of authors, **≥ 50 %** of their score comes from papers with ≤ 2 in-window
 citations. Restricting to papers with ≥ 3 citations keeps ≥ 60 % of the 1,430 authors and yields ρ **≤ 0.75**
-against the base — i.e. the thin-evidence half of the score is not redundant with the thick half.
+against the base, i.e. the thin-evidence half of the score is not redundant with the thick half.
 
-**Fails if.** ρ(base, thick-only) ≥ 0.90 on the shared authors — then thin evidence is not carrying
+**Fails if.** ρ(base, thick-only) ≥ 0.90 on the shared authors. Then thin evidence is not carrying
 independent weight and this concern is cosmetic.
 
 ---
@@ -112,7 +112,7 @@ heavily (a CIKM-primary author appears in the top 100 for every venue group), an
 groups' median scores differ by **< 20 %**. Sweeping the venue mix of a synthetic author (same per-paper
 citations, papers re-labelled across venues) changes their score by < 10 %.
 
-**Fails if.** Venue group medians differ by ≥ 2× — then A1 partly ranks "published in TOIS", and the
+**Fails if.** Venue group medians differ by ≥ 2×, then A1 partly ranks "published in TOIS", and the
 field-share normalisation it was built to fix is not actually normalising.
 
 ---
@@ -126,11 +126,11 @@ large teams, at equal paper quality. That is an authorship-volume effect dressed
 (mean `n` across their papers) rank higher; ρ(mean `n_authors`, score) is **≤ −0.3**. The same ranking
 computed with **full** credit per paper (`Σ share`, no `/n`) disagrees at ρ **≤ 0.7**.
 
-**Fails if.** ρ(full-credit, A1) ≥ 0.9 — then `/n` is a rounding detail and the aggregation is not a lever.
+**Fails if.** ρ(full-credit, A1) ≥ 0.9, then `/n` is a rounding detail and the aggregation is not a lever.
 
 ---
 
-## Section 2 — What each outcome would mean for the project
+## Section 2: What each outcome would mean for the project
 
 | If this holds | Then in the deck / report |
 |---|---|
@@ -147,7 +147,7 @@ method-slide that survives Soumen sir's first question.
 
 ---
 
-## Section 3 — Pre-registered grid (write the number down before running)
+## Section 3: Pre-registered grid (write the number down before running)
 
 | # | Test | Threshold for "holds" | Threshold for "fails" |
 |---|---|---|---|
@@ -165,7 +165,7 @@ by prose.
 
 ---
 
-## Section 4 — Cost
+## Section 4: Cost
 
 | test | run time | data already there? |
 |---|---|---|

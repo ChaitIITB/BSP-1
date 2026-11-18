@@ -26,16 +26,16 @@ citations scaled down). Applied per edge, so a paper's whole citation history is
 Equivalent formulation used here, which keeps the citation count an integer where possible:
 `share_def(p) = sum_{citations c to p, in window} D(y_citing(c)) / N_F`.
 
-### What `R(t)` is measured on — decision
+### What `R(t)` is measured on: decision
 
 Two options were considered (put to the user, who chose "continue"):
 
 - **Option A (chosen)**: `R(t)` = **references emitted by papers of year `t` in our pool that point
   OUTSIDE the pool**. Using only outside references is deliberate: if `R(t)` were built from
   in-pool references, it would partly measure our own subset's growth (346k references, 90% of
-  which point outside), and the deflator would be circular — it would deflate "our scrape got
+  which point outside), and the deflator would be circular: it would deflate "our scrape got
   bigger" rather than "IR got bigger".
-- **Option B (not used)**: true field-wide supply from all CS papers. Not available (requires a
+- **Option B (not used):** true field-wide supply from all CS papers. Not available (requires a
   new full OpenAlex reference crawl over all CS; GCP credits gone). Recorded here so the
   limitation is on record rather than discovered later.
 
@@ -109,13 +109,13 @@ share_def(p) = c_def(p) / N_F([y, y+DELTA])
 Author-level metrics, all with the same `(author, score, n_papers, raw_cites)` shape as A1 and the
 same 3-paper minimum, so only one thing differs per row:
 
-- **D1 (deflated total share)**: `sum_p share_def(p) / n_authors(p)` — the direct A1 replacement.
+- **D1 (deflated total share)**: `sum_p share_def(p) / n_authors(p)`, the direct A1 replacement.
   This is the headline metric.
-- **D2 (deflated per-paper share)**: D1 divided by `n_papers` — M1 with the deflator. This is the
+- **D2 (deflated per-paper share)**: D1 divided by `n_papers`, i.e. M1 with the deflator. This is the
   test of whether the deflator fixes what M1 could not.
 - **D3 (deflated + percentile)**: **not in this run.** Percentile scoring is W2/W4 and stays the
   next item; including it here would confound two changes in one row.
-- **B1' (deflated raw citations)**: `sum_p c_def(p)/n` — the plain per-paper citation baseline with
+- **B1' (deflated raw citations)**: `sum_p c_def(p)/n`, the plain per-paper citation baseline with
   the deflator, carrying no field-share normalisation. Included because if D1 cannot beat B1' it
   is the deflator alone doing the work, and the field-share part is dead weight.
 
@@ -142,7 +142,7 @@ A1's -0.178 therefore means A1 favours **older** authors, and a deflator should 
   down, and old authors are the ones whose citations A1 over-credits.
 - **H7 (the deflator is doing the work)** `|age_bias(D1) - age_bias(A1)| > |age_bias(M1) -
   age_bias(A1)| = 0.007`, i.e. the benefit is not the noise band. And `agree(D1, A1)` will show a
-  **large** reordering — expect Spearman in 0.80-0.95 and top-100 overlap below 70 of 100 — because
+  **large** reordering: expect Spearman in 0.80-0.95 and top-100 overlap below 70 of 100, because
   discounting citations by year is a monotone transform on age and must reshuffle old vs new
   authors.
 - **H8 (field share survives)** D1 beats B1' on `age_bias` even though both carry the deflator. If

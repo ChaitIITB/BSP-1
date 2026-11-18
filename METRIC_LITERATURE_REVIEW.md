@@ -27,7 +27,7 @@ substantially once deflated.
 
 **Why this matters to us.** Our A1 denominator `N_F([y, y+Δ])` normalises by the size of the field in
 that window. That is a *within-window* normalisation. It scales a paper's citations by how big the
-field was while the paper was young — which is not the same as correcting for the fact that a paper
+field was while the paper was young. That is not the same as correcting for the fact that a paper
 published in 2006 competes for a reference supply that was for ever changing shape. Our age bias
 (−0.18 in A1) is plausibly **inflation that our denominator does not deflate**, and that is testable
 with data already on disk.
@@ -35,18 +35,18 @@ with data already on disk.
 **Concrete test (W1).** Fit the reference-supply curve `R(t) = total citations emitted in year t` from
 our own edges, then recompute A1 with each citing-year's contribution scaled by `R(2003)/R(t)`, and
 re-measure age bias and ρ against the 2018–2022 outcome. Twenty lines of SQL, only data we have, and a
-published method — comparable to Petersen et al. rather than another bespoke variant.
+published method, comparable to Petersen et al. rather than another bespoke variant.
 
 **Preliminary check, run before writing this (so the number is real, not assumed).** Our own IR edges
 `R(t)`: 292 in 2003 → 3,039 in 2015 → 4,171 in 2020, i.e. **×10.4 over 2003–2015**. That is *faster*
 than the ~5.6%/yr in their corpus (which doubles every ~12 years), so **citation inflation in our
-window is large, not marginal** — and our A1 denominator does not touch it. Two caveats that the
+window is large, not marginal**, and our A1 denominator does not touch it. Two caveats that the
 full test must respect, and that I have not yet ruled out: (i) part of the rise is our crawl
 improving over time, not the field growing, so `R(t)` should be rebuilt as *references per paper ×
 papers per year*, the Petersen construction, not raw edge counts; (ii) growth being monotone means a
 deflator and a "later is better" trend are confounded, so the deflated ranking must be compared on
 both, and only a difference larger than the noise floor reported. So W1 is well-motivated but not yet
-a result — the check above says it is worth the run, it does not say the bias will disappear.
+a result: the check above says it is worth the run, it does not say the bias will disappear.
 
 The literature is explicit that a fixed window is **not** enough: their Section on balanced counts
 shows the top-1% cutoff for a 10-year window rose from ~100 citations (1965 papers) to ~200
@@ -66,7 +66,7 @@ Two families, and we have only built one of them:
 - **Ratio / mean-normalised scores.** `s(p) = c(p) / c̄(field, year)`. Aggregated by **averaging**
   (size-independent: MNCS, FWCI, "category normalised citation impact") or by **summing**
   (size-dependent, "total normalised citation score"). Our A1 is a denominator-variant of the summed
-  form, and M1 was our move toward the averaged form — which is why M1 collapsed onto per-paper
+  form, and M1 was our move toward the averaged form, which is why M1 collapsed onto per-paper
   citations: we had reinvented MNCS without knowing it, and MNCS's known weakness (small-n instability,
   one-hit papers) is exactly what H2 and M4 showed.
 - **Percentile-based indicators.** Value a paper by its **position in the citation distribution of its
@@ -78,14 +78,14 @@ Two families, and we have only built one of them:
 
 **Why we should build it (W2).** We already compute A3 rounds that use in-cohort percentile and
 shrinkage, so the machinery exists. But our A3 r2 used a cohort **within the author's birth year** and
-scored 0.582 — it was percentile-based *without the key idea*, which is that the cohort is the **whole
+scored 0.582. It was percentile-based *without the key idea*, which is that the cohort is the **whole
 field in that publication year**, not the author's entry class. A paper-level percentile score, summed
 or averaged per author, is the standard that reviewers will expect us to have tried.
 
 **Ties are a first-class problem there, and the literature already worked it.** Waltman & Schreiber
 (2013), with an empirical comparison in Schreiber (2013), survey threshold-tie handling; our
 `evaluate()` averages tied ranks, which is one of the accepted answers but is not the one used in
-percentile scoring. Worth stating explicitly which we use and why — the deck currently does not say.
+percentile scoring. Worth stating explicitly which we use and why; the deck currently does not say.
 
 ---
 
@@ -95,13 +95,13 @@ percentile scoring. Worth stating explicitly which we use and why — the deck c
 |---|---|---|---|---|
 | W3 | **Deflated A1** | Petersen et al. 2019; Pan et al. 2018 | edges + years (have) | Whether the residual age bias is inflation. Highest-value test in this review. |
 | W4 | **Paper-percentile score** (PR / MNCS) | Waltman 2017; Bornmann et al. | papers + years (have) | The standard alternative normalisation we have not tried; tail-insensitive. |
-| W5 | **g-index, w-index, and h-variants** | Egghe 2006; Wu 2010; reviews: Alonso et al. 2009, Wildgaard et al. 2014 | in-window citation counts (have) | Whether a core-based index beats a sum; h is known to grow with career length, so it should be age-biased — a useful negative control. |
+| W5 | **g-index, w-index, and h-variants** | Egghe 2006; Wu 2010; reviews: Alonso et al. 2009, Wildgaard et al. 2014 | in-window citation counts (have) | Whether a core-based index beats a sum; h is known to grow with career length, so it should be age-biased, a useful negative control. |
 | W6 | **h-rate / m-quotient** | Hirsch 2005 (the `m` parameter); Burrell 2007 | h + years since first paper (have) | The simplest published correction for career length. Cheap baseline for age bias. |
-| W7 | **Position-weighted credit** | Vavryčuk, *PLOS ONE* 13 (2018) e0195509; Waltman 2017 §7 | ordered author lists (have) | Whether our uniform 1/n split is distorting the list. IR has heavy first-author ordering (student–advisor), unlike econ/algebra — this is a field-specific check nobody has run on IR. |
+| W7 | **Position-weighted credit** | Vavryčuk, *PLOS ONE* 13 (2018) e0195509; Waltman 2017 §7 | ordered author lists (have) | Whether our uniform 1/n split is distorting the list. IR has heavy first-author ordering (student-advisor), unlike econ/algebra; this is a field-specific check nobody has run on IR. |
 | W8 | **Geometric / harmonic / m indices on the h-core** | Egghe; Glänzel & Schubert 2010; Wildgaard et al. 2014 | citation distribution per author (have) | Robust central-tendency of the core, less outlier-driven than g; a concrete answer to M2's tie explosion. |
-| W9 | **Eigenfactor-style author score** | Bergstrom, West & Wiseman, *JASIST* 2013 (author-level Eigenfactor on SSRN) | author-author citation matrix (have) | Network position, not receipts. Additive over collectives — a property our A1 does not have. |
-| W10 | **PageRank / weighted PageRank on the author co-citation network** | **Ding, *JASIST* 2009** — note this paper is *about IR authors, 108 of them*, so we have a direct precedent to compare top-10 lists against | edges (have) | Ding finds citation rank correlates highly with PageRank across all damping factors, and **neither correlates with centrality measures**. We can check if that holds on our larger graph. |
-| W11 | **Citation-age / windowed-at-fixed-age score** | Pan et al. 2018; Petersen et al. 2019 (fixed-Δ window) | edges with years (have) | Scores every paper at *, say, 5 or 10 years after birth, so no paper is favoured by having had longer. We currently score at Δ=3 only and never tested whether age bias is a window artefact — this is the direct test. |
+| W9 | **Eigenfactor-style author score** | Bergstrom, West & Wiseman, *JASIST* 2013 (author-level Eigenfactor on SSRN) | author-author citation matrix (have) | Network position, not receipts. Additive over collectives, a property our A1 does not have. |
+| W10 | **PageRank / weighted PageRank on the author co-citation network** | **Ding, *JASIST* 2009**. Note this paper is *about IR authors, 108 of them*, so we have a direct precedent to compare top-10 lists against | edges (have) | Ding finds citation rank correlates highly with PageRank across all damping factors, and **neither correlates with centrality measures**. We can check if that holds on our larger graph. |
+| W11 | **Citation-age / windowed-at-fixed-age score** | Pan et al. 2018; Petersen et al. 2019 (fixed-Δ window) | edges with years (have) | Scores every paper at *, say, 5 or 10 years after birth, so no paper is favoured by having had longer. We currently score at Δ=3 only and never tested whether age bias is a window artefact, so this is the direct test. |
 | W12 | **Disruption / novelty (CD index)** | Funk & Owen-Smith, *ASQ* 2017 (CD index); Wu, Wang & Evans, *Nature* 566 (2019) | references + citers (have) | Whether "influential" and "field-changing" are the same people. Not a ranking metric on its own, but the most interesting *additional dimension* on the list. |
 
 Beyond these, three other well-known families exist and each needs data we either have partly or not at all:
@@ -119,13 +119,13 @@ Beyond these, three other well-known families exist and each needs data we eithe
 
 ---
 
-## 4. Counting credit — a live methodological objection to A1
+## 4. Counting credit: a live methodological objection to A1
 
 Two reviews make a point we should pre-empt rather than discover in the room:
 
 - **Waltman 2017 §7** and **Vavryčuk 2018** both argue **full counting** (every co-author gets the
   whole credit) is unfair and inflates productivity for multi-author fields, while **fractional**
-  counting removes discipline differences. Our 1/n split is the standard fractional scheme — good.
+  counting removes discipline differences. Our 1/n split is the standard fractional scheme, which is good.
 - But Vavryčuk shows the *ordering* of the co-author list carries the signal, and proposes
   **author-position weighting** (roughly first/last > middle). IR is the canonical case: single-student
   advisor papers are common, and a three-letter CIKM paper with five authors is not five people's work.
@@ -156,13 +156,13 @@ Three claims I would now make in the deck, each backed by a citation:
 
 ## 6. Proposed order of work
 
-1. **W1/W3 deflator** — highest value, smallest change, published method, directly attacks the open
+1. **W1/W3 deflator**: highest value, smallest change, published method, directly attacks the open
    problem. One run, two numbers (age bias, ρ future).
-2. **W4 percentile score** — the missing standard; reuses A3's percentile machinery.
-3. **W11 fixed-age window** — the arbitrating test between "age bias is the window" and "age bias is
+2. **W4 percentile score**: the missing standard; reuses A3's percentile machinery.
+3. **W11 fixed-age window**: the arbitrating test between "age bias is the window" and "age bias is
    inflation".
-4. **W7 position weight** — cheap, IR-specific, rhetorically strong at a CS venue.
-5. **W10 PageRank** — compare against Ding (2009)'s published top authors for IR; a rare chance at an
+4. **W7 position weight**: cheap, IR-specific, rhetorically strong at a CS venue.
+5. **W10 PageRank**: compare against Ding (2009)'s published top authors for IR; a rare chance at an
    external sanity check with named people.
 6. W5/W6/W8 as one combined "core indices" block, mostly as negative controls (h *should* be the most
    age-biased; if it is not, something is wrong with our evaluation).

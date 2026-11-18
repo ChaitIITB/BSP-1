@@ -128,7 +128,7 @@ pre{background:rgba(127,127,127,.12);border:1px solid var(--line);border-radius:
 <tr><td>B1 per-paper citations</td><td class="n">0.646</td><td class="n">−0.08</td><td class="n">0.33</td><td class="n">47</td></tr>
 <tr><td>B2 h-like</td><td class="n">0.689</td><td class="n">−0.07</td><td class="n">–</td><td class="n">79</td></tr>
 </table>
-<p>Noise floor: dropping 20% of edges moves A1's ρ by at most 0.014 (20 runs). Normalizing by output removes the tie to paper count (0.61 → 0.33) but not age bias, and it costs 0.083 in agreement with future citations, about ten noise floors. M1 agrees with plain per-paper citations at ρ = 0.987, so once divided, the field-share denominator adds nothing. On Semantic Scholar the same pattern holds for M1 (ρ 0.502 → 0.456; age bias −0.002 → +0.010). Shrinkage (M4) is the worst variant — with a 3-paper minimum and k = 3 it pulls every short record toward the mean.</p>
+<p>Noise floor: dropping 20% of edges moves A1's ρ by at most 0.014 (20 runs). Normalizing by output removes the tie to paper count (0.61 → 0.33) but not age bias, and it costs 0.083 in agreement with future citations, about ten noise floors. M1 agrees with plain per-paper citations at ρ = 0.987, so once divided, the field-share denominator adds nothing. On Semantic Scholar the same pattern holds for M1 (ρ 0.502 → 0.456; age bias −0.002 → +0.010). Shrinkage (M4) is the worst variant: with a 3-paper minimum and k = 3 it pulls every short record toward the mean.</p>
 <div class="note">Verdict: report M1 beside A1 as "typical output quality", not as A1's replacement. Age bias lives in the birth window (longer exposure for earlier papers), not in output volume, so a denominator cannot fix it.</div>
 
 <h2>7b. Citation deflator</h2>

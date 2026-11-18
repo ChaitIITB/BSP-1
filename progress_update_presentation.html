@@ -87,7 +87,7 @@ pre{background:var(--code);border:1px solid var(--line);border-radius:8px;paddin
 <tr><td>A4 · Fine-tuned LLM</td><td>Fine-tune an LLM on ranking examples, GenRec-style (slides 14–15).</td></tr>
 <tr><td>A5 · LLMs pick the best ranking</td><td>An LLM compares candidate rankings and chooses the most relevant one.</td></tr>
 </table>
-<p class="mut sm">Status: Approach 1 is fully built and analysed. Approach 4 is trained and has first results (slides 14–15). Approach 5 is not built. Two further ideas — an LLM that writes the SQL, and an LLM that revises its own query and ranking rules — will be tried later.</p>
+<p class="mut sm">Status: Approach 1 is fully built and analysed. Approach 4 is trained and has first results (slides 14–15). Approach 5 is not built. Two further ideas will be tried later: an LLM that writes the SQL, and an LLM that revises its own query and ranking rules.</p>
 </section>
 
 <!-- 4 -->
@@ -184,10 +184,10 @@ pre{background:var(--code);border:1px solid var(--line);border-radius:8px;paddin
 <tr><th>Metric</th><th>Definition</th><th class="n">ρ with future citations</th><th class="n">Age bias</th><th class="n">ρ with paper count</th></tr>
 <tr><td>A1 total share (current)</td><td>Σ over papers of share / co-authors</td><td class="n">0.708</td><td class="n">−0.18</td><td class="n">0.61</td></tr>
 <tr><td><b>M1 per-paper</b></td><td>A1 divided by papers published in window</td><td class="n">0.625</td><td class="n">−0.19</td><td class="n">0.33</td></tr>
-<tr><td>M3 top-3 papers</td><td>mean of the 3 best paper shares</td><td class="n">0.692</td><td class="n">−0.18</td><td class="n">—</td></tr>
+<tr><td>M3 top-3 papers</td><td>mean of the 3 best paper shares</td><td class="n">0.692</td><td class="n">−0.18</td><td class="n">n/a</td></tr>
 <tr><td>M4 shrunk per-paper</td><td>M1 pulled toward field mean, k = 3</td><td class="n">0.302</td><td class="n">−0.14</td><td class="n">−0.27</td></tr>
 <tr><td>B1 per-paper citations</td><td>plain citations per paper</td><td class="n">0.646</td><td class="n">−0.08</td><td class="n">0.33</td></tr>
-<tr><td>B2 h-like</td><td>papers with ≥3 in-window citations</td><td class="n">0.689</td><td class="n">−0.07</td><td class="n">—</td></tr>
+<tr><td>B2 h-like</td><td>papers with ≥3 in-window citations</td><td class="n">0.689</td><td class="n">−0.07</td><td class="n">n/a</td></tr>
 </table>
 <p class="mut sm">Noise floor: dropping 20% of edges moves A1's ρ by at most 0.014. Every difference in the ρ column is 5–25× that. Age bias = Spearman ρ between score and the author's mean birth year; 0 is neutral.</p>
 </section>
