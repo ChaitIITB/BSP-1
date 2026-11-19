@@ -1,0 +1,557 @@
+\documentclass{article}
+
+\usepackage[preprint]{neurips_2026}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\newcommand{\good}[1]{\textcolor{green!40!black}{#1}}
+\newcommand{\bad}[1]{\textcolor{red!40!black}{#1}}
+
+\title{Evaluating Author-Level Citation Metrics on a Closed Citation Graph:
+A Pre-registered Comparison}
+
+\author{%
+  Anonymous Author(s) \\
+  CS6101 Project \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Ranking researchers by citation impact shapes hiring, funding, and tenure decisions, yet the
+sensitivity of such rankings to the choice of metric is rarely measured in a pre-registered
+framework on a single closed dataset. We evaluate seven author-level metrics, from field-share
+sums and per-paper averages to citation deflation and core-based indices, against a held-out
+future-citation outcome on a closed graph of 14,462 Information Retrieval (IR) papers from five
+venues (2000--2022). Eight hypotheses were fixed in writing before any metric was computed.
+Dividing the field-share sum (A1) by paper count (M1) costs $0.083$ in rank accuracy
+($\rho$: $0.708 \to 0.625$; bootstrap 95\% CI of the difference $[-0.099, -0.067]$) and leaves the
+correlation between score and cohort birth year unchanged (difference CI $[-0.024, +0.010]$),
+reproducing the documented behaviour of the mean normalised citation score. A Petersen-style
+citation deflator ($t_0 = 2021$) costs $0.014$ in accuracy and reorders almost nothing (top-100
+overlap 97 of 100 on OpenAlex and 96 of 100 on Semantic Scholar, first nine ranks identical). The top-3 mean (M3) is the closest non-trivial
+alternative to A1 ($\rho = 0.692$) but measures best-paper concentration rather than
+contribution. Each of these findings needs a further test: the age correlation is confounded by a
+mechanical relation between a paper's age and how much future-citation window it can reach, and
+no author-level metric can remove that confound. We release the pre-registrations, code, and
+per-author scores so that the comparison can be repeated on other fields.
+\end{abstract}
+
+\section{Introduction}
+
+Ranking researchers within a scientific field matters for hiring committees, funding agencies, and
+tenure panels. The dominant family of solutions normalises raw citation counts by field and
+publication year, producing indicators such as the field-weighted citation impact (FWCI) or the
+mean normalised citation score (MNCS) \citep{waltman2016review, waltman2019chapter}. Alternative
+families---percentile-based indicators \citep{bornmann2011further, bornmann2013percentiles}, core-based indices
+\citep{hirsch2005index, egghe2006gindex}, and network-centrality scores \citep{ding2011pagerank,
+west2010eigenfactor}---are well theorised but seldom compared head-to-head on one dataset against one
+outcome.
+
+Citation counts grow with paper age, so any ranking rewards earlier cohorts, and the usual remedy
+is to normalise by field and year \citep{waltman2019chapter}, and academic-age normalisation, which
+divides by years since first publication, is now offered as a platform-level service
+\citep{anonymous2026platform}. \citet{petersen2019inflation} proposed a further correction, a \emph{citation
+deflator} that divides each citation by the reference volume of its citing year, in analogy to a
+currency deflator. Whether these corrections change who is ranked
+where, and at what cost in accuracy, is an empirical question that depends on the field and on
+the outcome.
+
+This paper reports such an evaluation on one closed graph. Eight hypotheses were fixed in writing
+before the corresponding metrics were computed, every verdict is reported whatever its direction,
+and all point estimates come with bootstrap confidence intervals from a common author resample so
+that metric-to-metric differences are paired. The outcome is a held-out window (2018--2022) that
+no metric can see. A 20-run noise floor (20\% of edges dropped) and an independent Semantic
+Scholar mirror of the same papers test robustness.
+
+The scope is deliberately narrow. This is a \emph{measurement comparison}, not a field-wide
+validation: it uses one field, one birth window, one citation source at a time, and a single
+5-year outcome. Its contribution is to show which of the standard corrections are distinguishable
+from noise at this scale, and---more importantly for practice---which trade-offs the usual
+normalisations do and do not buy.
+
+\section{Related Work}
+
+\subsection{Normalisation families}
+
+\citet{waltman2016review} and \citet{waltman2019chapter} survey field-normalised citation indicators. Two
+families dominate. \emph{Ratio-based} indicators divide a paper's citations by the mean of its
+field-year cohort and aggregate either by summing (size-dependent) or averaging
+(size-independent: MNCS, FWCI). Our A1 is a size-dependent member of this family with an
+author-level denominator. The \emph{percentile-based} family
+\citep{tijssen2002benchmark, vanleeuwen2003holy, leydesdorff2011turning, albarran2011skewness} values a paper by its position
+in its cohort distribution and is less sensitive to fat tails. Ties are known to be a problem
+there; \citet{waltman2013percentile} compare tie-handling schemes. Percentile scoring is not implemented in
+this study and is the first item of future work.
+
+\subsection{Citation inflation}
+
+\citet{petersen2019inflation} report that the reference volume produced per year grows at roughly 5.6\%
+annually and argue that this ``citation inflation'' understates the impact of older generations.
+Their correction is $D(t) = R(t_0)/R(t)$, with $R(t)$ the reference supply in year $t$. The growth
+kinetics are analysed by \citet{pan2018memory} and the case for deflation as a complement to
+year-normalisation is made by \citet{ioannidis2014most}. Section~\ref{sec:deflator} describes the
+variant of this correction used here.
+
+\subsection{Productivity normalisation}
+
+Dividing an author's citations by their paper count yields a per-paper average, which is the
+author-level analogue of MNCS. Its failure modes are known: instability at small $n$, domination
+by single highly cited papers, and rank reversals against total-influence measures
+\citep{waltman2019chapter}.
+
+\subsection{Core-based indices}
+
+The $h$-index \citep{hirsch2005index} and its variants---the $g$-index \citep{egghe2006gindex}, $w$-index
+\citep{wu2010windex}, and $m$-quotient \citep{burrell2007core}---are widely used. \citet{alonso2009review} and
+\citet{wildgaard2014108} review their properties. The $h$-index grows with career length.
+
+\subsection{Credit allocation and other signals}
+
+\citet{vavrycuk2018influential} argues that author position carries information about contribution, which
+matters for IR venues where advisor--student papers are common. \citet{ding2011pagerank} applied
+PageRank to an author co-citation network of 108 IR authors, the closest published precedent for
+the present scale. The \emph{CD index} \citep{funk2017cdindex, wu2019teams} measures disruption rather than
+influence and is orthogonal to citation counts.
+
+\section{Method}
+
+\subsection{Data}
+
+\paragraph{Corpus.} 14,462 papers from SIGIR, CIKM, WSDM, TOIS, and IRJ, published 2000--2022,
+with author names in listed order and 345,866 distinct references in the source records. Citation
+edges are year-stamped.
+
+\paragraph{Citation sources.} Two graphs over the same papers are used:
+\begin{itemize}
+  \item \textbf{OpenAlex} (primary): 54,351 in-corpus citation edges, 1,430 authors after filtering.
+  \item \textbf{Semantic Scholar} (cross-check): 13,548 edges, 1,456 authors.
+\end{itemize}
+The Semantic Scholar graph is much thinner, with tie fractions up to 100\% (Table~\ref{tab:s2}), so
+it is used to test the \emph{direction} of an effect, not its magnitude.
+
+\paragraph{Scoring and outcome.} A paper born in year $y$ is scored on citations received in
+$[y, y+\Delta]$ with $\Delta = 3$. Authors need at least 3 scored papers born in 2006--2014. The
+outcome is the citations each author's papers (born $\leq 2017$) received in 2018--2022,
+self-citations removed (a citation from a paper whose first author is the author themselves) and
+credit split $1/n$ across co-authors. The outcome window lies entirely after the latest scoring
+window (2014--2017), so no scored citation is counted as outcome.
+
+\subsection{Metrics}
+
+Table~\ref{tab:defs} defines the metrics. All return (author, score, $n_{\text{papers}}$,
+raw citations) and share the 3-paper minimum, so rows differ only in aggregation.
+
+\begin{table}[h]
+\caption{Metric definitions. $c(p)$ = citations to paper $p$ inside its scoring window,
+  $N_F(W)$ = total scored citations to all papers whose scoring window is $W$,
+  $n_a(p)$ = number of authors of $p$, and $\bar{s}$ = field median paper share.}
+\label{tab:defs}
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+\textbf{Metric} & \textbf{Definition} \\
+\midrule
+A1 & $\sum_p \dfrac{c(p)}{N_F([y_p, y_p+\Delta])\, n_a(p)}$ \\[8pt]
+M1 & A1 $/\, n_{\text{papers}}$ \\[4pt]
+M2 & median over $p$ of the paper share \\[4pt]
+M3 & mean of the author's 3 largest paper shares \\[4pt]
+M4 & $(n \cdot \text{M1} + k\bar{s})/(n + k)$, $k = 3$ \\[4pt]
+B1 & $\sum_p c(p)/n_a(p) \big/ n_{\text{papers}}$ \\[4pt]
+B2 & number of papers with $\geq 3$ scored citations \\
+\midrule
+D1 & A1 with each citation weighted by $D(y_{\text{citing}})$ \\
+D2 & D1 $/\, n_{\text{papers}}$ \\
+B1$'$ & B1 with deflated citations \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Citation deflator}
+\label{sec:deflator}
+
+We follow \citet{petersen2019inflation} with
+\begin{equation}
+  D(t) = \frac{R(t_0)}{R(t)}, \qquad
+  R(t) = \frac{\text{outside-pool references emitted by pool papers of year } t}
+               {\text{number of pool papers of year } t},
+\end{equation}
+restricting references to those citing works outside the pool, so that $R(t)$ does not measure
+the growth of our own corpus.
+
+Amendment~1 was recorded before any deflated metric was computed. $t_0 = 2021$, the last year of
+the outcome window, so outcome-window citations carry weight near 1; years before 2005 are
+excluded because 41--54\% of 2001--2003 papers have truncated reference lists
+(\texttt{ir\_deflator\_truncation.csv}); and 0 of 10,896 in-window OpenAlex edges (0 of 577 on
+Semantic Scholar) fall in an undefined year, so no author loses evidence. Two further variants
+are reported as cross-checks: $D_{\text{naive}}$, built on raw reference counts without the
+per-paper normalisation, and $D_{\text{distinct}}$, built on distinct outside works cited. As a
+guard on the implementation, setting $D(t) \equiv 1$ must reproduce A1 exactly; it does, at
+$\rho = 1.00000000$ with maximum relative error $0.00\text{e}0$.
+
+\subsection{Evaluation and noise floor}
+
+For each metric we report the Spearman correlation with the outcome ($\rho_{\text{fut}}$), the
+correlation between score and the author's mean scored-paper year ($\text{corr}_{\text{yr}}$;
+negative means earlier cohorts score higher), mean outcome of the top 10 and top 100, the tie
+fraction, and agreement with A1 (Spearman correlation and top-100 overlap). Confidence intervals
+come from 2000 bootstrap resamples of the 1,430 authors, drawn once and shared across metrics so
+that differences against A1 are paired; intervals are percentile intervals.
+
+The noise floor drops 20\% of citation edges at random in 20 runs. A1's minimum correlation with
+the full ranking is 0.986 and its minimum top-100 overlap is 93 (Table~\ref{tab:noise}), far
+tighter than the $|\Delta\rho| < 0.03$ band fixed in the plan, so every between-metric difference
+is judged against that floor.
+
+\subsection{Pre-registered hypotheses}
+
+All hypotheses were written in \texttt{METRIC\_PLAN.md} and \texttt{METRIC\_PLAN\_DEFLATOR.md}
+before the corresponding metrics were computed, and the deflator protocol was amended once
+(Amendment~1, fixing $t_0$ and the truncation rule) before any deflated metric was computed. The
+verdict on each hypothesis below is the one recorded in \texttt{RESULTS.md} and
+\texttt{RESULTS\_DEFLATOR.md} at the time it was tested; where this paper disagrees with a
+recorded verdict (H8) the disagreement is stated in place.
+\begin{description}
+  \item[H1.] Per-paper normalisation (M1) reduces $|\text{corr}_{\text{yr}}|$ relative to A1.
+  \item[H2.] Per-paper normalisation lowers $\rho_{\text{fut}}$ below A1's 0.708.
+  \item[H3.] Shrinkage toward the field mean (M4, $k=3$) recovers most of H2's loss.
+  \item[H4.] The top-3 mean (M3) keeps the highest top-10 outcome among per-paper metrics, and a
+    core-count index (B2) has the worst tie fraction.
+  \item[H5.] The deflator reduces $|\text{corr}_{\text{yr}}|$ relative to A1.
+  \item[H6.] The deflator costs less accuracy than M1 did, i.e.\ $\rho_{\text{fut}}(\text{D1}) >
+    0.625$.
+  \item[H7.] The deflator reorders substantially: $\rho(\text{D1}, \text{A1}) \in [0.80, 0.95]$
+    and top-100 overlap below 70.
+  \item[H8.] The field-share normalisation adds information beyond deflation: D1 beats B1$'$ on
+    $\text{corr}_{\text{yr}}$, i.e.\ D1's value is the one closer to zero. (\texttt{RESULTS\_DEFLATOR.md}
+    records this hypothesis with the opposite inequality, ``D1 has a more negative
+    $\text{corr}_{\text{yr}}$''; that version cannot fail against the observed numbers and is not
+    the one tested here. See the H8 paragraph.)
+\end{description}
+
+\section{Results}
+
+\subsection{Productivity normalisation (H1--H4)}
+
+\begin{table}[h]
+\caption{OpenAlex (54,351 edges, 1,430 authors). $\text{corr}_{\text{yr}}$: negative = earlier
+  cohorts score higher.}
+\label{tab:oa}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Metric} & $\rho_{\text{fut}}$ & $\text{corr}_{\text{yr}}$ & \textbf{Top-10} & \textbf{Top-100} & \textbf{Ties} \\
+\midrule
+A1 & 0.708 & $-$0.178 & 96.5 & 30.5 & 22\% \\
+M1 & 0.625 & $-$0.185 & 22.3 & 20.4 & 19\% \\
+M2 & 0.513 & $-$0.071 & 7.7  & 13.8 & 82\% \\
+M3 & 0.692 & $-$0.183 & 46.3 & 27.8 & 33\% \\
+M4 & 0.302 & $-$0.139 & 26.4 & 20.4 & 17\% \\
+B1 & 0.646 & $-$0.080 & 19.8 & 22.3 & 48\% \\
+B2 & 0.689 & $-$0.071 & 85.1 & 32.0 & 98\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Bootstrap 95\% CIs, OpenAlex. $d_\rho$ = paired difference in $\rho_{\text{fut}}$ from
+  A1; $d_{\text{yr}}$ = paired difference in $\text{corr}_{\text{yr}}$ from A1.}
+\label{tab:ci}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Metric} & $d_\rho$ \textbf{CI} & $d_{\text{yr}}$ \textbf{CI} & \textbf{Overlap} \\
+\midrule
+M1 & [$-$0.099, $-$0.067] & [$-$0.024, $+$0.010] & 48 \\
+M2 & [$-$0.226, $-$0.163] & [$+$0.071, $+$0.145] & 31 \\
+M3 & [$-$0.027, $-$0.006] & [$-$0.017, $+$0.009] & 72 \\
+M4 & [$-$0.455, $-$0.357] & [$-$0.008, $+$0.086] & 48 \\
+B1 & [$-$0.079, $-$0.046] & [$+$0.079, $+$0.116] & 47 \\
+B2 & [$-$0.036, $-$0.001] & [$+$0.081, $+$0.134] & 79 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{H1: failed.} $\text{corr}_{\text{yr}}$ moves from $-0.178$ (A1) to $-0.185$ (M1), the
+wrong direction, and the paired CI for the change, $[-0.024, +0.010]$, contains zero. On Semantic
+Scholar it moves from $-0.002$ to $+0.010$ (paired CI $[+0.004, +0.021]$), the same sign of change
+on a graph where both values are within $\pm 0.01$ of zero. M1
+does remove volume: the correlation between score and paper count falls from 0.61 to 0.33. It
+removes nothing from the score's relation to birth year.
+
+\paragraph{H2: held.} $\rho_{\text{fut}}$ falls from 0.708 to 0.625, a difference of $0.083$
+(paired CI $[-0.099, -0.067]$), eight times A1's bootstrap half-width. The top-10 mean falls from
+96.5 to 22.3, and M1 shares 48 of A1's top 100. M1 correlates with B1, plain per-paper citations, at
+$\rho = 0.923$ and shares 47 of 100 with it, so averaging and dropping the field-share
+denominator move the ranking in the same broad direction but are not interchangeable.
+
+\paragraph{H3: failed.} M4 gives $\rho_{\text{fut}} = 0.302$, the worst value in
+Table~\ref{tab:oa}, with a difference CI of $[-0.455, -0.357]$ against A1. With $k=3$ and a
+3-paper minimum, shrinkage moves the score of an author with the minimum three papers by one half
+and that of an author with six papers by one third, pulling the ranking toward mid-size records
+without adding accuracy. Only $k=3$ was tested.
+
+\paragraph{H4: half held.} M3 gives $\rho_{\text{fut}} = 0.692$ (difference CI
+$[-0.027, -0.006]$) with the highest top-10 mean among the metrics other than A1 and B2 (46.3); it is
+essentially A1 with the tail cut off ($\rho = 0.969$ with A1, 72 of 100 shared). It does not beat
+A1. B2 has the worst ties (98\%) as predicted, but its accuracy prediction held only on Semantic
+Scholar ($\rho = 0.223$); on OpenAlex it reaches 0.689, above M1 and B1.
+
+\subsection{Noise floor}
+
+\begin{table}[h]
+\caption{Noise floor: 20 runs with 20\% of edges dropped. $\rho_{\min}$ and overlap minima are
+  with respect to the full-data ranking.}
+\label{tab:noise}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Metric} & $\rho_{\min}$ & $\rho$ median & Overlap min \\
+\midrule
+A1 & 0.986 & 0.988 & 93 \\
+M1 & 0.980 & 0.983 & 91 \\
+M2 & 0.936 & 0.945 & 84 \\
+M3 & 0.987 & 0.988 & 91 \\
+M4 & 0.984 & 0.986 & 91 \\
+B1 & 0.980 & 0.984 & 91 \\
+B2 & 0.942 & 0.952 & 90 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All OpenAlex differences in Table~\ref{tab:ci} except B2's lower bound ($-0.001$) exclude zero.
+The noise floor is an order of magnitude smaller than the effects it is compared with: dropping
+20\% of edges moves A1 by at most $0.014$ in $\rho$, whereas the smallest paired difference we
+report in magnitude, $0.016$ for M3, and the M1 difference of $0.083$, are several times larger.
+The observed between-metric spread is therefore not an artefact of missing edges.
+
+\subsection{Semantic Scholar cross-check}
+
+\begin{table}[h]
+\caption{Semantic Scholar (13,548 edges, 1,456 authors).}
+\label{tab:s2}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Metric} & $\rho_{\text{fut}}$ & $\text{corr}_{\text{yr}}$ & \textbf{Top-10} & \textbf{Top-100} & \textbf{Ties} \\
+\midrule
+A1 & 0.502 & $-$0.002 & 24.2 & 9.1  & 82\% \\
+M1 & 0.456 & $+$0.010 & 2.8  & 5.0  & 72\% \\
+M2 & 0.126 & $+$0.090 & 4.1  & 4.5  & 99\% \\
+M3 & 0.501 & $-$0.008 & 21.4 & 9.4  & 89\% \\
+M4 & 0.126 & $-$0.003 & 6.2  & 5.5  & 67\% \\
+B1 & 0.457 & $+$0.089 & 7.7  & 4.8  & 85\% \\
+B2 & 0.223 & $+$0.043 & 22.5 & 7.0  & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The \emph{order} of metrics by $\rho_{\text{fut}}$ is preserved only at the top: A1 $>$ M3 $>$
+B2 $>$ M4 on OpenAlex becomes A1 $\approx$ M3 $>$ B1 $\approx$ M1 $>$ M2 $\approx$ M4 on Semantic
+Scholar. A1 and M3 remain the two most accurate and M4 the least, but B2 and M1 swap places, and
+M2 overtakes M4. The H1 result is reproduced in sign (M1's $\text{corr}_{\text{yr}}$ is less
+negative, i.e.\ positive, against A1's $-0.002$), but both values lie within $\pm 0.01$ of zero,
+so the magnitude of the OpenAlex move cannot be checked here. That is a limitation of the mirror,
+not evidence against the OpenAlex result.
+
+\subsection{Citation deflator (H5--H8)}
+
+\begin{table}[h]
+\caption{Deflator results. D1 = deflated total share, D2 = deflated per-paper share,
+  B1$'$ = deflated per-paper citations.}
+\label{tab:deflator}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Metric} & $\rho_{\text{fut}}$ & $\text{corr}_{\text{yr}}$ & $\rho$ vs A1 & \textbf{Overlap} \\
+\midrule
+\multicolumn{5}{l}{\textit{OpenAlex}} \\
+A1  & 0.708 & $-$0.178 & 1.000 & 100 \\
+M1  & 0.625 & $-$0.185 & 0.937 & 48 \\
+B1  & 0.646 & $-$0.080 & 0.923 & 47 \\
+D1  & 0.694 & $-$0.217 & 0.998 & 97 \\
+D2  & 0.610 & $-$0.232 & 0.936 & 47 \\
+B1$'$ & 0.634 & $-$0.132 & 0.929 & 45 \\
+\midrule
+\multicolumn{5}{l}{\textit{Semantic Scholar}} \\
+A1  & 0.502 & $-$0.002 & 1.000 & 100 \\
+M1  & 0.456 & $+$0.010 & 0.984 & 53 \\
+B1  & 0.457 & $+$0.089 & 0.957 & 36 \\
+D1  & 0.499 & $-$0.008 & 1.000 & 96 \\
+D2  & 0.456 & $+$0.003 & 0.985 & 55 \\
+B1$'$ & 0.457 & $+$0.073 & 0.964 & 38 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Deflator curve on OpenAlex: outside-pool references per pool paper, and the resulting
+  weight. Years before 2005 are excluded (truncated references).}
+\label{tab:rt}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrr|lrr}
+\toprule
+\textbf{Year} & $R(t)$ & $D(t)$ & \textbf{Year} & $R(t)$ & $D(t)$ \\
+\midrule
+2005 & 18.43 & 1.742 & 2014 & 25.69 & 1.250 \\
+2006 & 19.69 & 1.631 & 2015 & 28.03 & 1.145 \\
+2007 & 20.61 & 1.558 & 2016 & 25.99 & 1.235 \\
+2008 & 20.66 & 1.554 & 2017 & 27.57 & 1.165 \\
+2009 & 19.70 & 1.630 & 2018 & 28.34 & 1.133 \\
+2010 & 20.88 & 1.538 & 2019 & 25.94 & 1.238 \\
+2011 & 20.61 & 1.558 & 2020 & 25.28 & 1.270 \\
+2012 & 22.38 & 1.435 & 2021 & 32.11 & 1.000 \\
+2013 & 23.37 & 1.374 & 2022 & 28.67 & 1.120 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{H5: failed, in the wrong direction.} $|\text{corr}_{\text{yr}}|$ rises from 0.178 to
+0.217 on OpenAlex, and from 0.002 to 0.008 on Semantic Scholar. The predicted mechanism is
+inverted. Citations received inside the scoring windows (born 2006--2014, cited by 2009--2017) are
+discounted by $D(t) = 1.63$ in 2006, falling to $1.17$ in 2017 (Table~\ref{tab:rt}), while
+citations received from 2018 to 2022 carry weights of $1.13$ to $1.27$. The discount is therefore
+applied most heavily to exactly the later-born papers that the fixed window already puts at a
+disadvantage, and the correlation moves away from zero.
+
+\paragraph{H6: held.} $\rho_{\text{fut}} = 0.694$ against A1's 0.708: a loss of 0.014 versus
+M1's 0.083, six times smaller, and the top-10 mean barely moves (91.6 against 96.5). On Semantic
+Scholar the loss is 0.003.
+
+\paragraph{H7: failed on reordering.} $\rho(\text{D1}, \text{A1}) = 0.998$ and top-100 overlap 97
+of 100, against the predicted 0.80--0.95 and below 70. The top nine authors hold identical
+positions and the remainder exchange adjacent places (for example de Rijke $10 \leftrightarrow 11$
+with D\'iaz). Across all 1,430 authors, 1,256 change rank at all, but 79 of the 100 authors in A1's
+top 100 stay inside it and the largest move is $70$ places (Barbosa, $718 \to 788$). $D(t)$ ranges
+from 1.00 to 1.74 and is nearly flat after 2012, so within the scoring window it behaves almost as
+a constant.
+
+\paragraph{H8: failed as stated.} D1's $\text{corr}_{\text{yr}}$ is $-0.217$ against B1$'$'s
+$-0.132$, so the field share keeps the correlation \emph{larger} in magnitude, not smaller. H8
+asked which of the two is closer to zero; tested as stated, it fails. The pair also shows that D1
+is the more accurate (0.694 against 0.634) with a four-times higher top-10 mean (91.6 against
+22.0). We report H8 as a failed prediction, and do not claim from these numbers that the field
+share adds information beyond deflation: on OpenAlex D1 and B1$'$ correlate at $0.929$ and share
+45 of 100, and on Semantic Scholar at $0.964$ with 38 of 100.
+
+\subsection{The birth-window confound}
+\label{sec:confound}
+
+The outcome counts citations received in a \emph{fixed calendar window} (2018--2022). A paper born
+in $y$ collects scored citations in $[y, y+3]$, and the two windows are disjoint only when
+$y + 3 < 2018$. For papers born after 2014 they overlap or coincide. Earlier-born papers therefore
+not only had more time to accumulate citations before the outcome window; they also have a
+guaranteed gap in which to be cited, while a 2014 paper's scored window (2014--2017) is followed
+immediately by the outcome window (2018--2022). The mean birth year in our sample is 2010.7, and
+A1's top 10 average 2010.4, so the leading group sits at the centre of the distribution, not at
+either end.
+
+Three checks support this reading and place limits on it. First, the sensitivity study gives
+$\text{corr}_{\text{yr}} = -0.197, -0.189, -0.178, -0.163, -0.166$ for $\Delta = 1, 2, 3, 5, 8$:
+widening the scoring window narrows the correlation without removing it. Second, widening the
+author cutoff from 2014 to 2016, which admits later-born papers, moves it from $-0.178$ to
+$-0.130$. Third, the top-10 mean birth year (2010.4) lies \emph{below} the population mean
+(2010.7); the correlation is carried by the body of the distribution and not by the leaders. We
+therefore treat $\text{corr}_{\text{yr}}$ as a diagnostic of the scoring protocol, not a
+headline bias measure, and we do not quantify how much of it is mechanical. A protocol in which
+every author is scored at the same number of years since first publication would separate the
+mechanical component from any behavioural one; it is the second item of future work.
+
+\section{Discussion}
+
+\paragraph{What the comparison establishes.} At this scale the standard corrections are
+separable. Per-paper averaging is a real and costly change: it reorders half the top 100 and gives
+up $0.083$ of rank accuracy. Deflation is not: it costs $0.014$, leaves the top nine authors in
+place, and is therefore a reporting correction rather than a re-ranking. Averaging and the field
+share are close but not redundant ($\rho = 0.937$, 48 of 100 shared), and the field share and the
+deflator are more nearly redundant still ($\rho = 0.998$).
+
+\paragraph{What it does not establish.} The age-related quantity that motivated H1 and H5 is
+confounded with the calendar structure of the outcome (Section~\ref{sec:confound}). Neither the
+M1 result nor the D1 result can be read as ``normalisation does not reduce age bias'': the
+confound is present in A1 and in every variant, and it is of the same size as the effects we
+observe. The literature separates a pure age effect from productivity and collaboration
+\citep{huang2012academicage}, reports academic-age normalisation as an operational remedy
+\citep{anonymous2026platform}, and documents citation inflation \citep{petersen2019inflation}; our design cannot
+adjudicate between these accounts for this cohort.
+
+\paragraph{Practical recommendation.} Report the field-share sum as the headline, report the
+deflated variant alongside it when absolute counts across eras are compared, and report the
+per-paper average as a separate question rather than a replacement. Say in the protocol what the
+outcome window is, because the result depends on it.
+
+\subsection{Limitations}
+
+\begin{enumerate}
+  \item \textbf{One field, one source, one window.} Five IR venues, one birth window
+    (2006--2014), one 5-year outcome. The correlations are specific to the overlap structure of
+    these windows.
+  \item \textbf{The birth-window confound.} The outcome window is shared by all authors, so the
+    relation between score and birth year mixes a mechanical and a behavioural component that
+    this design cannot separate.
+  \item \textbf{Deflator supply.} $R(t)$ is measured on outside-pool references, so it
+    under-represents fields that IR stopped citing. Its shape is what the deflator uses, and a
+    field-wide reference population would be preferable; that pull was not available, so the
+    per-paper and per-distinct-work variants ($D_{\text{naive}}$, $D_{\text{distinct}}$) remain
+    cross-checks rather than alternatives reported in the tables.
+  \item \textbf{Thin mirror.} Semantic Scholar is thin enough that its $\text{corr}_{\text{yr}}$
+    values lie within $\pm0.01$ of zero; it tests directions, not magnitudes.
+  \item \textbf{Tie-dominated indices.} M2 and B2 are 82--100\% ties, so their rank correlations
+    are computed on a heavily tied vector. No tie-breaking alternative was tested.
+  \item \textbf{Single setting for shrinkage.} Only $k=3$ was tested for M4.
+  \item \textbf{No external benchmark.} No author-level IR ground truth is public; the temporal
+    holdout is the only reproducible target available.
+\end{enumerate}
+
+\subsection{Future work}
+
+The evidence points at the protocol, not at further aggregation schemes.
+\begin{enumerate}
+  \item \textbf{Percentile indicators} \citep{waltman2016review, waltman2013percentile}: rank each paper in its
+    cohort and average per author. This is the only standard family not yet built.
+  \item \textbf{Fixed-age scoring}: score every author at the same number of years since first
+    publication, which removes the window-overlap confound by construction.
+  \item \textbf{Position-weighted credit} \citep{vavrycuk2018influential} and \textbf{PageRank}
+    \citep{ding2011pagerank} scaled to this graph.
+\end{enumerate}
+
+\section{Conclusion}
+
+We compared seven author-level metrics and three deflator variants against a held-out
+future-citation outcome on a closed IR graph, with hypotheses fixed before the numbers. Per-paper
+averaging costs $0.083$ in rank accuracy and does not turn into a freshness ranking. Citation
+deflation costs $0.014$ and changes almost nothing in the top 100. The field share survives both.
+The quantity these corrections were introduced to fix cannot be measured fairly with a shared
+outcome window, because paper age and outcome visibility are mechanically entangled. The next
+step is a protocol change, not another metric.
+
+\medskip
+\bibliographystyle{plainnat}
+\bibliography{neurips_biblio}
+
+\end{document}
